@@ -1,15 +1,25 @@
 {% load static %}
 {% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+{% get_language_info_list for LANGUAGES as languages %}
 <!DOCTYPE html>
-<html lang="en" dir="rtl">
+{% if LANGUAGE_CODE == 'fa' %}
+    <html lang="fa-ir" dir="rtl">
+{% endif %}
+
+{% if LANGUAGE_CODE == 'en' %}
+    <html lang="en">
+{% endif %}
+
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>قالب Molla - قالب بوت استرپ فروشگاهی</title>
+    <title>Sepimo</title>
     <meta name="keywords" content="HTML5 Template">
-    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="description" content="Sepimo">
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="{% static "core/images/icons/apple-touch-icon.png" %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static "core/images/icons/favicon-32x32.png" %}">
@@ -28,7 +38,9 @@
     <link rel="stylesheet" type="text/css" href="{% static "core/css/style.css" %}">
 
     <link rel="stylesheet" href={% static "core/css/bootstrap.min.css" %}>
-    <link rel="stylesheet" href={% static "core/css/bootstrap-rtl.min.css" %}>
+    {% if LANGUAGE_CODE == 'fa' %}
+        <link rel="stylesheet" href={% static "core/css/bootstrap-rtl.min.css" %}>
+    {% endif %}
     <link rel="stylesheet" href={% static "core/css/plugins/owl-carousel/owl.carousel.css" %}>
     <link rel="stylesheet" href={% static "core/css/plugins/magnific-popup/magnific-popup.css" %}>
     <link rel="stylesheet" href={% static "core/css/plugins/jquery.countdown.css" %}>
@@ -45,10 +57,10 @@
             <div class="container">
                 <div class="header-left">
                     <p>کالکشن های جدید به زودی در دسترس قرا می گیرند</p><a href="#">&nbsp;مطالعه بیشتر ...</a>
-                </div><!-- End .header-left -->
+                </div>
+                <!-- End .header-left -->
 
                 <div class="header-right">
-
                     <ul class="top-menu">
                         <li>
                             <a href="#">لینک ها</a>
@@ -89,7 +101,7 @@
             <div class="container">
                 <div class="header-left">
                     <button class="mobile-menu-toggler">
-                        <span class="sr-only">فهرست</span>
+                        <span class="sr-only">Toggle mobile menu</span>
                         <i class="icon-bars"></i>
                     </button>
 
@@ -105,9 +117,9 @@
                         <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
                         <form action="#" method="get">
                             <div class="header-search-wrapper search-wrapper-wide">
-                                <label for="q" class="sr-only">جستجو</label>
+                                <label for="q" class="sr-only">Search</label>
                                 <input type="search" class="form-control" name="q" id="q"
-                                       placeholder="جستجوی محصول ..." required>
+                                       placeholder="Search product ..." required>
                                 <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                             </div><!-- End .header-search-wrapper -->
                         </form>
@@ -120,28 +132,28 @@
                             <div class="icon">
                                 <i class="icon-user"></i>
                             </div>
-                            <p>حساب کاربری</p>
+                            <p>Account</p>
                         </a>
                     </div><!-- End .compare-dropdown -->
 
                     <div class="wishlist">
-                        <a href="wishlist.html" title="لیست محصولات مورد علاقه شما">
+                        <a href="wishlist.html" title="Wishlist">
                             <div class="icon">
                                 <i class="icon-heart-o"></i>
                                 <span class="wishlist-count badge">3</span>
                             </div>
-                            <p>لیست علاقه مندی ها</p>
+                            <p>Wishlist</p>
                         </a>
                     </div><!-- End .compare-dropdown -->
 
                     <div class="dropdown cart-dropdown">
-                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false" data-display="static">
+                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                           aria-expanded="false" data-display="static">
                             <div class="icon">
                                 <i class="icon-shopping-cart"></i>
                                 <span class="cart-count">2</span>
                             </div>
-                            <p>سبد خرید</p>
+                            <p>Cart</p>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right">
@@ -149,53 +161,55 @@
                                 <div class="product">
                                     <div class="product-cart-details">
                                         <h4 class="product-title">
-                                            <a href="product.html">کتونی ورزشی مخصوص دویدن رنگ بژ</a>
+                                            <a href="product.html">Beige knitted elastic runner shoes</a>
                                         </h4>
 
                                         <span class="cart-product-info">
-                                                <span class="cart-product-qty">1 x </span>
-                                                84,000 تومان
+                                                <span class="cart-product-qty">1</span>
+                                                x $84.00
                                             </span>
                                     </div><!-- End .product-cart-details -->
 
                                     <figure class="product-image-container">
                                         <a href="product.html" class="product-image">
-                                            <img src="{% static "core/images/products/cart/product-1.jpg" alt="product">
-                                            </a>
-                                        </figure>
-                                        <a href=" #" class="btn-remove" title="حذف محصول"><i class="icon-close"></i></a>
+                                            <img src="{% static "core/images/products/cart/product-1.jpg" %}"
+                                                 alt="product">
+                                        </a>
+                                    </figure>
+                                    <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
                                 </div><!-- End .product -->
 
                                 <div class="product">
                                     <div class="product-cart-details">
                                         <h4 class="product-title">
-                                            <a href="product.html">لباس زنانه آبی</a>
+                                            <a href="product.html">Blue utility pinafore denim dress</a>
                                         </h4>
 
                                         <span class="cart-product-info">
-                                                <span class="cart-product-qty">1 x </span>
-                                                76,000 تومان
+                                                <span class="cart-product-qty">1</span>
+                                                x $76.00
                                             </span>
                                     </div><!-- End .product-cart-details -->
 
                                     <figure class="product-image-container">
                                         <a href="product.html" class="product-image">
-                                            <img src="{% static "core/images/products/cart/product-2.jpg" alt="product">
-                                            </a>
-                                        </figure>
-                                        <a href=" #" class="btn-remove" title="حذف محصول"><i class="icon-close"></i></a>
+                                            <img src="{% static "core/images/products/cart/product-2.jpg" %}"
+                                                 alt="product">
+                                        </a>
+                                    </figure>
+                                    <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
                                 </div><!-- End .product -->
                             </div><!-- End .cart-product -->
 
                             <div class="dropdown-cart-total">
-                                <span>مجموع</span>
+                                <span>Total</span>
 
-                                <span class="cart-total-price">160,000 تومان</span>
+                                <span class="cart-total-price">$160.00</span>
                             </div><!-- End .dropdown-cart-total -->
 
                             <div class="dropdown-cart-action">
-                                <a href="cart.html" class="btn btn-primary">مشاهده سبد خرید</a>
-                                <a href="checkout.html" class="btn btn-outline-primary-2"><span>پرداخت</span><i
+                                <a href="cart.html" class="btn btn-primary">View Cart</a>
+                                <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i
                                         class="icon-long-arrow-left"></i></a>
                             </div><!-- End .dropdown-cart-total -->
                         </div><!-- End .dropdown-menu -->
@@ -208,26 +222,25 @@
             <div class="container">
                 <div class="header-left">
                     <div class="dropdown category-dropdown">
-                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false" data-display="static"
-                           title="فهرست دسته بندی ها">
-                            فهرست دسته بندی ها
+                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                           aria-expanded="false" data-display="static" title="Browse Categories">
+                            Browse Categories
                         </a>
 
                         <div class="dropdown-menu">
                             <nav class="side-nav">
                                 <ul class="menu-vertical sf-arrows">
-                                    <li class="item-lead"><a href="#">تخفیف های روزانه</a></li>
-                                    <li class="item-lead"><a href="#">هدیه ها</a></li>
-                                    <li><a href="#">تخت خواب</a></li>
-                                    <li><a href="#">روشنایی</a></li>
-                                    <li><a href="#">مبل</a></li>
-                                    <li><a href="#">حافظه های ذخیره سازی</a></li>
-                                    <li><a href="#">میز و صندلی</a></li>
-                                    <li><a href="#">وسایل تزیینی </a></li>
-                                    <li><a href="#">کابینت آشپزخانه</a></li>
-                                    <li><a href="#">قهوه</a></li>
-                                    <li><a href="#">لوازم تعمیرات </a></li>
+                                    <li class="item-lead"><a href="#">Daily offers</a></li>
+                                    <li class="item-lead"><a href="#">Gift Ideas</a></li>
+                                    <li><a href="#">Beds</a></li>
+                                    <li><a href="#">Lighting</a></li>
+                                    <li><a href="#">Sofas & Sleeper sofas</a></li>
+                                    <li><a href="#">Storage</a></li>
+                                    <li><a href="#">Armchairs & Chaises</a></li>
+                                    <li><a href="#">Decoration </a></li>
+                                    <li><a href="#">Kitchen Cabinets</a></li>
+                                    <li><a href="#">Coffee & Tables</a></li>
+                                    <li><a href="#">Outdoor Furniture </a></li>
                                 </ul><!-- End .menu-vertical -->
                             </nav><!-- End .side-nav -->
                         </div><!-- End .dropdown-menu -->
@@ -238,19 +251,18 @@
                     <nav class="main-nav">
                         <ul class="menu sf-arrows">
                             <li class="megamenu-container active">
-                                <a href="index-1.html" class="sf-with-ul">خانه</a>
+                                <a href="index.html" class="sf-with-ul">Home</a>
 
                                 <div class="megamenu demo">
                                     <div class="menu-col">
-                                        <div class="menu-title">دمو خود را انتخاب کنید</div><!-- End .menu-title -->
+                                        <div class="menu-title">Choose your demo</div><!-- End .menu-title -->
 
                                         <div class="demo-list">
                                             <div class="demo-item">
                                                 <a href="index-1.html">
                                                         <span class="demo-bg"
                                                               style="background-image: url({% static "core/images/menu/demos/1.jpg" %} );"></span>
-                                                                      <span class=" demo-title">01 - فروشگاه
-                                                    مبلمان</span>
+                                                    <span class=" demo-title">01 - furniture store</span>
                                                 </a>
                                             </div><!-- End .demo-item -->
 
@@ -594,86 +606,89 @@
                                         <div class="col-md-4">
                                             <div class="banner banner-overlay">
                                                 <a href="category.html" class="banner banner-menu">
-                                                    <img src="{% static "core/images/menu/banner-1.jpg" alt="Banner">
+                                                    <img src="{% static "core/images/menu/banner-1.jpg" %}"
+                                                         alt="Banner">
 
-                                                        <div class=" banner-content banner-content-top">
-                                                    <div class="banner-title text-white">آخرین
-                                                        <br>شانس<br><span><strong>فروش</strong></span></div>
-                                                    <!-- End .banner-title -->
-                                            </div><!-- End .banner-content -->
-                                            </a>
-                                        </div><!-- End .banner banner-overlay -->
-                                    </div><!-- End .col-md-4 -->
-                                </div><!-- End .row -->
-                </div><!-- End .megamenu megamenu-md -->
-                </li>
-                <li>
-                    <a href="product.html" class="sf-with-ul">محصول</a>
+                                                    <div class=" banner-content banner-content-top">
+                                                        <div class="banner-title text-white">آخرین
+                                                            <br>شانس<br><span><strong>فروش</strong></span></div>
+                                                        <!-- End .banner-title -->
+                                                    </div><!-- End .banner-content -->
+                                                </a>
+                                            </div><!-- End .banner banner-overlay -->
+                                        </div><!-- End .col-md-4 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .megamenu megamenu-md -->
+                            </li>
+                            <li>
+                                <a href="product.html" class="sf-with-ul">محصول</a>
 
-                    <div class="megamenu megamenu-sm">
-                        <div class="row no-gutters">
-                            <div class="col-md-6">
-                                <div class="menu-col">
-                                    <div class="menu-title">جزئیات محصول</div>
-                                    <!-- End .menu-title -->
-                                    <ul>
-                                        <li><a href="product.html">پیش فرض</a></li>
-                                        <li><a href="product-centered.html">توضیحات وسط چین</a></li>
-                                        <li><a href="product-extended.html"><span>توضیحات گسترده<span
-                                                class="tip tip-new">جدید</span></span></a></li>
-                                        <li><a href="product-gallery.html">گالری</a></li>
-                                        <li><a href="product-sticky.html">اطلاعات چسبیده</a></li>
-                                        <li><a href="product-sidebar.html">صفحه جمع با سایدبار</a></li>
-                                        <li><a href="product-fullwidth.html">تمام عرض</a></li>
-                                        <li><a href="product-masonry.html">اطلاعات چسبیده</a></li>
-                                    </ul>
-                                </div><!-- End .menu-col -->
-                            </div><!-- End .col-md-6 -->
+                                <div class="megamenu megamenu-sm">
+                                    <div class="row no-gutters">
+                                        <div class="col-md-6">
+                                            <div class="menu-col">
+                                                <div class="menu-title">جزئیات محصول</div>
+                                                <!-- End .menu-title -->
+                                                <ul>
+                                                    <li><a href="product.html">پیش فرض</a></li>
+                                                    <li><a href="product-centered.html">توضیحات وسط چین</a></li>
+                                                    <li><a href="product-extended.html"><span>توضیحات گسترده<span
+                                                            class="tip tip-new">جدید</span></span></a></li>
+                                                    <li><a href="product-gallery.html">گالری</a></li>
+                                                    <li><a href="product-sticky.html">اطلاعات چسبیده</a></li>
+                                                    <li><a href="product-sidebar.html">صفحه جمع با سایدبار</a></li>
+                                                    <li><a href="product-fullwidth.html">تمام عرض</a></li>
+                                                    <li><a href="product-masonry.html">اطلاعات چسبیده</a></li>
+                                                </ul>
+                                            </div><!-- End .menu-col -->
+                                        </div><!-- End .col-md-6 -->
 
-                            <div class="col-md-6">
-                                <div class="banner banner-overlay">
-                                    <a href="category.html">
-                                        <img src="{% static "core/images/menu/banner-2.jpg" alt="Banner">
+                                        <div class="col-md-6">
+                                            <div class="banner banner-overlay">
+                                                <a href="category.html">
+                                                    <img src="{% static "core/images/menu/banner-2.jpg" %}"
+                                                         alt="Banner">
 
-                                                        <div class=" banner-content banner-content-bottom">
-                                        <div class="banner-title text-white">محصولات
-                                            جدید<br><span><strong>بهار 1401</strong></span>
-                                        </div><!-- End .banner-title -->
-                                </div><!-- End .banner-content -->
-                                </a>
-                            </div><!-- End .banner -->
-                        </div><!-- End .col-md-6 -->
-                    </div><!-- End .row -->
-            </div><!-- End .megamenu megamenu-sm -->
-            </li>
-            <li>
-                <a href="#" class="sf-with-ul">صفحات </a>
+                                                    <div class=" banner-content banner-content-bottom">
+                                                        <div class="banner-title text-white">محصولات
+                                                            جدید<br><span><strong>بهار 1401</strong></span>
+                                                        </div><!-- End .banner-title -->
+                                                    </div><!-- End .banner-content -->
+                                                </a>
+                                            </div><!-- End .banner -->
+                                        </div><!-- End .col-md-6 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .megamenu megamenu-sm -->
+                            </li>
+                            <li>
+                                <a href="#" class="sf-with-ul">صفحات </a>
 
-                <ul>
-                    <li>
-                        <a href="about.html" class="sf-with-ul">درباره ما</a>
+                                <ul>
+                                    <li>
+                                        <a href="about.html" class="sf-with-ul">درباره ما</a>
 
-                        <ul>
-                            <li><a href="about.html">درباره ما 01</a></li>
-                            <li><a href="about-2.html">درباره ما 02</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="contact.html" class="sf-with-ul">تماس با ما</a>
+                                        <ul>
+                                            <li><a href="about.html">درباره ما 01</a></li>
+                                            <li><a href="about-2.html">درباره ما 02</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="contact.html" class="sf-with-ul">تماس با ما</a>
 
-                        <ul>
-                            <li><a href="contact.html">تماس با ما 01</a></li>
-                            <li><a href="contact-2.html">تماس با ما 02</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="invoice-template/invoice-template.html" class="sf-with-ul">قالب
-                            فاکتور</a>
+                                        <ul>
+                                            <li><a href="contact.html">تماس با ما 01</a></li>
+                                            <li><a href="contact-2.html">تماس با ما 02</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="invoice-template/invoice-template.html" class="sf-with-ul">قالب
+                                            فاکتور</a>
 
-                        <ul>
-                            <li><a href="invoice-template/invoice-template.html">قالب فاکتور 01</a></li>
-                            <li><a href="invoice-template/invoice-template2.html">قالب فاکتور 02</a></li>
-                        </ul>
+                                        <ul>
+                                            <li><a href="invoice-template/invoice-template.html">قالب فاکتور 01</a></li>
+                                            <li><a href="invoice-template/invoice-template2.html">قالب فاکتور 02</a>
+                                            </li>
+                                        </ul>
                     </li>
                     <li><a href="email-template/email-template.html">قالب ایمیل</a></li>
                     <li><a href="login.html">ورود</a></li>
@@ -876,67 +891,67 @@
                 <div class="col-md-12 col-lg-5">
                     <div class="banner banner-large banner-overlay banner-overlay-light">
                         <a href="#">
-                            <img src="{% static "core/images/demos/demo-2/banners/banner-1.jpg" alt="بنر">
-                                </a>
+                            <img src="{% static "core/images/demos/demo-2/banners/banner-1.jpg" %}" alt="بنر">
+                        </a>
 
-                                <div class=" banner-content banner-content-top">
+                        <div class=" banner-content banner-content-top">
                             <h4 class="banner-subtitle">پیشنهاد ویژه</h4><!-- End .banner-subtitle -->
                             <h3 class="banner-title">میز قهوه</h3><!-- End .banner-title -->
                             <div class="banner-text">از 19,000 تومان</div><!-- End .banner-text -->
                             <a href="#" class="btn btn-outline-gray banner-link">خرید<i
                                     class="icon-long-arrow-left"></i></a>
-                    </div><!-- End .banner-content -->
-                </div><!-- End .banner -->
-            </div><!-- End .col-lg-5 -->
+                        </div><!-- End .banner-content -->
+                    </div><!-- End .banner -->
+                </div><!-- End .col-lg-5 -->
 
-            <div class="col-md-6 col-lg-3">
-                <div class="banner banner-overlay">
-                    <a href="#">
-                        <img src="{% static "core/images/demos/demo-2/banners/banner-2.jpg" alt="بنر">
-                                </a>
+                <div class="col-md-6 col-lg-3">
+                    <div class="banner banner-overlay">
+                        <a href="#">
+                            <img src="{% static "core/images/demos/demo-2/banners/banner-2.jpg" %}" alt="بنر">
+                        </a>
 
-                                <div class=" banner-content banner-content-bottom">
-                        <h4 class="banner-subtitle text-grey">برای فروش</h4><!-- End .banner-subtitle -->
-                        <h3 class="banner-title text-white">صندلی های <br>فوق العاده</h3>
-                        <!-- End .banner-title -->
-                        <div class="banner-text text-white">از 39,000 تومان</div><!-- End .banner-text -->
-                        <a href="#" class="btn btn-outline-white banner-link">مشاهده<i
-                                class="icon-long-arrow-left"></i></a>
-                </div><!-- End .banner-content -->
-            </div><!-- End .banner -->
-        </div><!-- End .col-lg-3 -->
+                        <div class=" banner-content banner-content-bottom">
+                            <h4 class="banner-subtitle text-grey">برای فروش</h4><!-- End .banner-subtitle -->
+                            <h3 class="banner-title text-white">صندلی های <br>فوق العاده</h3>
+                            <!-- End .banner-title -->
+                            <div class="banner-text text-white">از 39,000 تومان</div><!-- End .banner-text -->
+                            <a href="#" class="btn btn-outline-white banner-link">مشاهده<i
+                                    class="icon-long-arrow-left"></i></a>
+                        </div><!-- End .banner-content -->
+                    </div><!-- End .banner -->
+                </div><!-- End .col-lg-3 -->
 
-        <div class="col-md-6 col-lg-4">
-            <div class="banner banner-overlay">
-                <a href="#">
-                    <img src="{% static "core/images/demos/demo-2/banners/banner-3.jpg" alt="بنر">
-                                </a>
+                <div class="col-md-6 col-lg-4">
+                    <div class="banner banner-overlay">
+                        <a href="#">
+                            <img src="{% static "core/images/demos/demo-2/banners/banner-3.jpg" %}" alt="بنر">
+                        </a>
 
-                                <div class=" banner-content banner-content-top">
-                    <h4 class="banner-subtitle text-grey">محصولات جدید</h4><!-- End .banner-subtitle -->
-                    <h3 class="banner-title text-white">جعبه <br>و سبد</h3>
-                    <!-- End .banner-title -->
-                    <a href="#" class="btn btn-outline-white banner-link">مشاهده<i
-                            class="icon-long-arrow-left"></i></a>
-            </div><!-- End .banner-content -->
-        </div><!-- End .banner -->
+                        <div class=" banner-content banner-content-top">
+                            <h4 class="banner-subtitle text-grey">محصولات جدید</h4><!-- End .banner-subtitle -->
+                            <h3 class="banner-title text-white">جعبه <br>و سبد</h3>
+                            <!-- End .banner-title -->
+                            <a href="#" class="btn btn-outline-white banner-link">مشاهده<i
+                                    class="icon-long-arrow-left"></i></a>
+                        </div><!-- End .banner-content -->
+                    </div><!-- End .banner -->
 
-        <div class="banner banner-overlay banner-overlay-light">
-            <a href="#">
-                <img src="{% static "core/images/demos/demo-2/banners/banner-4.jpg" alt="بنر">
-                                </a>
+                    <div class="banner banner-overlay banner-overlay-light">
+                        <a href="#">
+                            <img src="{% static "core/images/demos/demo-2/banners/banner-4.jpg" %}" alt="بنر">
+                        </a>
 
-                                <div class=" banner-content banner-content-top">
-                <h4 class="banner-subtitle">برای فروش</h4><!-- End .banner-subtitle -->
-                <h3 class="banner-title">تخفف لامپ</h3><!-- End .banner-title -->
-                <div class="banner-text">تا 30% تخفیف</div><!-- End .banner-text -->
-                <a href="#" class="btn btn-outline-gray banner-link">خرید<i
-                        class="icon-long-arrow-left"></i></a>
-        </div><!-- End .banner-content -->
-    </div><!-- End .banner -->
-    </div><!-- End .col-lg-4 -->
-    </div><!-- End .row -->
-    </div><!-- End .container -->
+                        <div class=" banner-content banner-content-top">
+                            <h4 class="banner-subtitle">برای فروش</h4><!-- End .banner-subtitle -->
+                            <h3 class="banner-title">تخفف لامپ</h3><!-- End .banner-title -->
+                            <div class="banner-text">تا 30% تخفیف</div><!-- End .banner-text -->
+                            <a href="#" class="btn btn-outline-gray banner-link">خرید<i
+                                    class="icon-long-arrow-left"></i></a>
+                        </div><!-- End .banner-content -->
+                    </div><!-- End .banner -->
+                </div><!-- End .col-lg-4 -->
+            </div><!-- End .row -->
+        </div><!-- End .container -->
     </div><!-- End .banner-group -->
 
     <div class="mb-3"></div><!-- End .mb-6 -->
@@ -995,10 +1010,12 @@
                     <div class="product product-11 text-center">
                         <figure class="product-media">
                             <a href="product.html">
-                                <img src="{% static "core/images/demos/demo-2/products/product-1-1.jpg" alt="تصویر محصول"
-                                            class=" product-image">
-                                <img src="{% static "core/images/demos/demo-2/products/product-1-2.jpg" alt="تصویر محصول"
-                                            class=" product-image-hover">
+                                <img src="{% static "core/images/demos/demo-2/products/product-1-1.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image">
+                                <img src="{% static "core/images/demos/demo-2/products/product-1-2.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image-hover">
                             </a>
 
                             <div class="product-action-vertical">
@@ -1024,10 +1041,12 @@
                     <div class="product product-11 text-center">
                         <figure class="product-media">
                             <a href="product.html">
-                                <img src="{% static "core/images/demos/demo-2/products/product-2-1.jpg" alt="تصویر محصول"
-                                            class=" product-image">
-                                <img src="{% static "core/images/demos/demo-2/products/product-2-2.jpg" alt="تصویر محصول"
-                                            class=" product-image-hover">
+                                <img src="{% static "core/images/demos/demo-2/products/product-2-1.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image">
+                                <img src="{% static "core/images/demos/demo-2/products/product-2-2.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image-hover">
                             </a>
 
                             <div class="product-action-vertical">
@@ -1060,10 +1079,12 @@
                         <figure class="product-media">
                             <span class="product-label label-circle label-new">جدید</span>
                             <a href="product.html">
-                                <img src="{% static "core/images/demos/demo-2/products/product-3-1.jpg" alt="تصویر محصول"
-                                            class=" product-image">
-                                <img src="{% static "core/images/demos/demo-2/products/product-3-2.jpg" alt="تصویر محصول"
-                                            class=" product-image-hover">
+                                <img src="{% static "core/images/demos/demo-2/products/product-3-1.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image">
+                                <img src="{% static "core/images/demos/demo-2/products/product-3-2.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image-hover">
                             </a>
 
                             <div class="product-action-vertical">
@@ -1091,10 +1112,12 @@
                         <figure class="product-media">
                             <span class="product-label label-circle label-sale">فروش ویژه</span>
                             <a href="product.html">
-                                <img src="{% static "core/images/demos/demo-2/products/product-4-1.jpg" alt="تصویر محصول"
-                                            class=" product-image">
-                                <img src="{% static "core/images/demos/demo-2/products/product-4-2.jpg" alt="تصویر محصول"
-                                            class=" product-image-hover">
+                                <img src="{% static "core/images/demos/demo-2/products/product-4-1.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image">
+                                <img src="{% static "core/images/demos/demo-2/products/product-4-2.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image-hover">
                             </a>
 
                             <div class="product-action-vertical">
@@ -1128,10 +1151,12 @@
                     <div class="product product-11 text-center">
                         <figure class="product-media">
                             <a href="product.html">
-                                <img src="{% static "core/images/demos/demo-2/products/product-5-1.jpg" alt="تصویر محصول"
-                                            class=" product-image">
-                                <img src="{% static "core/images/demos/demo-2/products/product-5-2.jpg" alt="تصویر محصول"
-                                            class=" product-image-hover">
+                                <img src="{% static "core/images/demos/demo-2/products/product-5-1.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image">
+                                <img src="{% static "core/images/demos/demo-2/products/product-5-2.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image-hover">
                             </a>
 
                             <div class="product-action-vertical">
@@ -1164,10 +1189,12 @@
                     <div class="product product-11 text-center">
                         <figure class="product-media">
                             <a href="product.html">
-                                <img src="{% static "core/images/demos/demo-2/products/product-6-1.jpg" alt="تصویر محصول"
-                                            class=" product-image">
-                                <img src="{% static "core/images/demos/demo-2/products/product-6-2.jpg" alt="تصویر محصول"
-                                            class=" product-image-hover">
+                                <img src="{% static "core/images/demos/demo-2/products/product-6-1.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image">
+                                <img src="{% static "core/images/demos/demo-2/products/product-6-2.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image-hover">
                             </a>
 
                             <div class="product-action-vertical">
@@ -1194,10 +1221,12 @@
                     <div class="product product-11 text-center">
                         <figure class="product-media">
                             <a href="product.html">
-                                <img src="{% static "core/images/demos/demo-2/products/product-1-1.jpg" alt="تصویر محصول"
-                                            class=" product-image">
-                                <img src="{% static "core/images/demos/demo-2/products/product-1-2.jpg" alt="تصویر محصول"
-                                            class=" product-image-hover">
+                                <img src="{% static "core/images/demos/demo-2/products/product-1-1.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image">
+                                <img src="{% static "core/images/demos/demo-2/products/product-1-2.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image-hover">
                             </a>
 
                             <div class="product-action-vertical">
@@ -1256,10 +1285,12 @@
                     <div class="product product-11 text-center">
                         <figure class="product-media">
                             <a href="product.html">
-                                <img src="{% static "core/images/demos/demo-2/products/product-5-1.jpg" alt="تصویر محصول"
-                                            class=" product-image">
-                                <img src="{% static "core/images/demos/demo-2/products/product-5-2.jpg" alt="تصویر محصول"
-                                            class=" product-image-hover">
+                                <img src="{% static "core/images/demos/demo-2/products/product-5-1.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image">
+                                <img src="{% static "core/images/demos/demo-2/products/product-5-2.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image-hover">
                             </a>
 
                             <div class="product-action-vertical">
@@ -1292,10 +1323,12 @@
                     <div class="product product-11 text-center">
                         <figure class="product-media">
                             <a href="product.html">
-                                <img src="{% static "core/images/demos/demo-2/products/product-6-1.jpg" alt="تصویر محصول"
-                                            class=" product-image">
-                                <img src="{% static "core/images/demos/demo-2/products/product-6-2.jpg" alt="تصویر محصول"
-                                            class=" product-image-hover">
+                                <img src="{% static "core/images/demos/demo-2/products/product-6-1.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image">
+                                <img src="{% static "core/images/demos/demo-2/products/product-6-2.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image-hover">
                             </a>
 
                             <div class="product-action-vertical">
@@ -1322,10 +1355,12 @@
                     <div class="product product-11 text-center">
                         <figure class="product-media">
                             <a href="product.html">
-                                <img src="{% static "core/images/demos/demo-2/products/product-1-1.jpg" alt="تصویر محصول"
-                                            class=" product-image">
-                                <img src="{% static "core/images/demos/demo-2/products/product-1-2.jpg" alt="تصویر محصول"
-                                            class=" product-image-hover">
+                                <img src="{% static "core/images/demos/demo-2/products/product-1-1.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image">
+                                <img src="{% static "core/images/demos/demo-2/products/product-1-2.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image-hover">
                             </a>
 
                             <div class="product-action-vertical">
@@ -1384,10 +1419,12 @@
                     <div class="product product-11 text-center">
                         <figure class="product-media">
                             <a href="product.html">
-                                <img src="{% static "core/images/demos/demo-2/products/product-2-1.jpg" alt="تصویر محصول"
-                                            class=" product-image">
-                                <img src="{% static "core/images/demos/demo-2/products/product-2-2.jpg" alt="تصویر محصول"
-                                            class=" product-image-hover">
+                                <img src="{% static "core/images/demos/demo-2/products/product-2-1.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image">
+                                <img src="{% static "core/images/demos/demo-2/products/product-2-2.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image-hover">
                             </a>
 
                             <div class="product-action-vertical">
@@ -1420,10 +1457,12 @@
                         <figure class="product-media">
                             <span class="product-label label-circle label-new">جدید</span>
                             <a href="product.html">
-                                <img src="{% static "core/images/demos/demo-2/products/product-3-1.jpg" alt="تصویر محصول"
-                                            class=" product-image">
-                                <img src="{% static "core/images/demos/demo-2/products/product-3-2.jpg" alt="تصویر محصول"
-                                            class=" product-image-hover">
+                                <img src="{% static "core/images/demos/demo-2/products/product-3-1.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image">
+                                <img src="{% static "core/images/demos/demo-2/products/product-3-2.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image-hover">
                             </a>
 
                             <div class="product-action-vertical">
@@ -1451,10 +1490,12 @@
                         <figure class="product-media">
                             <span class="product-label label-circle label-sale">فروش ویژه</span>
                             <a href="product.html">
-                                <img src="{% static "core/images/demos/demo-2/products/product-4-1.jpg" alt="تصویر محصول"
-                                            class=" product-image">
-                                <img src="{% static "core/images/demos/demo-2/products/product-4-2.jpg" alt="تصویر محصول"
-                                            class=" product-image-hover">
+                                <img src="{% static "core/images/demos/demo-2/products/product-4-1.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image">
+                                <img src="{% static "core/images/demos/demo-2/products/product-4-2.jpg" %}"
+                                     alt="تصویر محصول"
+                                     class=" product-image-hover">
                             </a>
 
                             <div class="product-action-vertical">
@@ -1516,776 +1557,776 @@
                         </div><!-- End .deal-content -->
                         <div class="deal-image">
                             <a href="product.html">
-                                <img src="{% static "core/images/demos/demo-2/deal/product-1.jpg" alt="image">
-                                    </a>
-                                </div><!-- End .deal-image -->
-                            </div><!-- End .deal -->
-                        </div><!-- End .col-lg-9 -->
-
-                        <div class=" col-lg-3">
-                                <div class="banner banner-overlay banner-overlay-light text-center d-none d-lg-block">
-                                    <a href="#">
-                                        <img src="{% static "core/images/demos/demo-2/banners/banner-5.jpg" alt="بنر">
-                                </a>
-
-                                <div class=" banner-content banner-content-top banner-content-center text-center">
-                                        <h4 class="banner-subtitle">بهترین انتخاب</h4><!-- End .banner-subtitle -->
-                                        <h3 class="banner-title">صندلی حصیری</h3><!-- End .banner-title -->
-                                        <div class="banner-text text-primary">49,000 تومان</div>
-                                        <!-- End .banner-text -->
-                                        <a href="#" class="btn btn-outline-gray banner-link">خرید<i
-                                                class="icon-long-arrow-left"></i></a>
-                                </div><!-- End .banner-content -->
-                        </div><!-- End .banner -->
-                    </div><!-- End .col-lg-3 -->
-                </div><!-- End .row -->
-            </div><!-- End .container -->
-        </div><!-- End .bg-light -->
-
-        <div class="mb-6"></div><!-- End .mb-6 -->
-
-        <div class="container">
-            <div class="heading heading-center mb-3">
-                <h2 class="title text-center">پرفروش ترین محصولات</h2><!-- End .title -->
-
-                <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="top-all-link" data-toggle="tab" href="#top-all-tab"
-                           role="tab" aria-controls="top-all-tab" aria-selected="true">همه</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="top-fur-link" data-toggle="tab" href="#top-fur-tab" role="tab"
-                           aria-controls="top-fur-tab" aria-selected="false">مبل</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="top-decor-link" data-toggle="tab" href="#top-decor-tab" role="tab"
-                           aria-controls="top-decor-tab" aria-selected="false">دکور</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="top-light-link" data-toggle="tab" href="#top-light-tab" role="tab"
-                           aria-controls="top-light-tab" aria-selected="false">روشنایی</a>
-                    </li>
-                </ul>
-            </div><!-- End .heading -->
-
-            <div class="tab-content">
-                <div class="tab-pane p-0 fade show active" id="top-all-tab" role="tabpanel"
-                     aria-labelledby="top-all-link">
-                    <div class="products">
-                        <div class="row justify-content-center">
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-7-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-7-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">روشنایی</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">چراغ های رومیزی
-                                            زیبا</a></h3>
-                                        <!-- End .product-title -->
-                                        <div class="product-price">
-                                            401,000 تومان
-                                        </div><!-- End .product-price -->
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-8-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-8-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">دکور</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">نگه دارنده
-                                            هیزم</a></h3>
-                                        <!-- End .product-title -->
-                                        <div class="product-price">
-                                            401,000 تومان
-                                        </div><!-- End .product-price -->
-
-                                        <div class="product-nav product-nav-dots">
-                                            <a href="#" class="active" style="background: #333333;"><span
-                                                    class="sr-only">نام رنگ</span></a>
-                                            <a href="#" style="background: #927764;"><span
-                                                    class="sr-only">نام رنگ</span></a>
-                                        </div><!-- End .product-nav -->
-
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <span class="product-label label-circle label-sale">فروش ویژه</span>
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-9-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-9-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">مبل</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">صندلی راحتی
-                                            باغ</a></h3>
-                                        <!-- End .product-title -->
-                                        <div class="product-price">
-                                            <span class="new-price">94,000 تومان</span>
-                                            <span class="old-price">108,00</span>
-                                        </div><!-- End .product-price -->
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-10-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-10-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">روشنایی</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">لامپ سقفی
-                                            بزرگ</a></h3><!-- End .product-title -->
-                                        <div class="product-price">
-                                            401,000 تومان
-                                        </div><!-- End .product-price -->
-
-                                        <div class="product-nav product-nav-dots">
-                                            <a href="#" class="active" style="background: #e8e8e8;"><span
-                                                    class="sr-only">نام رنگ</span></a>
-                                            <a href="#" style="background: #333333;"><span
-                                                    class="sr-only">نام رنگ</span></a>
-                                        </div><!-- End .product-nav -->
-
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-11-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-11-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">دکور</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">صندلی بین
-                                            بگ</a></h3><!-- End .product-title -->
-                                        <div class="product-price">
-                                            259,000 تومان
-                                        </div><!-- End .product-price -->
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <span class="product-label label-circle label-new">جدید</span>
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-12-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-12-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">مبل</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">مبل 2 </a>
-                                        </h3>
-                                        <!-- End .product-title -->
-                                        <div class="product-price">
-                                            980,000 تومان
-                                        </div><!-- End .product-price -->
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-13-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-13-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">مبل</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">صندلی پشت
-                                            دار</a></h3>
-                                        <!-- End .product-title -->
-                                        <div class="product-price">
-                                            945,000 تومان
-                                        </div><!-- End .product-price -->
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-14-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-14-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">دکور</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">روشنایی 3
-                                            تیکه</a>
-                                        </h3><!-- End .product-title -->
-                                        <div class="product-price">
-                                            199,000 تومان
-                                        </div><!-- End .product-price -->
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-15-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-15-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">دکور</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">روشنایی 3
-                                            تیکه</a>
-                                        </h3><!-- End .product-title -->
-                                        <div class="product-price">
-                                            199,000 تومان
-                                        </div><!-- End .product-price -->
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-16-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-16-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">روشنایی</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">لامپ رومیزی</a>
-                                        </h3><!-- End .product-title -->
-                                        <div class="product-price">
-                                            499,000 تومان
-                                        </div><!-- End .product-price -->
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-                        </div><!-- End .row -->
-                    </div><!-- End .products -->
-                </div><!-- .End .tab-pane -->
-                <div class="tab-pane p-0 fade" id="top-fur-tab" role="tabpanel" aria-labelledby="top-fur-link">
-                    <div class="products">
-                        <div class="row justify-content-center">
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <span class="product-label label-circle label-sale">فروش ویژه</span>
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-9-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-9-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">مبل</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">صندلی راحتی
-                                            باغ</a></h3>
-                                        <!-- End .product-title -->
-                                        <div class="product-price">
-                                            <span class="new-price">94,000 تومان</span>
-                                            <span class="old-price">94,000</span>
-                                        </div><!-- End .product-price -->
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <span class="product-label label-circle label-new">جدید</span>
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-12-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-12-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">مبل</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">مبل 2 </a>
-                                        </h3>
-                                        <!-- End .product-title -->
-                                        <div class="product-price">
-                                            980,000 تومان
-                                        </div><!-- End .product-price -->
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-13-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-13-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">مبل</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">صندلی پشت
-                                            دار</a></h3>
-                                        <!-- End .product-title -->
-                                        <div class="product-price">
-                                            945,000 تومان
-                                        </div><!-- End .product-price -->
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-                        </div><!-- End .row -->
-                    </div><!-- End .products -->
-                </div><!-- .End .tab-pane -->
-                <div class="tab-pane p-0 fade" id="top-decor-tab" role="tabpanel" aria-labelledby="top-decor-link">
-                    <div class="products">
-                        <div class="row justify-content-center">
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-8-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-8-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">دکور</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">نگه دارنده
-                                            هیزم</a></h3>
-                                        <!-- End .product-title -->
-                                        <div class="product-price">
-                                            401,000 تومان
-                                        </div><!-- End .product-price -->
-
-                                        <div class="product-nav product-nav-dots">
-                                            <a href="#" class="active" style="background: #333333;"><span
-                                                    class="sr-only">نام رنگ</span></a>
-                                            <a href="#" style="background: #927764;"><span
-                                                    class="sr-only">نام رنگ</span></a>
-                                        </div><!-- End .product-nav -->
-
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-11-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-11-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">دکور</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">صندلی بین
-                                            بگ</a></h3><!-- End .product-title -->
-                                        <div class="product-price">
-                                            259,000 تومان
-                                        </div><!-- End .product-price -->
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-14-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-14-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">دکور</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">روشنایی 3
-                                            تیکه</a>
-                                        </h3><!-- End .product-title -->
-                                        <div class="product-price">
-                                            199,000 تومان
-                                        </div><!-- End .product-price -->
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-15-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-15-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">دکور</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">روشنایی 3
-                                            تیکه</a>
-                                        </h3><!-- End .product-title -->
-                                        <div class="product-price">
-                                            199,000 تومان
-                                        </div><!-- End .product-price -->
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-                        </div><!-- End .row -->
-                    </div><!-- End .products -->
-                </div><!-- .End .tab-pane -->
-                <div class="tab-pane p-0 fade" id="top-light-tab" role="tabpanel" aria-labelledby="top-light-link">
-                    <div class="products">
-                        <div class="row justify-content-center">
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-7-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-7-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">روشنایی</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">چراغ های رومیزی
-                                            زیبا</a></h3>
-                                        <!-- End .product-title -->
-                                        <div class="product-price">
-                                            401,000 تومان
-                                        </div><!-- End .product-price -->
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-10-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-10-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">روشنایی</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">لامپ سقفی
-                                            بزرگ</a></h3><!-- End .product-title -->
-                                        <div class="product-price">
-                                            401,000 تومان
-                                        </div><!-- End .product-price -->
-
-                                        <div class="product-nav product-nav-dots">
-                                            <a href="#" class="active" style="background: #e8e8e8;"><span
-                                                    class="sr-only">نام رنگ</span></a>
-                                            <a href="#" style="background: #333333;"><span
-                                                    class="sr-only">نام رنگ</span></a>
-                                        </div><!-- End .product-nav -->
-
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-                                <div class="product product-11 text-center">
-                                    <figure class="product-media">
-                                        <a href="product.html">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-16-1.jpg"
-                                                    alt=" تصویر محصول" class="product-image">
-                                            <img src="{% static "core/images/demos/demo-2/products/product-16-2.jpg"
-                                                    alt=" تصویر محصول" class="product-image-hover">
-                                        </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
-                                                        لیست علاقه مندی</span></a>
-                                        </div><!-- End .product-action-vertical -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat text-center">
-                                            <a href="#">روشنایی</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title text-center"><a href="product.html">لامپ رومیزی</a>
-                                        </h3><!-- End .product-title -->
-                                        <div class="product-price">
-                                            499,000 تومان
-                                        </div><!-- End .product-price -->
-                                    </div><!-- End .product-body -->
-                                    <div class="product-action">
-                                        <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
-                                    </div><!-- End .product-action -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
-                        </div><!-- End .row -->
-                    </div><!-- End .products -->
-                </div><!-- .End .tab-pane -->
-            </div><!-- End .tab-content -->
+                                <img src="{% static "core/images/demos/demo-2/deal/product-1.jpg" %}" alt="image">
+                            </a>
+                        </div><!-- End .deal-image -->
+                    </div><!-- End .deal -->
+                </div><!-- End .col-lg-9 -->
+
+                <div class=" col-lg-3">
+                    <div class="banner banner-overlay banner-overlay-light text-center d-none d-lg-block">
+                        <a href="#">
+                            <img src="{% static "core/images/demos/demo-2/banners/banner-5.jpg" %}" alt="بنر">
+                        </a>
+
+                        <div class=" banner-content banner-content-top banner-content-center text-center">
+                            <h4 class="banner-subtitle">بهترین انتخاب</h4><!-- End .banner-subtitle -->
+                            <h3 class="banner-title">صندلی حصیری</h3><!-- End .banner-title -->
+                            <div class="banner-text text-primary">49,000 تومان</div>
+                            <!-- End .banner-text -->
+                            <a href="#" class="btn btn-outline-gray banner-link">خرید<i
+                                    class="icon-long-arrow-left"></i></a>
+                        </div><!-- End .banner-content -->
+                    </div><!-- End .banner -->
+                </div><!-- End .col-lg-3 -->
+            </div><!-- End .row -->
         </div><!-- End .container -->
+    </div><!-- End .bg-light -->
 
-        <div class="container">
+    <div class="mb-6"></div><!-- End .mb-6 -->
+
+    <div class="container">
+        <div class="heading heading-center mb-3">
+            <h2 class="title text-center">پرفروش ترین محصولات</h2><!-- End .title -->
+
+            <ul class="nav nav-pills nav-border-anim justify-content-center" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="top-all-link" data-toggle="tab" href="#top-all-tab"
+                       role="tab" aria-controls="top-all-tab" aria-selected="true">همه</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="top-fur-link" data-toggle="tab" href="#top-fur-tab" role="tab"
+                       aria-controls="top-fur-tab" aria-selected="false">مبل</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="top-decor-link" data-toggle="tab" href="#top-decor-tab" role="tab"
+                       aria-controls="top-decor-tab" aria-selected="false">دکور</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="top-light-link" data-toggle="tab" href="#top-light-tab" role="tab"
+                       aria-controls="top-light-tab" aria-selected="false">روشنایی</a>
+                </li>
+            </ul>
+        </div><!-- End .heading -->
+
+        <div class="tab-content">
+            <div class="tab-pane p-0 fade show active" id="top-all-tab" role="tabpanel"
+                 aria-labelledby="top-all-link">
+                <div class="products">
+                    <div class="row justify-content-center">
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-7-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-7-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">روشنایی</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">چراغ های رومیزی
+                                        زیبا</a></h3>
+                                    <!-- End .product-title -->
+                                    <div class="product-price">
+                                        401,000 تومان
+                                    </div><!-- End .product-price -->
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-8-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-8-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">دکور</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">نگه دارنده
+                                        هیزم</a></h3>
+                                    <!-- End .product-title -->
+                                    <div class="product-price">
+                                        401,000 تومان
+                                    </div><!-- End .product-price -->
+
+                                    <div class="product-nav product-nav-dots">
+                                        <a href="#" class="active" style="background: #333333;"><span
+                                                class="sr-only">نام رنگ</span></a>
+                                        <a href="#" style="background: #927764;"><span
+                                                class="sr-only">نام رنگ</span></a>
+                                    </div><!-- End .product-nav -->
+
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <span class="product-label label-circle label-sale">فروش ویژه</span>
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-9-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-9-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">مبل</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">صندلی راحتی
+                                        باغ</a></h3>
+                                    <!-- End .product-title -->
+                                    <div class="product-price">
+                                        <span class="new-price">94,000 تومان</span>
+                                        <span class="old-price">108,00</span>
+                                    </div><!-- End .product-price -->
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-10-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-10-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">روشنایی</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">لامپ سقفی
+                                        بزرگ</a></h3><!-- End .product-title -->
+                                    <div class="product-price">
+                                        401,000 تومان
+                                    </div><!-- End .product-price -->
+
+                                    <div class="product-nav product-nav-dots">
+                                        <a href="#" class="active" style="background: #e8e8e8;"><span
+                                                class="sr-only">نام رنگ</span></a>
+                                        <a href="#" style="background: #333333;"><span
+                                                class="sr-only">نام رنگ</span></a>
+                                    </div><!-- End .product-nav -->
+
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-11-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-11-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">دکور</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">صندلی بین
+                                        بگ</a></h3><!-- End .product-title -->
+                                    <div class="product-price">
+                                        259,000 تومان
+                                    </div><!-- End .product-price -->
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <span class="product-label label-circle label-new">جدید</span>
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-12-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-12-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">مبل</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">مبل 2 </a>
+                                    </h3>
+                                    <!-- End .product-title -->
+                                    <div class="product-price">
+                                        980,000 تومان
+                                    </div><!-- End .product-price -->
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-13-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-13-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">مبل</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">صندلی پشت
+                                        دار</a></h3>
+                                    <!-- End .product-title -->
+                                    <div class="product-price">
+                                        945,000 تومان
+                                    </div><!-- End .product-price -->
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-14-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-14-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">دکور</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">روشنایی 3
+                                        تیکه</a>
+                                    </h3><!-- End .product-title -->
+                                    <div class="product-price">
+                                        199,000 تومان
+                                    </div><!-- End .product-price -->
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-15-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-15-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">دکور</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">روشنایی 3
+                                        تیکه</a>
+                                    </h3><!-- End .product-title -->
+                                    <div class="product-price">
+                                        199,000 تومان
+                                    </div><!-- End .product-price -->
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-16-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-16-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">روشنایی</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">لامپ رومیزی</a>
+                                    </h3><!-- End .product-title -->
+                                    <div class="product-price">
+                                        499,000 تومان
+                                    </div><!-- End .product-price -->
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .products -->
+            </div><!-- .End .tab-pane -->
+            <div class="tab-pane p-0 fade" id="top-fur-tab" role="tabpanel" aria-labelledby="top-fur-link">
+                <div class="products">
+                    <div class="row justify-content-center">
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <span class="product-label label-circle label-sale">فروش ویژه</span>
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-9-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-9-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">مبل</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">صندلی راحتی
+                                        باغ</a></h3>
+                                    <!-- End .product-title -->
+                                    <div class="product-price">
+                                        <span class="new-price">94,000 تومان</span>
+                                        <span class="old-price">94,000</span>
+                                    </div><!-- End .product-price -->
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <span class="product-label label-circle label-new">جدید</span>
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-12-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-12-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">مبل</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">مبل 2 </a>
+                                    </h3>
+                                    <!-- End .product-title -->
+                                    <div class="product-price">
+                                        980,000 تومان
+                                    </div><!-- End .product-price -->
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-13-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-13-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">مبل</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">صندلی پشت
+                                        دار</a></h3>
+                                    <!-- End .product-title -->
+                                    <div class="product-price">
+                                        945,000 تومان
+                                    </div><!-- End .product-price -->
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .products -->
+            </div><!-- .End .tab-pane -->
+            <div class="tab-pane p-0 fade" id="top-decor-tab" role="tabpanel" aria-labelledby="top-decor-link">
+                <div class="products">
+                    <div class="row justify-content-center">
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-8-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-8-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">دکور</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">نگه دارنده
+                                        هیزم</a></h3>
+                                    <!-- End .product-title -->
+                                    <div class="product-price">
+                                        401,000 تومان
+                                    </div><!-- End .product-price -->
+
+                                    <div class="product-nav product-nav-dots">
+                                        <a href="#" class="active" style="background: #333333;"><span
+                                                class="sr-only">نام رنگ</span></a>
+                                        <a href="#" style="background: #927764;"><span
+                                                class="sr-only">نام رنگ</span></a>
+                                    </div><!-- End .product-nav -->
+
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-11-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-11-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">دکور</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">صندلی بین
+                                        بگ</a></h3><!-- End .product-title -->
+                                    <div class="product-price">
+                                        259,000 تومان
+                                    </div><!-- End .product-price -->
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-14-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-14-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">دکور</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">روشنایی 3
+                                        تیکه</a>
+                                    </h3><!-- End .product-title -->
+                                    <div class="product-price">
+                                        199,000 تومان
+                                    </div><!-- End .product-price -->
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-15-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-15-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">دکور</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">روشنایی 3
+                                        تیکه</a>
+                                    </h3><!-- End .product-title -->
+                                    <div class="product-price">
+                                        199,000 تومان
+                                    </div><!-- End .product-price -->
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .products -->
+            </div><!-- .End .tab-pane -->
+            <div class="tab-pane p-0 fade" id="top-light-tab" role="tabpanel" aria-labelledby="top-light-link">
+                <div class="products">
+                    <div class="row justify-content-center">
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-7-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-7-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">روشنایی</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">چراغ های رومیزی
+                                        زیبا</a></h3>
+                                    <!-- End .product-title -->
+                                    <div class="product-price">
+                                        401,000 تومان
+                                    </div><!-- End .product-price -->
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-10-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-10-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">روشنایی</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">لامپ سقفی
+                                        بزرگ</a></h3><!-- End .product-title -->
+                                    <div class="product-price">
+                                        401,000 تومان
+                                    </div><!-- End .product-price -->
+
+                                    <div class="product-nav product-nav-dots">
+                                        <a href="#" class="active" style="background: #e8e8e8;"><span
+                                                class="sr-only">نام رنگ</span></a>
+                                        <a href="#" style="background: #333333;"><span
+                                                class="sr-only">نام رنگ</span></a>
+                                    </div><!-- End .product-nav -->
+
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                        <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <a href="product.html">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-16-1.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image">
+                                        <img src="{% static "core/images/demos/demo-2/products/product-16-2.jpg" %} "
+                                             alt=" تصویر محصول" class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist "><span>افزودن به
+                                                        لیست علاقه مندی</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <div class="product-cat text-center">
+                                        <a href="#">روشنایی</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title text-center"><a href="product.html">لامپ رومیزی</a>
+                                    </h3><!-- End .product-title -->
+                                    <div class="product-price">
+                                        499,000 تومان
+                                    </div><!-- End .product-price -->
+                                </div><!-- End .product-body -->
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>افزودن به سبد خرید</span></a>
+                                </div><!-- End .product-action -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .products -->
+            </div><!-- .End .tab-pane -->
+        </div><!-- End .tab-content -->
+    </div><!-- End .container -->
+
+    <div class="container">
             <hr class="mt-1 mb-6">
         </div><!-- End .container -->
 
@@ -2315,33 +2356,33 @@
                     <article class="entry entry-display">
                         <figure class="entry-media">
                             <a href="single.html">
-                                <img src="{% static "core/images/demos/demo-2/blog/post-1.jpg" alt="توضیحات عکس">
-                                </a>
-                            </figure><!-- End .entry-media -->
+                                <img src="{% static "core/images/demos/demo-2/blog/post-1.jpg" %}" alt="توضیحات عکس">
+                            </a>
+                        </figure><!-- End .entry-media -->
 
-                            <div class=" entry-body text-center">
-                                <div class="entry-meta">
-                                    <a href="#">22 فروردین 1401</a>, 0 دیدگاه
-                                </div><!-- End .entry-meta -->
+                        <div class=" entry-body text-center">
+                            <div class="entry-meta">
+                                <a href="#">22 فروردین 1401</a>, 0 دیدگاه
+                            </div><!-- End .entry-meta -->
 
-                                <h3 class="entry-title text-center">
-                                    <a href="single.html">لورم ایپسوم متن ساختگی</a>
-                                </h3><!-- End .entry-title -->
+                            <h3 class="entry-title text-center">
+                                <a href="single.html">لورم ایپسوم متن ساختگی</a>
+                            </h3><!-- End .entry-title -->
 
-                                <div class="entry-content">
-                                    <a href="single.html" class="read-more">ادامه خواندن</a>
-                                </div><!-- End .entry-content -->
-                </div><!-- End .entry-body -->
-                </article><!-- End .entry -->
+                            <div class="entry-content">
+                                <a href="single.html" class="read-more">ادامه خواندن</a>
+                            </div><!-- End .entry-content -->
+                        </div><!-- End .entry-body -->
+                    </article><!-- End .entry -->
 
-                <article class="entry entry-display">
-                    <figure class="entry-media">
-                        <a href="single.html">
-                            <img src="{% static "core/images/demos/demo-2/blog/post-2.jpg" alt="توضیحات عکس">
-                                </a>
-                            </figure><!-- End .entry-media -->
+                    <article class="entry entry-display">
+                        <figure class="entry-media">
+                            <a href="single.html">
+                                <img src="{% static "core/images/demos/demo-2/blog/post-2.jpg" %}" alt="توضیحات عکس">
+                            </a>
+                        </figure><!-- End .entry-media -->
 
-                            <div class=" entry-body text-center">
+                        <div class=" entry-body text-center">
                             <div class="entry-meta">
                                 <a href="#">12 فروردین 1401</a>, 0 دیدگاه
                             </div><!-- End .entry-meta -->
@@ -2353,53 +2394,53 @@
                             <div class="entry-content">
                                 <a href="single.html" class="read-more">ادامه خواندن</a>
                             </div><!-- End .entry-content -->
-            </div><!-- End .entry-body -->
-            </article><!-- End .entry -->
+                        </div><!-- End .entry-body -->
+                    </article><!-- End .entry -->
 
-            <article class="entry entry-display">
-                <figure class="entry-media">
-                    <a href="single.html">
-                        <img src="{% static "core/images/demos/demo-2/blog/post-3.jpg" alt="توضیحات عکس">
-                                </a>
-                            </figure><!-- End .entry-media -->
+                    <article class="entry entry-display">
+                        <figure class="entry-media">
+                            <a href="single.html">
+                                <img src="{% static "core/images/demos/demo-2/blog/post-3.jpg" %}" alt="توضیحات عکس">
+                            </a>
+                        </figure><!-- End .entry-media -->
 
-                            <div class=" entry-body text-center">
-                        <div class="entry-meta">
-                            <a href="#">10 فروردین 1401</a>, 2 دیدگاه
-                        </div><!-- End .entry-meta -->
+                        <div class=" entry-body text-center">
+                            <div class="entry-meta">
+                                <a href="#">10 فروردین 1401</a>, 2 دیدگاه
+                            </div><!-- End .entry-meta -->
 
-                        <h3 class="entry-title text-center">
-                            <a href="single.html">لورم ایپسوم متن ساختگی</a>
-                        </h3><!-- End .entry-title -->
+                            <h3 class="entry-title text-center">
+                                <a href="single.html">لورم ایپسوم متن ساختگی</a>
+                            </h3><!-- End .entry-title -->
 
-                        <div class="entry-content">
-                            <a href="single.html" class="read-more">ادامه خواندن</a>
-                        </div><!-- End .entry-content -->
-        </div><!-- End .entry-body -->
-        </article><!-- End .entry -->
-    </div><!-- End .owl-carousel -->
+                            <div class="entry-content">
+                                <a href="single.html" class="read-more">ادامه خواندن</a>
+                            </div><!-- End .entry-content -->
+                        </div><!-- End .entry-body -->
+                    </article><!-- End .entry -->
+                </div><!-- End .owl-carousel -->
 
-    <div class="more-container text-center mt-2">
-        <a href="blog.html" class="btn btn-outline-darker btn-more"><span>مشاهده اخبار بیشتر</span><i
-                class="icon-long-arrow-left"></i></a>
-    </div><!-- End .more-container -->
-    </div><!-- End .container -->
-    </div><!-- End .blog-posts -->
+                <div class="more-container text-center mt-2">
+                    <a href="blog.html" class="btn btn-outline-darker btn-more"><span>مشاهده اخبار بیشتر</span><i
+                            class="icon-long-arrow-left"></i></a>
+                </div><!-- End .more-container -->
+            </div><!-- End .container -->
+        </div><!-- End .blog-posts -->
 </main><!-- End .main -->
 
-<footer class="footer footer-2">
-    <div class="icon-boxes-container">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6 col-lg-3">
-                    <div class="icon-box icon-box-side">
+    <footer class="footer footer-2">
+        <div class="icon-boxes-container">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="icon-box icon-box-side">
                                 <span class="icon-box-icon text-dark">
                                     <i class="icon-rocket"></i>
                                 </span>
-                        <div class="icon-box-content">
-                            <h3 class="icon-box-title">ارسال رایگان</h3><!-- End .icon-box-title -->
-                            <p>برای سفارشات بالای 50 هزار تومان</p>
-                        </div><!-- End .icon-box-content -->
+                            <div class="icon-box-content">
+                                <h3 class="icon-box-title">ارسال رایگان</h3><!-- End .icon-box-title -->
+                                <p>برای سفارشات بالای 50 هزار تومان</p>
+                            </div><!-- End .icon-box-content -->
                     </div><!-- End .icon-box -->
                 </div><!-- End .col-sm-6 col-lg-3 -->
 
@@ -2943,26 +2984,27 @@
                     </div>
                 </div>
                 <div class="col-xl-2-5col col-lg-5 ">
-                    <img src="{% static "core/images/popup/newsletter/img-1.jpg" class="newsletter-img" alt="newsletter">
-                    </div>
+                    <img src="{% static "core/images/popup/newsletter/img-1.jpg" %}" class="newsletter-img"
+                         alt="newsletter">
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Plugins JS File -->
-    <script src={% static "core/js/jquery.min.js" %}></script>
-    <script src={% static "core/js/bootstrap.bundle.min.js" %}></script>
-    <script src={% static "core/js/jquery.hoverIntent.min.js" %}></script>
-    <script src={% static "core/js/jquery.waypoints.min.js" %}></script>
-    <script src={% static "core/js/superfish.min.js" %}></script>
-    <script src={% static "core/js/owl.carousel.min.js" %}></script>
-    <script src={% static "core/js/jquery.plugin.min.js" %}></script>
-    <script src={% static "core/js/jquery.magnific-popup.min.js" %}></script>
-    <script src={% static "core/js/jquery.countdown.min.js" %}></script>
-    <!-- Main JS File -->
-    <script src={% static "core/js/main.js" %}></script>
-    <script src={% static "core/js/demos/demo-2.js" %}></script>
+<!-- Plugins JS File -->
+<script src={% static "core/js/jquery.min.js" %}></script>
+<script src={% static "core/js/bootstrap.bundle.min.js" %}></script>
+<script src={% static "core/js/jquery.hoverIntent.min.js" %}></script>
+<script src={% static "core/js/jquery.waypoints.min.js" %}></script>
+<script src={% static "core/js/superfish.min.js" %}></script>
+<script src={% static "core/js/owl.carousel.min.js" %}></script>
+<script src={% static "core/js/jquery.plugin.min.js" %}></script>
+<script src={% static "core/js/jquery.magnific-popup.min.js" %}></script>
+<script src={% static "core/js/jquery.countdown.min.js" %}></script>
+<!-- Main JS File -->
+<script src={% static "core/js/main.js" %}></script>
+<script src={% static "core/js/demos/demo-2.js" %}></script>
 </body>
 
 </html>
