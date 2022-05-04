@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-03 15:28+0430\n"
+"POT-Creation-Date: 2022-05-04 21:22+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,138 +18,155 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: apps/account/forms.py:16 apps/account/forms.py:122
+#: apps/account/forms.py:29 apps/account/forms.py:136
 msgid "Password"
-msgstr ""
+msgstr "رمز عبور"
 
-#: apps/account/forms.py:25 apps/account/forms.py:105
+#: apps/account/forms.py:39 apps/account/forms.py:119
 #: apps/contact_us/forms.py:29 apps/contact_us/forms.py:38
 msgid "Email"
-msgstr ""
+msgstr "ایمیل"
 
-#: apps/account/forms.py:34
+#: apps/account/forms.py:48
+#, fuzzy
+#| msgid "Password"
 msgid "Old password"
-msgstr ""
+msgstr "رمز عبور"
 
-#: apps/account/forms.py:40 apps/account/forms.py:56
+#: apps/account/forms.py:54 apps/account/forms.py:70
+#, fuzzy
+#| msgid "Password"
 msgid "New password"
-msgstr ""
+msgstr "رمز عبور"
 
-#: apps/account/forms.py:46 apps/account/forms.py:62
+#: apps/account/forms.py:60 apps/account/forms.py:76
+#, fuzzy
+#| msgid "password change"
 msgid "New password confirmation"
-msgstr ""
+msgstr "تغییر رمز عبور"
 
-#: apps/account/forms.py:71 apps/account/templates/account/profile.html:30
+#: apps/account/forms.py:85 apps/account/templates/account/profile.html:158
 msgid "username"
-msgstr ""
+msgstr "نام کاربری"
 
-#: apps/account/forms.py:76
+#: apps/account/forms.py:90 apps/account/models.py:19
+#, fuzzy
+#| msgid "first_name"
 msgid "first name"
-msgstr ""
+msgstr "نام"
 
-#: apps/account/forms.py:84
+#: apps/account/forms.py:98 apps/account/models.py:20
+#, fuzzy
+#| msgid "last_name"
 msgid "last name"
-msgstr ""
+msgstr "نام خانوادگی"
 
-#: apps/account/forms.py:92 apps/account/models.py:20
+#: apps/account/forms.py:106 apps/account/models.py:17
 msgid "mobile"
-msgstr ""
+msgstr "موبایل"
 
-#: apps/account/forms.py:98 apps/account/models.py:21
+#: apps/account/forms.py:112 apps/account/models.py:18
 msgid "phone"
-msgstr ""
+msgstr "شماره تلفن ثابت"
 
-#: apps/account/forms.py:128
+#: apps/account/forms.py:142
+#, fuzzy
+#| msgid "password change"
 msgid "Password confirmation"
-msgstr ""
+msgstr "تغییر رمز عبور"
 
-#: apps/account/forms.py:131
+#: apps/account/forms.py:145
 msgid "Enter the same password as before, for verification."
 msgstr ""
 
-#: apps/account/forms.py:134
+#: apps/account/forms.py:148
+#, fuzzy
+#| msgid "address"
 msgid "Address"
-msgstr ""
+msgstr "آدرس"
 
-#: apps/account/models.py:17
-msgid "profile picture"
-msgstr ""
-
-#: apps/account/models.py:19 apps/account/templates/account/profile.html:38
+#: apps/account/models.py:16 apps/account/templates/account/profile.html:166
 msgid "address"
-msgstr ""
+msgstr "آدرس"
 
-#: apps/account/templates/account/custom_field.html:6
-msgid "Enter security code"
-msgstr ""
+#: apps/account/models.py:21
+#, fuzzy
+#| msgid "address"
+msgid "email address"
+msgstr "آدرس"
+
+#: apps/account/templates/account/custom_field.html:4
+msgid "Security code"
+msgstr "کد امنیتی:"
 
 #: apps/account/templates/account/logged_out.html:11
 #: apps/account/templates/account/password_change_done.html:11
 #: apps/account/templates/account/password_reset_complete.html:10
 #: apps/account/templates/account/password_reset_confirm.html:70
 #: apps/account/templates/account/password_reset_done.html:11
-#: apps/account/templates/account/profile.html:16
+#: apps/account/templates/account/profile.html:144
 msgid "Profile"
-msgstr ""
+msgstr "پروفایل"
 
 #: apps/account/templates/account/logged_out.html:13
 msgid "You have successfully logged out!"
-msgstr ""
+msgstr "شما با موفقیت از حساب کاربری خود خارج شدید."
 
-#: apps/account/templates/account/login.html:18
-#: apps/account/templates/account/login.html:51
-#: apps/account/templates/account/signup.html:11
-msgid "Login"
-msgstr ""
-
-#: apps/account/templates/account/login.html:22
+#: apps/account/templates/account/login.html:23
+#: apps/account/templates/account/login.html:221
 msgid ""
 "Your account doesn't have access to this page. To proceed, please login with "
 "an account that has access"
 msgstr ""
 
-#: apps/account/templates/account/login.html:24
-msgid "Please login "
-msgstr ""
+#: apps/account/templates/account/login.html:218
+#: apps/account/templates/account/login.html:223
+#: apps/account/templates/account/login.html:250
+#: apps/account/templates/account/signup.html:11
+msgid "Login"
+msgstr "ورود به سایت"
 
-#: apps/account/templates/account/login.html:53
+#: apps/account/templates/account/login.html:252
 msgid "Forget Password"
-msgstr ""
+msgstr "بازیابی رمز عبور"
 
 #: apps/account/templates/account/password_change_done.html:14
 msgid "your password succesfuly changed"
-msgstr ""
+msgstr "رمز عبور با موفقیت تغییر کرد"
 
 #: apps/account/templates/account/password_change_form.html:10
 #: apps/account/templates/account/password_reset_confirm.html:12
 #: apps/account/templates/account/password_reset_form.html:12
 msgid "did you forget your password?"
-msgstr ""
+msgstr "رمز خود را فراموش کرده اید؟"
 
 #: apps/account/templates/account/password_change_form.html:12
 #: apps/account/templates/account/password_reset_confirm.html:14
 #: apps/account/templates/account/password_reset_form.html:14
 msgid "enter your email to reset your password"
 msgstr ""
+"آدرس ایمیل خود را وارد کنید. لینک بازیابی رمز عبور برای شما ارسال می گردد."
 
 #: apps/account/templates/account/password_change_form.html:48
 #: apps/account/templates/account/password_reset_form.html:34
 msgid "reset"
-msgstr ""
+msgstr "بازیابی رمز عبور"
 
 #: apps/account/templates/account/password_reset_complete.html:13
 msgid "Your password has been set. You may go ahead and sign in now"
-msgstr ""
+msgstr "رمز عبور شما با موفقیت تغغیر کرد. اکنون می توانید وارد سایت شوید"
 
 #: apps/account/templates/account/password_reset_confirm.html:50
 msgid "Change Passoword"
-msgstr ""
+msgstr "تغییر رمز عبور"
 
 #: apps/account/templates/account/password_reset_confirm.html:73
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.Please request a new password reset."
 msgstr ""
+"لینک بازنشانی رمز عبور معتبر نبود، احتمالاً به این دلیل که قبلاً استفاده شده "
+"است. لطفاً فرآیند بازیابی رمز عبور  را مجددا درخواست نمایید"
 
 #: apps/account/templates/account/password_reset_done.html:14
 msgid ""
@@ -158,52 +175,56 @@ msgid ""
 "don't receive an email, please make sure you've entered the address you "
 "registered with,and check your spam folder."
 msgstr ""
+"اگر حسابی با ایمیلی که وارد کرده‌اید وجود داشته باشد، دستورالعمل‌های تنظیم رمز "
+"عبور را برای شما ایمیل کرده‌ایم. شما باید به زودی آنها را دریافت کنید. اگر "
+"ایمیلی دریافت نکردید، لطفاً مطمئن شوید که آدرسی را که با آن ثبت نام کرده بوده "
+"اید را وارد کرده اید همچنین پوشه اسپم خود را نیز بررسی نمایید."
 
-#: apps/account/templates/account/profile.html:23
+#: apps/account/templates/account/profile.html:151
 msgid "Purchases"
-msgstr ""
+msgstr "خرید ها"
 
-#: apps/account/templates/account/profile.html:31
+#: apps/account/templates/account/profile.html:159
 msgid "first_name"
-msgstr ""
+msgstr "نام"
 
-#: apps/account/templates/account/profile.html:32
+#: apps/account/templates/account/profile.html:160
 msgid "last_name"
-msgstr ""
+msgstr "نام خانوادگی"
 
-#: apps/account/templates/account/profile.html:33
+#: apps/account/templates/account/profile.html:161
 msgid "email"
-msgstr ""
+msgstr "ایمیل"
 
-#: apps/account/templates/account/profile.html:34
-#: apps/account/templates/account/profile.html:37
+#: apps/account/templates/account/profile.html:162
+#: apps/account/templates/account/profile.html:165
 msgid "profile_picture"
-msgstr ""
+msgstr "تصویر پروفایل"
 
-#: apps/account/templates/account/profile.html:40
+#: apps/account/templates/account/profile.html:168
 msgid "logout"
-msgstr ""
+msgstr "خروج"
 
-#: apps/account/templates/account/profile.html:42
+#: apps/account/templates/account/profile.html:170
 msgid "password reset"
-msgstr ""
+msgstr "بازنشانی رمز عبور"
 
-#: apps/account/templates/account/profile.html:44
+#: apps/account/templates/account/profile.html:172
 msgid "password change"
-msgstr ""
+msgstr "تغییر رمز عبور"
 
 #: apps/account/templates/account/signup.html:105
 #: apps/contact_us/templates/contact_us/message_form.html:56
 msgid "Create account"
-msgstr ""
+msgstr "ایجاد حساب کاربری"
 
 #: apps/blog/models.py:21
 msgid "Blog Category"
-msgstr ""
+msgstr "دسته بندی بلاگ"
 
 #: apps/blog/models.py:22
 msgid "Blog Categories"
-msgstr ""
+msgstr "دسته بندی های بلاگ"
 
 #: apps/blog/models.py:43
 msgid "Date"
@@ -211,11 +232,11 @@ msgstr ""
 
 #: apps/blog/models.py:48
 msgid "Blog Post"
-msgstr ""
+msgstr "مطلب بلاگ"
 
 #: apps/blog/models.py:49
 msgid "Blog Posts"
-msgstr ""
+msgstr "مطالب بلاگ"
 
 #: apps/contact_us/forms.py:10
 msgid "Department1"
@@ -239,13 +260,17 @@ msgstr ""
 
 #: apps/contact_us/forms.py:33 apps/contact_us/forms.py:39
 #: apps/contact_us/models.py:21
+#, fuzzy
+#| msgid "Messages"
 msgid "Message"
-msgstr ""
+msgstr "پیام"
 
 #: apps/contact_us/models.py:22
 #: venv/lib/python3.8/site-packages/django/contrib/messages/apps.py:7
+#, fuzzy
+#| msgid "Messages"
 msgid "Messages"
-msgstr ""
+msgstr "پیام"
 
 #: apps/contact_us/templates/contact_us/message_form.html:11
 #: apps/contact_us/templates/contact_us/thanks.html:11
@@ -270,57 +295,57 @@ msgstr ""
 
 #: apps/store/models.py:28
 msgid "Product Base Model"
-msgstr ""
+msgstr "محصول پایه"
 
 #: apps/store/models.py:29
 msgid "Product Base Models"
-msgstr ""
+msgstr "محصولات پایه"
 
 #: apps/store/models.py:55
 msgid "Cart"
-msgstr ""
+msgstr "سبد خرید"
 
 #: apps/store/models.py:56
 msgid "Carts"
-msgstr ""
+msgstr "سبدهای خرید"
 
 #: apps/store/models.py:64
 msgid "cart"
-msgstr ""
+msgstr "سبد خرید"
 
 #: apps/store/models.py:65 apps/store/models.py:117
 msgid "quantity"
-msgstr ""
+msgstr "تعداد"
 
 #: apps/store/models.py:69
 msgid "Cart item"
-msgstr ""
+msgstr "اقلام سبد خرید"
 
 #: apps/store/models.py:70
 msgid "Cart items"
-msgstr ""
+msgstr "اقلام سبد خرید"
 
 #: apps/store/models.py:100
 #: venv/lib/python3.8/site-packages/django/forms/formsets.py:405
 #: venv/lib/python3.8/site-packages/django/forms/formsets.py:412
 msgid "Order"
-msgstr ""
+msgstr "سفارش"
 
 #: apps/store/models.py:101
 msgid "Orders"
-msgstr ""
+msgstr "سفارشات"
 
 #: apps/store/models.py:116
 msgid "order item"
-msgstr ""
+msgstr "اقلام سفارش"
 
 #: apps/store/models.py:124
 msgid "Order item"
-msgstr ""
+msgstr "اقلام سفارش"
 
 #: apps/store/models.py:125
 msgid "Order items"
-msgstr ""
+msgstr "اقلام سفارشات"
 
 #: apps/store/models.py:138
 msgid "initial"
@@ -341,8 +366,10 @@ msgid "order"
 msgstr ""
 
 #: apps/store/models.py:145
+#, fuzzy
+#| msgid "Create account"
 msgid "created at"
-msgstr ""
+msgstr "ایجاد حساب کاربری"
 
 #: apps/store/models.py:146
 msgid "expired at"
@@ -368,11 +395,11 @@ msgstr ""
 
 #: apps/store/models.py:158
 msgid "Payment"
-msgstr ""
+msgstr "پرداخت"
 
 #: apps/store/models.py:159
 msgid "Payments"
-msgstr ""
+msgstr "پرداخت ها"
 
 #: apps/store/templates/store/cart.html:92
 msgid "error in response"
@@ -701,8 +728,10 @@ msgid "Couldn't detect Bash version, shell completion is not supported."
 msgstr ""
 
 #: venv/lib/python3.8/site-packages/click/termui.py:160
+#, fuzzy
+#| msgid "password change"
 msgid "Repeat for confirmation"
-msgstr ""
+msgstr "تغییر رمز عبور"
 
 #: venv/lib/python3.8/site-packages/click/termui.py:176
 msgid "Error: The value you entered was invalid."
@@ -762,8 +791,10 @@ msgid "{value!r} is not a valid UUID."
 msgstr ""
 
 #: venv/lib/python3.8/site-packages/click/types.py:811
+#, fuzzy
+#| msgid "Profile"
 msgid "file"
-msgstr ""
+msgstr "پروفایل"
 
 #: venv/lib/python3.8/site-packages/click/types.py:813
 msgid "directory"
@@ -807,11 +838,11 @@ msgstr[1] ""
 
 #: venv/lib/python3.8/site-packages/django/contrib/sitemaps/apps.py:8
 msgid "Site Maps"
-msgstr ""
+msgstr "نقشه سایت"
 
 #: venv/lib/python3.8/site-packages/django/contrib/staticfiles/apps.py:9
 msgid "Static Files"
-msgstr ""
+msgstr "فایل استاتیک"
 
 #: venv/lib/python3.8/site-packages/django/contrib/syndication/apps.py:7
 msgid "Syndication"
@@ -825,15 +856,15 @@ msgstr ""
 
 #: venv/lib/python3.8/site-packages/django/core/paginator.py:51
 msgid "That page number is not an integer"
-msgstr ""
+msgstr "شماره صفحه عدد نیست"
 
 #: venv/lib/python3.8/site-packages/django/core/paginator.py:53
 msgid "That page number is less than 1"
-msgstr ""
+msgstr "شماره صفحه کمتر از 1 است"
 
 #: venv/lib/python3.8/site-packages/django/core/paginator.py:58
 msgid "That page contains no results"
-msgstr ""
+msgstr "در این صفحه نتیجه ای یافت نشد"
 
 #: venv/lib/python3.8/site-packages/django/core/validators.py:22
 msgid "Enter a valid value."
@@ -1085,8 +1116,10 @@ msgid "Duration"
 msgstr ""
 
 #: venv/lib/python3.8/site-packages/django/db/models/fields/__init__.py:1638
+#, fuzzy
+#| msgid "address"
 msgid "Email address"
-msgstr ""
+msgstr "آدرس"
 
 #: venv/lib/python3.8/site-packages/django/db/models/fields/__init__.py:1661
 msgid "File path"
@@ -1119,12 +1152,16 @@ msgid "Small integer"
 msgstr ""
 
 #: venv/lib/python3.8/site-packages/django/db/models/fields/__init__.py:1875
+#, fuzzy
+#| msgid "address"
 msgid "IPv4 address"
-msgstr ""
+msgstr "آدرس"
 
 #: venv/lib/python3.8/site-packages/django/db/models/fields/__init__.py:1906
+#, fuzzy
+#| msgid "address"
 msgid "IP address"
-msgstr ""
+msgstr "آدرس"
 
 #: venv/lib/python3.8/site-packages/django/db/models/fields/__init__.py:1986
 #: venv/lib/python3.8/site-packages/django/db/models/fields/__init__.py:1987
@@ -2052,4 +2089,3 @@ msgstr ""
 #, python-format
 msgid "Unable to connect to qpid with SASL mechanism %s"
 msgstr ""
-

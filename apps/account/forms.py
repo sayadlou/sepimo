@@ -1,13 +1,26 @@
+from captcha.fields import CaptchaField
 from django import forms
-from django.contrib.auth import password_validation, login
+from django.contrib.auth import password_validation
 from django.contrib.auth.forms import AuthenticationForm, UsernameField, PasswordResetForm, PasswordChangeForm, \
     SetPasswordForm
-from django.utils.translation import gettext_lazy as _
-from captcha.fields import CaptchaField
 from django.contrib.auth.forms import UserCreationForm
+from django.utils.translation import gettext_lazy as _
 
 from .models import UserProfile
 from .widget import CustomCaptchaTextInput
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ('first_name', 'last_name', 'email', 'mobile', 'phone', )
+        widgets = {
+            'first_name': forms.TextInput(attrs={'autofocus': True, 'class': "form-control"}),
+            'last_name': forms.TextInput(attrs={'autofocus': True, 'class': "form-control"}),
+            'mobile': forms.TextInput(attrs={'autofocus': True, 'class': "form-control"}),
+            'phone': forms.TextInput(attrs={'autofocus': True, 'class': "form-control"}),
+            'email': forms.EmailInput(attrs={'autofocus': True, 'class': "form-control"}),
+        }
 
 
 class MyAuthenticationForm(AuthenticationForm):
@@ -18,6 +31,7 @@ class MyAuthenticationForm(AuthenticationForm):
         widget=forms.PasswordInput(attrs={'autocomplete': 'current-password', 'class': "form-control"}),
     )
     captcha = CaptchaField(widget=CustomCaptchaTextInput(attrs={'class': "form-control"}))
+    remember_me = forms.BooleanField(required=False)  # and add the remember_me field
 
 
 class MyPasswordResetForm(PasswordResetForm):
