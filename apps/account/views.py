@@ -71,9 +71,9 @@ class Profile(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data()
-        user_purchased_base_product = self.request.user.productbasemodel_set.all()
-        user_purchased_product = set()
-        for base_product in user_purchased_base_product:
-            user_purchased_product.add(base_product.get_child())
-        data["purchase"] = user_purchased_product
+        # user_purchased_base_product = self.request.user.productbasemodel_set.all()
+        # user_purchased_product = set()
+        # for base_product in user_purchased_base_product:
+        #     user_purchased_product.add(base_product.get_child())
+        # data["purchase"] = user_purchased_product
         return data

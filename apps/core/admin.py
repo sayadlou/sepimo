@@ -5,5 +5,5 @@ from .widget import CustomCaptchaTextInput
 
 
 # Register your models here.
-class AuthAdminForm(AuthenticationForm):
-    captcha = CaptchaField(widget=CustomCaptchaTextInput(attrs={'class': "form-control"}))
+# class AuthAdminForm(AuthenticationForm):
+#     captcha = CaptchaField(widget=CustomCaptchaTextInput(attrs={'class': "form-control"}))

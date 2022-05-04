@@ -11,6 +11,7 @@ urlpatterns = [
     path('contact_us/', include(('apps.contact_us.urls', 'apps.contact_us'), namespace='contact_us')),
     path('bankgateways/', az_bank_gateways_urls()),
     path('tinymce/', include('tinymce.urls')),
+    path('i18n/', include('django.conf.urls.i18n')),
 
 ]
 
