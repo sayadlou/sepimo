@@ -28,17 +28,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-9">
-                    {#                    {% for post in page_obj %}#}
-                    {#                        <div class="col-4 blog-single">#}
-                    {#                            <div class="blog-image">#}
-                    {#                                <a class="post-title" href="{{ post.get_absolute_url }}"><h1>{{ post.title }}</h1></a>#}
-                    {#                                <strong class="post-date">{{ post.pub_date|jformat:'%Y/%m/%d' }}</strong>#}
-                    {#                                <a href="{{ post.get_absolute_url }}">#}
-                    {#                                    <img class="" src="{{ post.picture.url }}" alt="">#}
-                    {#                                </a>#}
-                    {#                            </div>#}
-                    {#                        </div>#}
-                    {#                    {% endfor %}#}
+                {% if page_obj %}
                     {% for post in page_obj %}
                         <article class="entry entry-list">
                             <div class="row align-items-center">
@@ -63,11 +53,9 @@
                                         </h2><!-- End .entry-title -->
 
                                         <div class="entry-cats">
-                                            {% for category in categories %}
-                                                <a href="{% url "blog:category" category.0 %}">
-                                                    {{ category.0 }}
-                                                </a>&nbsp
-                                            {% endfor %}
+                                                <a href="{% url "blog:category" post.category.name %}">
+                                                    {{ post.category.name }}
+                                                </a>
                                         </div><!-- End .entry-cats -->
 
                                         <div class="entry-content">
@@ -79,6 +67,9 @@
                             </div><!-- End .row -->
                         </article><!-- End .entry -->
                     {% endfor %}
+                {% else %}
+                    <h4 class="text-right">{% translate "No Post for display" %}</h4>
+                {% endif %}
                     <nav aria-label="Page navigation ">
                         <ul class="pagination ml-2">
                             {% if page_obj.has_previous %}
