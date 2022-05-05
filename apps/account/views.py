@@ -64,7 +64,7 @@ class SignUp(CreateView):
     form_class = UserRegisterForm
 
     def get_success_url(self):
-        return reverse_lazy('account:login')
+        return reverse_lazy('account:profile')
 
 
 class Profile(LoginRequiredMixin, UpdateView):

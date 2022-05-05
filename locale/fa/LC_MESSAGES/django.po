@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-04 23:05+0430\n"
+"POT-Creation-Date: 2022-05-05 10:54+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,26 +49,6 @@ msgstr "تغییر رمز عبور"
 msgid "username"
 msgstr "نام کاربری"
 
-#: apps/account/forms.py:90 apps/account/models.py:19
-#, fuzzy
-#| msgid "first_name"
-msgid "first name"
-msgstr "نام"
-
-#: apps/account/forms.py:98 apps/account/models.py:20
-#, fuzzy
-#| msgid "last_name"
-msgid "last name"
-msgstr "نام خانوادگی"
-
-#: apps/account/forms.py:106 apps/account/models.py:17
-msgid "mobile"
-msgstr "موبایل"
-
-#: apps/account/forms.py:112 apps/account/models.py:18
-msgid "phone"
-msgstr "شماره تلفن ثابت"
-
 #: apps/account/forms.py:142
 #, fuzzy
 #| msgid "password change"
@@ -79,15 +59,29 @@ msgstr "تغییر رمز عبور"
 msgid "Enter the same password as before, for verification."
 msgstr ""
 
-#: apps/account/forms.py:148
-#, fuzzy
-#| msgid "address"
-msgid "Address"
-msgstr "آدرس"
-
 #: apps/account/models.py:16 apps/account/templates/account/profile.html:166
 msgid "address"
 msgstr "آدرس"
+
+#: apps/account/models.py:17
+msgid "mobile"
+msgstr "موبایل"
+
+#: apps/account/models.py:18
+msgid "phone"
+msgstr "شماره تلفن ثابت"
+
+#: apps/account/models.py:19
+#, fuzzy
+#| msgid "first_name"
+msgid "first name"
+msgstr "نام"
+
+#: apps/account/models.py:20
+#, fuzzy
+#| msgid "last_name"
+msgid "last name"
+msgstr "نام خانوادگی"
 
 #: apps/account/models.py:21
 #, fuzzy
@@ -101,12 +95,14 @@ msgstr "کد امنیتی:"
 
 #: apps/account/templates/account/logged_out.html:15
 #: apps/account/templates/account/login.html:23
-#: apps/account/templates/account/login.html:106
+#: apps/account/templates/account/login.html:105
 #: apps/account/templates/account/password_change_done.html:15
+#: apps/account/templates/account/password_change_form.html:15
 #: apps/account/templates/account/password_reset_complete.html:15
 #: apps/account/templates/account/password_reset_confirm.html:15
 #: apps/account/templates/account/password_reset_done.html:15
 #: apps/account/templates/account/password_reset_form.html:15
+#: apps/account/templates/account/signup.html:15
 msgid ""
 "Your account doesn't have access to this page. To proceed, please login with "
 "an account that has access"
@@ -127,14 +123,21 @@ msgid "Profile"
 msgstr "پروفایل"
 
 #: apps/account/templates/account/login.html:37
-#: apps/account/templates/account/login.html:103
-#: apps/account/templates/account/login.html:108
-#: apps/account/templates/account/login.html:135
-#: apps/account/templates/account/signup.html:11
+#: apps/account/templates/account/login.html:102
+#: apps/account/templates/account/login.html:107
+#: apps/account/templates/account/login.html:134
+#: apps/account/templates/account/signup.html:36
+#: apps/account/templates/account/signup.html:156
 msgid "Login"
 msgstr "ورود به سایت"
 
-#: apps/account/templates/account/login.html:137
+#: apps/account/templates/account/login.html:37
+#: apps/account/templates/account/signup.html:35
+#: apps/account/templates/account/signup.html:156
+msgid "Signup"
+msgstr "ثبت نام در سایت"
+
+#: apps/account/templates/account/login.html:136
 msgid "Forget Password"
 msgstr "بازیابی رمز عبور"
 
@@ -143,7 +146,8 @@ msgstr "بازیابی رمز عبور"
 msgid "your password succesfuly changed"
 msgstr "رمز عبور با موفقیت تغییر کرد"
 
-#: apps/account/templates/account/password_change_form.html:10
+#: apps/account/templates/account/password_change_form.html:29
+#: apps/account/templates/account/password_change_form.html:78
 #: apps/account/templates/account/password_reset_confirm.html:30
 #: apps/account/templates/account/password_reset_confirm.html:78
 #: apps/account/templates/account/password_reset_form.html:29
@@ -151,7 +155,13 @@ msgstr "رمز عبور با موفقیت تغییر کرد"
 msgid "did you forget your password?"
 msgstr "رمز خود را فراموش کرده اید؟"
 
-#: apps/account/templates/account/password_change_form.html:12
+#: apps/account/templates/account/password_change_form.html:64
+#, fuzzy
+#| msgid "Change Passoword"
+msgid "Change password"
+msgstr "تغییر رمز عبور"
+
+#: apps/account/templates/account/password_change_form.html:80
 #: apps/account/templates/account/password_reset_confirm.html:32
 #: apps/account/templates/account/password_reset_confirm.html:80
 #: apps/account/templates/account/password_reset_form.html:31
@@ -160,7 +170,7 @@ msgid "enter your email to reset your password"
 msgstr ""
 "آدرس ایمیل خود را وارد کنید. لینک بازیابی رمز عبور برای شما ارسال می گردد."
 
-#: apps/account/templates/account/password_change_form.html:48
+#: apps/account/templates/account/password_change_form.html:116
 #: apps/account/templates/account/password_reset_form.html:46
 #: apps/account/templates/account/password_reset_form.html:84
 msgid "reset"
@@ -230,7 +240,8 @@ msgstr "بازنشانی رمز عبور"
 msgid "password change"
 msgstr "تغییر رمز عبور"
 
-#: apps/account/templates/account/signup.html:105
+#: apps/account/templates/account/signup.html:136
+#: apps/account/templates/account/signup.html:250
 #: apps/contact_us/templates/contact_us/message_form.html:56
 msgid "Create account"
 msgstr "ایجاد حساب کاربری"
@@ -2106,3 +2117,8 @@ msgstr ""
 #, python-format
 msgid "Unable to connect to qpid with SASL mechanism %s"
 msgstr ""
+
+#, fuzzy
+#~| msgid "address"
+#~ msgid "Address"
+#~ msgstr "آدرس"

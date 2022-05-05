@@ -86,34 +86,34 @@ class UserRegisterForm(UserCreationForm):
         widget=forms.TextInput(attrs={'class': "form-control", 'autocomplete': 'off'})
     )
 
-    first_name = forms.CharField(
-        label=_("first name"),
-        widget=forms.TextInput(attrs={'autofocus': True, 'class': "form-control", 'autocomplete': 'off'}),
-        strip=True,
-        help_text="",
-        required=False,
-    )
-
-    last_name = forms.CharField(
-        label=_("last name"),
-        widget=forms.TextInput(attrs={'class': "form-control", 'autocomplete': 'off'}),
-        strip=True,
-        help_text="",
-        required=False,
-    )
-
-    mobile = forms.CharField(
-        label=_("mobile"),
-        widget=forms.TextInput(attrs={'class': "form-control", 'autocomplete': 'off'}),
-        help_text="",
-    )
-
-    phone = forms.CharField(
-        label=_("phone"),
-        widget=forms.TextInput(attrs={'class': "form-control", 'autocomplete': 'off'}),
-        help_text="",
-        required=False,
-    )
+    # first_name = forms.CharField(
+    #     label=_("first name"),
+    #     widget=forms.TextInput(attrs={'autofocus': True, 'class': "form-control", 'autocomplete': 'off'}),
+    #     strip=True,
+    #     help_text="",
+    #     required=False,
+    # )
+    #
+    # last_name = forms.CharField(
+    #     label=_("last name"),
+    #     widget=forms.TextInput(attrs={'class': "form-control", 'autocomplete': 'off'}),
+    #     strip=True,
+    #     help_text="",
+    #     required=False,
+    # )
+    #
+    # mobile = forms.CharField(
+    #     label=_("mobile"),
+    #     widget=forms.TextInput(attrs={'class': "form-control", 'autocomplete': 'off'}),
+    #     help_text="",
+    # )
+    #
+    # phone = forms.CharField(
+    #     label=_("phone"),
+    #     widget=forms.TextInput(attrs={'class': "form-control", 'autocomplete': 'off'}),
+    #     help_text="",
+    #     required=False,
+    # )
 
     email = forms.EmailField(
         label=_("Email"),
@@ -144,13 +144,14 @@ class UserRegisterForm(UserCreationForm):
         strip=False,
         help_text=_("Enter the same password as before, for verification."),
     )
-    address = forms.CharField(
-        label=_("Address"),
-        widget=forms.Textarea(attrs={'class': "form-control", 'rows': '4'}),
-        strip=True,
-        help_text="",
-        required=False,
-    )
+
+    # address = forms.CharField(
+    #     label=_("Address"),
+    #     widget=forms.Textarea(attrs={'class': "form-control", 'rows': '4'}),
+    #     strip=True,
+    #     help_text="",
+    #     required=False,
+    # )
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -161,6 +162,5 @@ class UserRegisterForm(UserCreationForm):
 
     class Meta:
         model = UserProfile
-        fields = ['address', 'first_name', 'last_name', 'address', 'mobile', 'phone', 'username', 'email',
-                  'password1',
-                  'password2']
+        # fields = ['address', 'first_name', 'last_name', 'address', 'mobile', 'phone', 'username', 'email','password1','password2']
+        fields = ['username', 'email', 'password1', 'password2']
