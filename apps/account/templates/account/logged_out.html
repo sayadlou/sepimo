@@ -1,7 +1,40 @@
-{% extends "core/base.html" %}
+{% extends "account/base.html" %}
 {% load i18n %}
 {% load static %}
-{% block content %}
+
+{% block page_header %}
+
+{% endblock page_header %}
+{% block breadcrumb %}
+
+{% endblock breadcrumb %}
+
+{% block page_content %}
+    {% if next %}
+        <script>
+            alertify.warning("{% translate "Your account doesn't have access to this page. To proceed, please login with an account that has access" %}");
+        </script>
+    {% endif %}
+    {% if form.errors %}
+        {% for error in form.non_field_errors %}
+            <script>
+                alertify.error("{{ error }}");
+            </script>
+        {% endfor %}
+    {% endif %}
+    <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
+         style="background-image: url({% static 'core/en/images/backgrounds/login-bg.jpg' %})">
+        <div class="container">
+            <div class="form-box">
+                <p class="pt-2 text-justify">
+                    {% translate "You have successfully logged out!" %}
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock page_content %}
+
+{% block content2 %}
     <div id="page-top" class="wide">
         <!-- Single Service Item ////////// Just this Section is changed! -->
         <div id="change_password">

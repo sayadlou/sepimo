@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-04 21:22+0430\n"
+"POT-Creation-Date: 2022-05-04 23:05+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -99,68 +99,84 @@ msgstr "آدرس"
 msgid "Security code"
 msgstr "کد امنیتی:"
 
-#: apps/account/templates/account/logged_out.html:11
-#: apps/account/templates/account/password_change_done.html:11
-#: apps/account/templates/account/password_reset_complete.html:10
-#: apps/account/templates/account/password_reset_confirm.html:70
-#: apps/account/templates/account/password_reset_done.html:11
-#: apps/account/templates/account/profile.html:144
-msgid "Profile"
-msgstr "پروفایل"
-
-#: apps/account/templates/account/logged_out.html:13
-msgid "You have successfully logged out!"
-msgstr "شما با موفقیت از حساب کاربری خود خارج شدید."
-
+#: apps/account/templates/account/logged_out.html:15
 #: apps/account/templates/account/login.html:23
-#: apps/account/templates/account/login.html:221
+#: apps/account/templates/account/login.html:106
+#: apps/account/templates/account/password_change_done.html:15
+#: apps/account/templates/account/password_reset_complete.html:15
+#: apps/account/templates/account/password_reset_confirm.html:15
+#: apps/account/templates/account/password_reset_done.html:15
+#: apps/account/templates/account/password_reset_form.html:15
 msgid ""
 "Your account doesn't have access to this page. To proceed, please login with "
 "an account that has access"
 msgstr ""
 
-#: apps/account/templates/account/login.html:218
-#: apps/account/templates/account/login.html:223
-#: apps/account/templates/account/login.html:250
+#: apps/account/templates/account/logged_out.html:30
+#: apps/account/templates/account/logged_out.html:46
+msgid "You have successfully logged out!"
+msgstr "شما با موفقیت از حساب کاربری خود خارج شدید."
+
+#: apps/account/templates/account/logged_out.html:44
+#: apps/account/templates/account/password_change_done.html:44
+#: apps/account/templates/account/password_reset_complete.html:43
+#: apps/account/templates/account/password_reset_confirm.html:136
+#: apps/account/templates/account/password_reset_done.html:44
+#: apps/account/templates/account/profile.html:144
+msgid "Profile"
+msgstr "پروفایل"
+
+#: apps/account/templates/account/login.html:37
+#: apps/account/templates/account/login.html:103
+#: apps/account/templates/account/login.html:108
+#: apps/account/templates/account/login.html:135
 #: apps/account/templates/account/signup.html:11
 msgid "Login"
 msgstr "ورود به سایت"
 
-#: apps/account/templates/account/login.html:252
+#: apps/account/templates/account/login.html:137
 msgid "Forget Password"
 msgstr "بازیابی رمز عبور"
 
-#: apps/account/templates/account/password_change_done.html:14
+#: apps/account/templates/account/password_change_done.html:30
+#: apps/account/templates/account/password_change_done.html:47
 msgid "your password succesfuly changed"
 msgstr "رمز عبور با موفقیت تغییر کرد"
 
 #: apps/account/templates/account/password_change_form.html:10
-#: apps/account/templates/account/password_reset_confirm.html:12
-#: apps/account/templates/account/password_reset_form.html:12
+#: apps/account/templates/account/password_reset_confirm.html:30
+#: apps/account/templates/account/password_reset_confirm.html:78
+#: apps/account/templates/account/password_reset_form.html:29
+#: apps/account/templates/account/password_reset_form.html:62
 msgid "did you forget your password?"
 msgstr "رمز خود را فراموش کرده اید؟"
 
 #: apps/account/templates/account/password_change_form.html:12
-#: apps/account/templates/account/password_reset_confirm.html:14
-#: apps/account/templates/account/password_reset_form.html:14
+#: apps/account/templates/account/password_reset_confirm.html:32
+#: apps/account/templates/account/password_reset_confirm.html:80
+#: apps/account/templates/account/password_reset_form.html:31
+#: apps/account/templates/account/password_reset_form.html:64
 msgid "enter your email to reset your password"
 msgstr ""
 "آدرس ایمیل خود را وارد کنید. لینک بازیابی رمز عبور برای شما ارسال می گردد."
 
 #: apps/account/templates/account/password_change_form.html:48
-#: apps/account/templates/account/password_reset_form.html:34
+#: apps/account/templates/account/password_reset_form.html:46
+#: apps/account/templates/account/password_reset_form.html:84
 msgid "reset"
 msgstr "بازیابی رمز عبور"
 
-#: apps/account/templates/account/password_reset_complete.html:13
+#: apps/account/templates/account/password_reset_complete.html:30
+#: apps/account/templates/account/password_reset_complete.html:46
 msgid "Your password has been set. You may go ahead and sign in now"
-msgstr "رمز عبور شما با موفقیت تغغیر کرد. اکنون می توانید وارد سایت شوید"
+msgstr "رمز عبور شما با موفقیت تغییر کرد. اکنون می توانید وارد سایت شوید"
 
-#: apps/account/templates/account/password_reset_confirm.html:50
+#: apps/account/templates/account/password_reset_confirm.html:60
+#: apps/account/templates/account/password_reset_confirm.html:116
 msgid "Change Passoword"
 msgstr "تغییر رمز عبور"
 
-#: apps/account/templates/account/password_reset_confirm.html:73
+#: apps/account/templates/account/password_reset_confirm.html:139
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.Please request a new password reset."
@@ -168,7 +184,8 @@ msgstr ""
 "لینک بازنشانی رمز عبور معتبر نبود، احتمالاً به این دلیل که قبلاً استفاده شده "
 "است. لطفاً فرآیند بازیابی رمز عبور  را مجددا درخواست نمایید"
 
-#: apps/account/templates/account/password_reset_done.html:14
+#: apps/account/templates/account/password_reset_done.html:30
+#: apps/account/templates/account/password_reset_done.html:47
 msgid ""
 "We've emailed you instructions for setting your password, if an account "
 "exists with the email you entered. You should receive them shortly. If you "
