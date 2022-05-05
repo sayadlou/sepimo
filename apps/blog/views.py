@@ -1,5 +1,3 @@
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
 from .models import Post, Category
@@ -8,15 +6,16 @@ from .models import Post, Category
 class Blog(ListView):
     template_name = 'blog/index.html'
     model = Post
-    paginate_by = 6
+    paginate_by = 2
 
     def get_queryset(self):
         return self.model.objects.order_by('pub_date').filter(status='Published')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
-        context['tags'] = Post.blog_tags_list()
+        categories = Category.objects.all()
+        context['categories'] = [(category.name, category.post_set.all().count()) for category in categories]
+        context['popular_post'] = self.model.objects.order_by('view').filter(status='Published')
         return context
 
 
