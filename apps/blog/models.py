@@ -30,16 +30,20 @@ class Post(models.Model):
         ('Draft', 'Draft'),
         ('Trash', 'Trash'),
     )
-    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=50, unique=True, allow_unicode=True)
+    intro_picture = models.ImageField(upload_to='blog')
+    intro_picture_text = models.CharField(max_length=50, null=True, blank=True)
+    picture_header = models.ImageField(upload_to='blog')
+    picture_header_text = models.CharField(max_length=50, null=True, blank=True)
+    picture_content = models.ImageField(upload_to='blog')
+    picture_content_text = models.CharField(max_length=50, null=True, blank=True)
     intro = HTMLField()
     content = HTMLField()
     content2 = HTMLField()
     status = models.CharField(max_length=50, choices=STATUS)
     view = models.BigIntegerField(null=True, blank=True, default=0)
     pub_date = models.DateField(_("Date"), default=datetime.date.today)
-    picture = models.ImageField(upload_to='blog')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
 
     class Meta:

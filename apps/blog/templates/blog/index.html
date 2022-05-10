@@ -35,7 +35,7 @@
                                 <div class="col-md-5">
                                     <figure class="entry-media">
                                         <a href="{{ post.get_absolute_url }}">
-                                            <img src="{{ post.picture.url }}" alt="{{ post.picture.alt }}">
+                                            <img src="{{ post.intro_picture.url }}" alt="{{ post.intro_picture.alt_text }}">
                                         </a>
                                     </figure><!-- End .entry-media -->
                                 </div><!-- End .col-md-5 -->
@@ -43,7 +43,7 @@
                                 <div class="col-md-7">
                                     <div class="entry-body">
                                         <div class="entry-meta">
-                                            <a href="#">{{ post.pub_date|jformat:'%Y/%m/%d' }}</a>
+                                            <a>{{ post.pub_date|jformat:'%Y/%m/%d' }}</a>
                                             <span class="meta-separator">|</span>
                                             <a href="#">2 دیدگاه</a>
                                         </div><!-- End .entry-meta -->
@@ -167,7 +167,7 @@
                                     <li>
                                         <figure>
                                             <a href="{{ post.get_absolute_url }}">
-                                                <img src="{{ post.picture.url }}" alt="post">
+                                                <img src="{{ post.intro_picture.url }}" alt="post">
                                             </a>
                                         </figure>
 
@@ -179,8 +179,6 @@
                                 {% endfor %}
                             </ul><!-- End .posts-list -->
                         </div><!-- End .widget -->
-
-
                     </div><!-- End .sidebar -->
                 </aside><!-- End .col-lg-3 -->
             </div><!-- End .row -->

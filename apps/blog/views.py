@@ -18,7 +18,6 @@ class Blog(ListView):
         context = super().get_context_data(**kwargs)
         categories = Category.objects.all()
         context['categories'] = [(category.name, category.post_set.all().count()) for category in categories]
-        context['popular_post'] = self.model.objects.order_by('view').filter(status='Published')
         return context
 
 
@@ -26,3 +25,16 @@ class Slug(DetailView):
     template_name = 'blog/slug.html'
     model = Post
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['next_post'] = self.model.objects. \
+            order_by('id'). \
+            filter(id__gt=self.object.id). \
+            first()
+        context['prev_post'] = self.model.objects. \
+            order_by('id'). \
+            filter(id__lt=self.object.id). \
+            last()
+        context['same_post'] = self.model.objects.order_by('pub_date').filter(status='Published') \
+            .filter(category=self.object.category).all()
+        return context

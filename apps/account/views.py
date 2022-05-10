@@ -13,6 +13,9 @@ class Login(LoginView):
     form_class = MyAuthenticationForm
     template_name = 'account/login.html'
 
+    def get_success_url(self):
+        return self.request.POST.get('next', reverse_lazy("account:profile"))
+
     def form_valid(self, form):
         remember_me = form.cleaned_data['remember_me']  # get remember me data from cleaned_data of form
         if not remember_me:

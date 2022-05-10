@@ -64,3 +64,5 @@ media/
 general.log/
 /static/
 /temp/
+/webpack/node_modules/
+/webpack/src/
