@@ -32,7 +32,6 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -51,6 +50,8 @@ INSTALLED_APPS = [
     'apps.store',
     'apps.blog',
     'apps.core',
+    'modeltranslation',
+    'django.contrib.admin',
 ]
 
 MIDDLEWARE = [

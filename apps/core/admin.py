@@ -1,4 +1,5 @@
 from django.contrib import admin
+from modeltranslation.admin import TranslationAdmin
 
 from .models import LoginPage, AboutUsPage, Brand, CustomerReviews
 
@@ -19,5 +20,5 @@ class BrandAdmin(admin.ModelAdmin):
 
 
 @admin.register(AboutUsPage)
-class AboutUsPageAdmin(admin.ModelAdmin):
+class AboutUsPageAdmin(TranslationAdmin):
     pass

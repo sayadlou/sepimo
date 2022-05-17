@@ -5,6 +5,9 @@ from django.utils.translation import ugettext_lazy as _
 
 
 # Create your models here.
+from tinymce.models import HTMLField
+
+
 class Page(models.Model):
     title = models.CharField(max_length=60)
 
@@ -50,11 +53,11 @@ class CustomerReviews(models.Model):
 class AboutUsPage(Page):
     is_brand_active = models.BooleanField(default=False)
     brand_title = models.CharField(max_length=100)
-    brand_description = models.TextField()
-    our_vision_text = models.TextField()
-    our_mission_text = models.TextField()
-    who_we_are_text_1 = models.TextField()
-    who_we_are_text_2 = models.TextField()
+    brand_description = HTMLField()
+    our_vision_text = HTMLField()
+    our_mission_text = HTMLField()
+    who_we_are_text_1 = HTMLField()
+    who_we_are_text_2 = HTMLField()
     main_picture = models.ImageField(upload_to="about_us")
     who_we_are_picture = models.ImageField(upload_to="who_we_are")
     customer_reviews_title = models.CharField(max_length=100, default="نظرات مشتری های فروشگاه")
