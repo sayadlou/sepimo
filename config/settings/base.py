@@ -106,9 +106,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'fa'
 
+LANGUAGE_COOKIE_AGE = 3600 * 24 * 30
+
 LANGUAGES = (
-    ('en', 'English'),
     ('fa', 'پارسی'),
+    ('en', 'English'),
 
 )
 

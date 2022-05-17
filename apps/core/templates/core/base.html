@@ -14,7 +14,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{ context.title }}</title>
+    <title>{{ title }}</title>
     <meta name="keywords" content="{{ context.keywords }}">
     <meta name="description" content="{{ context.description }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{% static "core/en/images/icons/apple-touch-icon.png" %}">
@@ -451,9 +451,6 @@
         {% endblock page_header %}
         {% block breadcrumb %}
         {% endblock breadcrumb %}
-
-
-
         {% block page_content %}
         {% endblock page_content %}
 

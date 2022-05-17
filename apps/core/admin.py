@@ -1,9 +1,23 @@
-from captcha.fields import CaptchaField
 from django.contrib import admin
-from django.contrib.auth.forms import AuthenticationForm
-from .widget import CustomCaptchaTextInput
+
+from .models import LoginPage, AboutUsPage, Brand, CustomerReviews
 
 
-# Register your models here.
-# class AuthAdminForm(AuthenticationForm):
-#     captcha = CaptchaField(widget=CustomCaptchaTextInput(attrs={'class': "form-control"}))
+@admin.register(LoginPage)
+class LoginPageAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Brand)
+class BrandAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(CustomerReviews)
+class BrandAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(AboutUsPage)
+class AboutUsPageAdmin(admin.ModelAdmin):
+    pass

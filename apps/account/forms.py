@@ -31,7 +31,7 @@ class MyAuthenticationForm(AuthenticationForm):
         widget=forms.PasswordInput(attrs={'autocomplete': 'current-password', 'class': "form-control"}),
     )
     captcha = CaptchaField(widget=CustomCaptchaTextInput(attrs={'class': "form-control"}))
-    remember_me = forms.BooleanField(required=False)  # and add the remember_me field
+    remember_me = forms.BooleanField(required=False)
 
 
 class MyPasswordResetForm(PasswordResetForm):
