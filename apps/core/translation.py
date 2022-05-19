@@ -1,6 +1,6 @@
 from modeltranslation.translator import translator, TranslationOptions as BaseTranslationOptions
 
-from .models import AboutUsPage
+from .models import *
 
 
 class TranslationOptions(BaseTranslationOptions):
@@ -10,4 +10,17 @@ class TranslationOptions(BaseTranslationOptions):
     required_languages = ('fa', 'en')
 
 
+class ProfileTranslationOptions(BaseTranslationOptions):
+    fields = ('title', 'header_text_big', 'header_text_small',)
+    required_languages = ('fa', 'en')
+
+
+class TitleTranslationOptions(BaseTranslationOptions):
+    fields = ('title',)
+    required_languages = ('fa', 'en')
+
+
+translator.register(LoginPage, TitleTranslationOptions)
+translator.register(SignUpPage, TitleTranslationOptions)
 translator.register(AboutUsPage, TranslationOptions)
+translator.register(ProfilePage, ProfileTranslationOptions)

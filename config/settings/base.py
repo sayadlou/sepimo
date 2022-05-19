@@ -45,13 +45,15 @@ INSTALLED_APPS = [
     'tinymce',
     'azbankgateways',
     'mptt',
+    'easy_thumbnails',
+    'filer',
+    'modeltranslation',
+    'django.contrib.admin',
     'apps.account',
     'apps.contact_us',
     'apps.store',
     'apps.blog',
     'apps.core',
-    'modeltranslation',
-    'django.contrib.admin',
 ]
 
 MIDDLEWARE = [

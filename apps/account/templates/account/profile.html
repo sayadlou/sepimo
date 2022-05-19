@@ -3,9 +3,9 @@
 {% load i18n %}
 {% block page_header %}
     <div class="page-header text-center"
-         style="background-image: url({% static 'core/en/images/page-header-bg.jpg' %})">
+         style="background-image: url({{ page.header_background.url }})">
         <div class="container">
-            <h1 class="page-title">داشبورد<span>فروشگاه</span></h1>
+            <h1 class="page-title">{{ page.header_text_big }}<span>{{ page.header_text_small }}</span></h1>
         </div><!-- End .container -->
     </div><!-- End .page-header -->
 {% endblock page_header %}

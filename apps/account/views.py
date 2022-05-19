@@ -7,6 +7,7 @@ from django.views.generic import CreateView, UpdateView
 from .forms import MyAuthenticationForm, MyPasswordResetForm, MyPasswordChangeForm, MySetPasswordForm, UserRegisterForm, \
     ProfileForm
 from .models import UserProfile
+from ..core.models import LoginPage, SignUpPage, ProfilePage
 
 
 class Login(LoginView):
@@ -22,6 +23,12 @@ class Login(LoginView):
             self.request.session.set_expiry(0)  # if remember me is
             self.request.session.modified = True
         return super(Login, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context["page"] = LoginPage.get_setting()
+        context["title"] = LoginPage.get_setting().title
+        return context
 
 
 class Logout(LogoutView):
@@ -69,6 +76,12 @@ class SignUp(CreateView):
     def get_success_url(self):
         return reverse_lazy('account:profile')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context["page"] = SignUpPage.get_setting()
+        context["title"] = SignUpPage.get_setting().title
+        return context
+
 
 class Profile(LoginRequiredMixin, UpdateView):
     form_class = ProfileForm
@@ -85,10 +98,6 @@ class Profile(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data()
-        data["saeid"] = "asawdawdawdqwdqwd"
-        # user_purchased_base_product = self.request.user.productbasemodel_set.all()
-        # user_purchased_product = set()
-        # for base_product in user_purchased_base_product:
-        #     user_purchased_product.add(base_product.get_child())
-        # data["purchase"] = user_purchased_product
+        data["page"] = ProfilePage.get_setting()
+        data["title"] = ProfilePage.get_setting().title
         return data

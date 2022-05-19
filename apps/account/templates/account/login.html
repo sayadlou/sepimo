@@ -31,10 +31,11 @@
         {% endfor %}
     {% endif %}
     <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
-         style="background-image: url({% static 'core/en/images/backgrounds/login-bg.jpg' %})">
+         style="background-image: url({{ page.background_image.url }})">
         <div class="container">
             <div class="form-box">
-                <h4 class="text-right">{% translate "Login" %}&nbsp/&nbsp<a href="{% url "account:signup" %}">{% translate "Signup" %}</a></h4>
+                <h4 class="text-right">{% translate "Login" %}&nbsp/&nbsp<a
+                        href="{% url "account:signup" %}">{% translate "Signup" %}</a></h4>
                 <form method="post" action="{% url 'account:login' %}">
                     {% csrf_token %}
                     <div class="form-group">

@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
+from filer.fields.image import FilerImageField
 
 
 # Create your models here.
@@ -9,7 +10,7 @@ from tinymce.models import HTMLField
 
 
 class Page(models.Model):
-    title = models.CharField(max_length=60)
+    title = models.CharField(max_length=60, default="Sepimo")
 
     class Meta:
         abstract = True
@@ -28,16 +29,12 @@ class Page(models.Model):
             raise ValidationError(_("add setting Error"))
 
 
-class LoginPage(Page):
-    background_image = models.ImageField()
-
-
 class homePage(Page):
     pass
 
 
 class Brand(models.Model):
-    picture = models.ImageField(upload_to="brand_image")
+    picture = FilerImageField(related_name='brand_image', on_delete=models.PROTECT)
     brand_name = models.CharField(max_length=60)
 
     def __str__(self):
@@ -45,7 +42,7 @@ class Brand(models.Model):
 
 
 class CustomerReviews(models.Model):
-    picture = models.ImageField(upload_to="customer")
+    picture = FilerImageField(related_name='customer', on_delete=models.PROTECT)
     review = models.TextField()
     customer_name = models.CharField(max_length=60)
 
@@ -58,21 +55,23 @@ class AboutUsPage(Page):
     our_mission_text = HTMLField()
     who_we_are_text_1 = HTMLField()
     who_we_are_text_2 = HTMLField()
-    main_picture = models.ImageField(upload_to="about_us")
-    who_we_are_picture = models.ImageField(upload_to="who_we_are")
+    main_picture = FilerImageField(related_name='about_us', on_delete=models.PROTECT)
+    who_we_are_picture = FilerImageField(related_name='who_we_are', on_delete=models.PROTECT)
     customer_reviews_title = models.CharField(max_length=100, default="نظرات مشتری های فروشگاه")
 
 
-class LogoutPage(Page):
-    pass
+class ProfilePage(Page):
+    header_text_big = models.CharField(max_length=60)
+    header_text_small = models.CharField(max_length=60)
+    header_background = FilerImageField(related_name='profile_background', on_delete=models.PROTECT)
 
 
 class SignUpPage(Page):
-    pass
+    background_image = FilerImageField(related_name='signup_page', on_delete=models.PROTECT)
 
 
-class ProfilePage(Page):
-    pass
+class LoginPage(Page):
+    background_image = FilerImageField(related_name='login_page', on_delete=models.PROTECT)
 
 
 class PasswordChangePage(Page):
