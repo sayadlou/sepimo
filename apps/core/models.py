@@ -16,7 +16,7 @@ class Page(models.Model):
         abstract = True
 
     @classmethod
-    def get_setting(cls):
+    def get_data(cls):
         try:
             return cls.objects.get(id__gt=0)
 
@@ -64,6 +64,11 @@ class ProfilePage(Page):
     header_text_big = models.CharField(max_length=60)
     header_text_small = models.CharField(max_length=60)
     header_background = FilerImageField(related_name='profile_background', on_delete=models.PROTECT)
+    menu_dashboard = models.CharField(max_length=60, default="داشبورد")
+    menu_orders = models.CharField(max_length=60, default="سفارشات")
+    menu_address = models.CharField(max_length=60, default="آدرس")
+    menu_profile = models.CharField(max_length=60, default="جزئیات حساب کاربری")
+    menu_logout = models.CharField(max_length=60, default="خروج از حساب کاربری")
 
 
 class SignUpPage(Page):

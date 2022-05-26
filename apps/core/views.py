@@ -16,8 +16,8 @@ class AboutUs(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page'] = AboutUsPage.get_setting()
-        context['title'] = AboutUsPage.get_setting().title
+        context['page'] = AboutUsPage.get_data()
+        context['title'] = AboutUsPage.get_data().title
         context['brands'] = Brand.objects.all()
         context['reviews'] = CustomerReviews.objects.all()
         return context

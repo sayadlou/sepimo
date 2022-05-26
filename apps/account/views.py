@@ -1,12 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView, \
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
-from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView
+from django.urls import reverse_lazy, reverse
+from django.views.generic import CreateView, UpdateView, ListView, DetailView
 
 from .forms import MyAuthenticationForm, MyPasswordResetForm, MyPasswordChangeForm, MySetPasswordForm, UserRegisterForm, \
     ProfileForm
-from .models import UserProfile
+from .models import UserProfile, Address
 from ..core.models import LoginPage, SignUpPage, ProfilePage
 
 
@@ -15,7 +15,10 @@ class Login(LoginView):
     template_name = 'account/login.html'
 
     def get_success_url(self):
-        return self.request.POST.get('next', reverse_lazy("account:profile"))
+        url = self.request.POST.get('next', "")
+        if url == "":
+            return reverse("account:profile")
+        return url
 
     def form_valid(self, form):
         remember_me = form.cleaned_data['remember_me']  # get remember me data from cleaned_data of form
@@ -26,8 +29,8 @@ class Login(LoginView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context["page"] = LoginPage.get_setting()
-        context["title"] = LoginPage.get_setting().title
+        context["page"] = LoginPage.get_data()
+        context["title"] = LoginPage.get_data().title
         return context
 
 
@@ -78,8 +81,8 @@ class SignUp(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context["page"] = SignUpPage.get_setting()
-        context["title"] = SignUpPage.get_setting().title
+        context["page"] = SignUpPage.get_data()
+        context["title"] = SignUpPage.get_data().title
         return context
 
 
@@ -98,6 +101,23 @@ class Profile(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data()
-        data["page"] = ProfilePage.get_setting()
-        data["title"] = ProfilePage.get_setting().title
+        data["page"] = ProfilePage.get_data()
+        data["title"] = ProfilePage.get_data().title
+        data["orders"] = self.request.user.Orders.all()
         return data
+
+
+class AddressViewList(LoginRequiredMixin, ListView):
+
+    def get_queryset(self):
+        return Address.objects.filter(owner=self.request.user)
+
+
+class AddressView(LoginRequiredMixin, DetailView):
+
+    def get_object(self, queryset=None):
+        # return Address.objects.filter(owner=self.request.user,id = self.request.)
+        return Address.objects.filter(owner=self.request.user)
+
+    def get_queryset(self):
+        return Address.objects.filter(owner=self.request.user)

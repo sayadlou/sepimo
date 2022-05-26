@@ -1,16 +1,11 @@
-from datetime import date
 from uuid import uuid4
 
 from azbankgateways.models import Bank
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
-from tinymce.models import HTMLField
-from django_jalali.db import models as jmodels
 
 from apps.account.models import UserProfile
 
@@ -35,7 +30,6 @@ class Product(models.Model):
         self.purchaser.add(user)
 
 
-
 class Cart(models.Model):
     CART_STATUS_WAITING = 'W'
     CART_STATUS_TRANSFERRED = 'T'
@@ -45,7 +39,7 @@ class Cart(models.Model):
         (CART_STATUS_TRANSFERRED, 'Transferred'),
         (CART_STATUS_FAILED, 'Failed')
     ]
-    owner = models.OneToOneField(UserProfile, on_delete=models.RESTRICT)
+    owner = models.OneToOneField(UserProfile, on_delete=models.RESTRICT, related_name="Cart")
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(choices=CART_STATUS_CHOICES, max_length=20, default=CART_STATUS_WAITING)
@@ -86,7 +80,7 @@ class Order(models.Model):
         (ORDER_STATUS_FAILED, 'Failed')
     ]
 
-    owner = models.ForeignKey(UserProfile, on_delete=models.RESTRICT)
+    owner = models.ForeignKey(UserProfile, on_delete=models.RESTRICT, related_name="Orders")
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(choices=ORDER_STATUS_CHOICES, max_length=20, default=ORDER_STATUS_WAITING)
@@ -139,7 +133,7 @@ class Payment(models.Model):
         (STATUS_PROCESSING, _('processing')),
         (STATUS_CONFIRMED, _('confirmed')),
     ]
-    owner = models.ForeignKey(UserProfile, on_delete=models.RESTRICT)
+    owner = models.ForeignKey(UserProfile, on_delete=models.RESTRICT, related_name="Payment")
     order = models.ForeignKey(Order, verbose_name=_('order'), on_delete=models.CASCADE)
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created at'))
@@ -158,4 +152,3 @@ class Payment(models.Model):
         verbose_name = _('Payment')
         verbose_name_plural = _('Payments')
         ordering = ('created_at',)
-
