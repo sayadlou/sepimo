@@ -13,7 +13,7 @@ from .widget import CustomCaptchaTextInput
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('first_name', 'last_name', 'email', 'mobile', 'phone', )
+        fields = ('first_name', 'last_name', 'email', 'mobile', 'phone',)
         widgets = {
             'first_name': forms.TextInput(attrs={'autofocus': True, 'class': "form-control"}),
             'last_name': forms.TextInput(attrs={'autofocus': True, 'class': "form-control"}),
@@ -82,38 +82,9 @@ class MySetPasswordForm(SetPasswordForm):
 class UserRegisterForm(UserCreationForm):
     captcha = CaptchaField(widget=CustomCaptchaTextInput(attrs={'class': "form-control"}))
     username = UsernameField(
-        label=_("username"),
+        label=_("Username"),
         widget=forms.TextInput(attrs={'class': "form-control", 'autocomplete': 'off'})
     )
-
-    # first_name = forms.CharField(
-    #     label=_("first name"),
-    #     widget=forms.TextInput(attrs={'autofocus': True, 'class': "form-control", 'autocomplete': 'off'}),
-    #     strip=True,
-    #     help_text="",
-    #     required=False,
-    # )
-    #
-    # last_name = forms.CharField(
-    #     label=_("last name"),
-    #     widget=forms.TextInput(attrs={'class': "form-control", 'autocomplete': 'off'}),
-    #     strip=True,
-    #     help_text="",
-    #     required=False,
-    # )
-    #
-    # mobile = forms.CharField(
-    #     label=_("mobile"),
-    #     widget=forms.TextInput(attrs={'class': "form-control", 'autocomplete': 'off'}),
-    #     help_text="",
-    # )
-    #
-    # phone = forms.CharField(
-    #     label=_("phone"),
-    #     widget=forms.TextInput(attrs={'class': "form-control", 'autocomplete': 'off'}),
-    #     help_text="",
-    #     required=False,
-    # )
 
     email = forms.EmailField(
         label=_("Email"),
@@ -121,17 +92,6 @@ class UserRegisterForm(UserCreationForm):
         widget=forms.EmailInput(attrs={'class': "form-control", 'autocomplete': 'off'})
     )
 
-    # password1 = forms.CharField(
-    #     label=_("New password"),
-    #     widget=forms.PasswordInput(attrs={'class': "form-control", 'autocomplete': 'new-password'}),
-    #     strip=False,
-    #     help_text=password_validation.password_validators_help_text_html(),
-    # )
-    # password2 = forms.CharField(
-    #     label=_("New password confirmation"),
-    #     strip=False,
-    #     widget=forms.PasswordInput(attrs={'class': "form-control", 'autocomplete': 'new-password'}),
-    # )
     password1 = forms.CharField(
         label=_("Password"),
         strip=False,
@@ -145,14 +105,6 @@ class UserRegisterForm(UserCreationForm):
         help_text=_("Enter the same password as before, for verification."),
     )
 
-    # address = forms.CharField(
-    #     label=_("Address"),
-    #     widget=forms.Textarea(attrs={'class': "form-control", 'rows': '4'}),
-    #     strip=True,
-    #     help_text="",
-    #     required=False,
-    # )
-
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data['password1'])
@@ -162,5 +114,4 @@ class UserRegisterForm(UserCreationForm):
 
     class Meta:
         model = UserProfile
-        # fields = ['address', 'first_name', 'last_name', 'address', 'mobile', 'phone', 'username', 'email','password1','password2']
         fields = ['username', 'email', 'password1', 'password2']

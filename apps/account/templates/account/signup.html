@@ -35,7 +35,8 @@
                     <div id="user">
                         <div>
                             <div class="user-form">
-                                <h4 class="text-right">{% translate "Signup" %}&nbsp/&nbsp<a
+                                <h4>
+                                    {% translate "Signup" %}&nbsp/&nbsp<a
                                         href="{% url "account:login" %}">{% translate "Login" %}</a></h4>
                                 <hr>
                                 <form autocomplete="off" method="post" action="{% url 'account:signup' %}">
