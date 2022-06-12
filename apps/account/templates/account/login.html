@@ -34,7 +34,7 @@
          style="background-image: url({{ page.background_image.url }})">
         <div class="container">
             <div class="form-box">
-                <h4 class="text-right">{% translate "Login" %}&nbsp/&nbsp<a
+                <h4>{% translate "Login" %}&nbsp/&nbsp<a
                         href="{% url "account:signup" %}">{% translate "Signup" %}</a></h4>
                 <form method="post" action="{% url 'account:login' %}">
                     {% csrf_token %}

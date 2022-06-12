@@ -25,6 +25,10 @@ class Address(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     state = models.CharField(_('state'), max_length=30)
     city = models.CharField(_('city'), max_length=30)
+    phone_number = models.CharField(_('Phone Number'), max_length=30)
     area = models.CharField(_('area'), max_length=2)
-    postal_code = models.CharField(_('city'), max_length=11)
+    postal_code = models.CharField(_('Postal Code'), max_length=11)
     address = models.TextField(_('address'), max_length=300)
+
+    def __str__(self):
+        return f"{self.owner.username} {self.address}"

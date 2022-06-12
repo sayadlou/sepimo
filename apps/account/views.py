@@ -104,20 +104,23 @@ class Profile(LoginRequiredMixin, UpdateView):
         data["page"] = ProfilePage.get_data()
         data["title"] = ProfilePage.get_data().title
         data["orders"] = self.request.user.Orders.all()
+        data["addresses"] = Address.objects.filter(owner=self.request.user)
         return data
 
 
 class AddressViewList(LoginRequiredMixin, ListView):
+    template_name = 'account/address_list.html'
 
     def get_queryset(self):
         return Address.objects.filter(owner=self.request.user)
 
 
-class AddressView(LoginRequiredMixin, DetailView):
+class AddressView(LoginRequiredMixin, UpdateView):
+    template_name = 'account'
 
     def get_object(self, queryset=None):
-        # return Address.objects.filter(owner=self.request.user,id = self.request.)
-        return Address.objects.filter(owner=self.request.user)
+        return Address.objects.filter(owner=self.request.user, pk=self.kwargs['pk'])
 
-    def get_queryset(self):
-        return Address.objects.filter(owner=self.request.user)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        return context

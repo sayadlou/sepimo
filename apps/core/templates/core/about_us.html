@@ -31,14 +31,14 @@
                 <div class="col-lg-6 mb-3 mb-lg-0">
                     <h2 class="title">دید ما</h2><!-- End .title -->
                     <p>
-                        {{ page.our_vision_text }}
+                        {{ page.our_vision_text | safe }}
                     </p>
                 </div><!-- End .col-lg-6 -->
 
                 <div class="col-lg-6">
                     <h2 class="title">ماموریت ما</h2><!-- End .title -->
                     <p>
-                        {{ page.our_mission_text }}
+                        {{ page.our_mission_text | safe }}
                     </p>
                 </div><!-- End .col-lg-6 -->
             </div><!-- End .row -->
@@ -52,10 +52,10 @@
                     <div class="col-lg-5 mb-3 mb-lg-0">
                         <h2 class="title">ما که هستیم</h2><!-- End .title -->
                         <p class="lead text-primary mb-3">
-                            {{ page.who_we_are_text_1 }}
+                            {{ page.who_we_are_text_1 | safe}}
                         </p><!-- End .lead text-primary -->
                         <p class="mb-2">
-                            {{ page.who_we_are_text_2 }}
+                            {{ page.who_we_are_text_2 | safe}}
                         </p>
 
                         <a href="{% url "blog:home" %}"

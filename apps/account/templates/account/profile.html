@@ -32,23 +32,27 @@
                             <li class="nav-item">
                                 <a class="nav-link active" id="tab-dashboard-link" data-toggle="tab"
                                    href="#tab-dashboard" role="tab" aria-controls="tab-dashboard"
-                                   aria-selected="true">داشبورد</a>
+                                   aria-selected="true">
+                                    {% translate "Dashboard" %}
+                                </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders"
-                                   role="tab" aria-controls="tab-orders" aria-selected="false">سفارشات</a>
+                                   role="tab" aria-controls="tab-orders"
+                                   aria-selected="false">{% translate "Orders" %}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address"
-                                   role="tab" aria-controls="tab-address" aria-selected="false">آدرس</a>
+                                   role="tab" aria-controls="tab-address"
+                                   aria-selected="false">{% translate "Address" %}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account"
-                                   role="tab" aria-controls="tab-account" aria-selected="false">جزئیات حساب
-                                    کاربری</a>
+                                   role="tab" aria-controls="tab-account"
+                                   aria-selected="false">{% translate "Account Information" %}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link"  href="{% url 'account:logout' %}">خروج از حساب کاربری</a>
+                                <a class="nav-link" href="{% url 'account:logout' %}">{% translate "Logout" %}</a>
                             </li>
                         </ul>
                     </aside><!-- End .col-lg-3 -->
@@ -83,26 +87,9 @@
 
                             <div class="tab-pane fade" id="tab-address" role="tabpanel"
                                  aria-labelledby="tab-address-link">
-                                <p>آدرسی که اینجا ثبت می کنید به صورت پیش فرض برای ارسال محصولات به شما استفاده
-                                    می شود.</p>
-
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="card card-dashboard">
-                                            <div class="card-body">
-                                                <h3 class="card-title">آدرس شما</h3><!-- End .card-title -->
-
-                                                <p>نام کاربری شما<br>
-                                                    نام شرکت شما<br>
-                                                    محمد محمدی<br>
-                                                    تهران-تهران<br>
-                                                    خیابان آزادی - پلاک 7<br>
-                                                    yourmail@mail.com<br>
-                                                    <a href="#">ویرایش <i class="icon-edit"></i></a></p>
-                                            </div><!-- End .card-body -->
-                                        </div><!-- End .card-dashboard -->
-                                    </div><!-- End .col-lg-12 -->
-                                </div><!-- End .row -->
+                                {#                                <p>آدرسی که اینجا ثبت می کنید به صورت پیش فرض برای ارسال محصولات به شما استفاده#}
+                                {#                                    می شود.</p>#}
+                                {% include "account/address_list.html" %}
                             </div><!-- .End .tab-pane -->
 
                             <div class="tab-pane fade" id="tab-account" role="tabpanel"
@@ -185,7 +172,8 @@
                                                 <th scope="row">1</th>
                                                 <td>{{ item.title }}</td>
                                                 <td>
-                                                    <a  href="{{ item.get_absolute_url }}" class="btn btn-outline-primary btn-equal">
+                                                    <a href="{{ item.get_absolute_url }}"
+                                                       class="btn btn-outline-primary btn-equal">
                                                         مشاهده
                                                     </a>
                                                 </td>
