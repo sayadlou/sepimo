@@ -5,7 +5,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView, ListView, DetailView
 
 from .forms import MyAuthenticationForm, MyPasswordResetForm, MyPasswordChangeForm, MySetPasswordForm, UserRegisterForm, \
-    ProfileForm
+    ProfileForm, AddressForm
 from .models import UserProfile, Address
 from ..core.models import LoginPage, SignUpPage, ProfilePage
 
@@ -105,11 +105,17 @@ class Profile(LoginRequiredMixin, UpdateView):
         data["title"] = ProfilePage.get_data().title
         data["orders"] = self.request.user.Orders.all()
         data["addresses"] = Address.objects.filter(owner=self.request.user)
+        data['new_address_form'] = AddressForm({'owner': self.request.user})
         return data
 
 
 class AddressViewList(LoginRequiredMixin, ListView):
     template_name = 'account/address_list.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+        context['addresses'] = self.object_list
+        return context
 
     def get_queryset(self):
         return Address.objects.filter(owner=self.request.user)
@@ -124,3 +130,14 @@ class AddressView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         return context
+
+
+class AddressViewCreate(LoginRequiredMixin, CreateView):
+    template_name = 'account/new_address_form.html'
+    form_class = AddressForm
+
+    def get_success_url(self):
+        return reverse('account:list-address')
+
+    def get_initial(self):
+        return {"owner": self.request.user}

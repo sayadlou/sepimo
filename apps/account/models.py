@@ -23,10 +23,10 @@ class UserProfile(AbstractUser):
 class Address(models.Model):
     owner = models.ForeignKey(UserProfile, on_delete=models.PROTECT)
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    province = models.CharField(_('Province'), max_length=30)
     city = models.CharField(_('City'), max_length=30)
-    state = models.CharField(_('State'), max_length=30)
     phone_number = models.CharField(_('Phone Number'), max_length=30)
-    # area = models.CharField(_('area'), max_length=2)
+    area = models.CharField(_('area'), max_length=2)
     postal_code = models.CharField(_('Postal Code'), max_length=11)
     address = models.TextField(_('Address'), max_length=300)
 

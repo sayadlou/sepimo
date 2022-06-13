@@ -6,8 +6,17 @@ from django.contrib.auth.forms import AuthenticationForm, UsernameField, Passwor
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
 
-from .models import UserProfile
+from .models import UserProfile, Address
 from .widget import CustomCaptchaTextInput
+
+
+class AddressForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = ("owner", "province", "city", "phone_number", "area", "postal_code", "address",)
+        widgets = {
+            "owner": forms.TextInput(attrs={'hidden': True})
+        }
 
 
 class ProfileForm(forms.ModelForm):

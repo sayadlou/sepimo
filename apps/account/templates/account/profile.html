@@ -89,8 +89,33 @@
                                  aria-labelledby="tab-address-link">
                                 {#                                <p>آدرسی که اینجا ثبت می کنید به صورت پیش فرض برای ارسال محصولات به شما استفاده#}
                                 {#                                    می شود.</p>#}
-                                {% include "account/address_list.html" %}
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="card card-dashboard">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between mb-3">
+                                                    <div class="">
+                                                        <h3 class="card-title mt-1">{% translate "Your addresses" %}</h3>
+                                                    </div>
+                                                    <div class="">
+                                                        <button type="button"
+                                                                class="btn btn-outline-dark btn-round"
+                                                                data-toggle="modal"
+                                                                data-target="#newAddress">
+                                                            {% translate "New Address +" %}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div id="addressList">
+                                                    {% include "account/address_list.html" %}
+                                                </div>
+                                            </div><!-- End .card-body -->
+                                        </div><!-- End .card-dashboard -->
+                                    </div><!-- End .col-lg-12 -->
+                                </div><!-- End .row -->
                             </div><!-- .End .tab-pane -->
+                            <!-- Button trigger modal -->
+
 
                             <div class="tab-pane fade" id="tab-account" role="tabpanel"
                                  aria-labelledby="tab-account-link">
@@ -103,7 +128,6 @@
                                     </button>
                                 </form>
                                 <div>
-
                                 </div>
                             </div><!-- .End .tab-pane -->
                         </div>
@@ -112,6 +136,64 @@
             </div><!-- End .container -->
         </div><!-- End .dashboard -->
     </div><!-- End .page-content -->
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="newAddress" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                </div>
+                <form id="newAddressForm">
+                    {% csrf_token %}
+                    <div class="modal-body">
+
+                        {{ new_address_form }}
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                        </button>
+                        <input type="submit" class="btn btn-primary">Save changes</input>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        var newAddressForm = document.getElementById('newAddressForm');
+        var addressListDiv = document.getElementById('addressList');
+
+        function onNewAddressFormSubmit(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            fetch(
+                "{% url "account:create-address" %}",
+                {
+                    method: 'post',
+                    body: formData,
+                }
+            ).then(function (response) {
+                    return response.text();
+                }
+            ).then(function (text) {
+                    addressListDiv.innerHTML = text
+                    console.log("ok", text)
+                }
+            ).catch(function (error) {
+                    console.log('error', error)
+                }
+            )
+        }
+
+        newAddressForm.addEventListener('submit', onNewAddressFormSubmit)
+    </script>
 {% endblock page_content %}
 
 
