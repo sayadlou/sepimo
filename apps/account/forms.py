@@ -31,11 +31,11 @@ class ProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('first_name', 'last_name', 'email', 'mobile', 'phone',)
         widgets = {
-            'first_name': forms.TextInput(attrs={'autofocus': True, 'class': "form-control"}),
-            'last_name': forms.TextInput(attrs={'autofocus': True, 'class': "form-control"}),
-            'mobile': forms.TextInput(attrs={'autofocus': True, 'class': "form-control"}),
-            'phone': forms.TextInput(attrs={'autofocus': True, 'class': "form-control"}),
-            'email': forms.EmailInput(attrs={'autofocus': True, 'class': "form-control"}),
+            'first_name': forms.TextInput(attrs={'autofocus': True, 'class': "form-control my-1"}),
+            'last_name': forms.TextInput(attrs={'autofocus': True, 'class': "form-control  my-1"}),
+            'mobile': forms.TextInput(attrs={'autofocus': True, 'class': "form-control  my-1"}),
+            'phone': forms.TextInput(attrs={'autofocus': True, 'class': "form-control  my-1"}),
+            'email': forms.EmailInput(attrs={'autofocus': True, 'class': "form-control  my-1"}),
         }
 
 

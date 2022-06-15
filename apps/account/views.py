@@ -2,10 +2,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView, \
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, UpdateView, ListView, DetailView, DeleteView
+from django.views.generic import CreateView, UpdateView, ListView, DeleteView, TemplateView
 
 from .forms import MyAuthenticationForm, MyPasswordResetForm, MyPasswordChangeForm, MySetPasswordForm, UserRegisterForm, \
-    ProfileForm, AddressForm
+    AddressForm, ProfileForm
 from .models import UserProfile, Address
 from ..core.models import LoginPage, SignUpPage, ProfilePage
 
@@ -86,27 +86,34 @@ class SignUp(CreateView):
         return context
 
 
-class Profile(LoginRequiredMixin, UpdateView):
-    form_class = ProfileForm
+class Profile(LoginRequiredMixin, TemplateView):
     login_url = reverse_lazy('account:login')
-
     template_name = "account/profile.html"
-    context_object_name = "obj"
-
-    def get_success_url(self):
-        return reverse_lazy('account:profile')
-
-    def get_object(self, queryset=None):
-        return self.request.user
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context["page"] = ProfilePage.get_data()
+        context["form"] = ProfileForm(instance=self.request.user)
         context["title"] = ProfilePage.get_data().title
         context["orders"] = self.request.user.Orders.all()
         context["addresses"] = Address.objects.filter(owner=self.request.user)
         context['new_address_form'] = AddressForm({'owner': self.request.user})
         return context
+
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'account/edit_profile_form.html'
+    form_class = ProfileForm
+
+    def get_object(self, queryset=None):
+        return UserProfile.objects.filter(pk=self.request.user.pk).first()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        return context
+
+    def get_success_url(self):
+        return reverse('account:update-profile')
 
 
 class AddressListView(LoginRequiredMixin, ListView):

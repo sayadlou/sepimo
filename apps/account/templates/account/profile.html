@@ -116,22 +116,16 @@
 
                             <div class="tab-pane fade" id="tab-account" role="tabpanel"
                                  aria-labelledby="tab-account-link">
-                                <form method="post">
-                                    {% csrf_token %}
-                                    {{ form }}
-                                    <button type="submit" class="btn btn-outline-primary-2 float-right">
-                                        <span>ذخیره تغییرات</span>
-                                        <i class="icon-long-arrow-left"></i>
-                                    </button>
-                                </form>
-                                <div>
+                                <div id="edit-profile-div">
+                                    {% include "account/edit_profile_form.html" %}
                                 </div>
-                            </div><!-- .End .tab-pane -->
-                        </div>
-                    </div><!-- End .col-lg-9 -->
-                </div><!-- End .row -->
-            </div><!-- End .container -->
-        </div><!-- End .dashboard -->
+                            </div>
+                        </div><!-- .End .tab-pane -->
+                    </div>
+                </div><!-- End .col-lg-9 -->
+            </div><!-- End .row -->
+        </div><!-- End .container -->
+    </div><!-- End .dashboard -->
     </div><!-- End .page-content -->
 
 
@@ -236,6 +230,42 @@
         </div>
     </div>
     <script>
+        var newAddressForm = document.getElementById('newAddressForm');
+        var addressListDiv = document.getElementById('addressList');
+        var editProfileDiv = document.getElementById('edit-profile-div');
+        var deleteAddressModel = document.getElementById('deleteAddressModel');
+        var editAddressModel = document.getElementById('editAddressModel');
+
+
+        function onProfileFormSubmit() {
+            event.preventDefault()
+            var form = document.querySelector("#update-profile-form")
+            var formData = new FormData(form);
+            var url = "{% url 'account:update-profile'  %}"
+            fetch(url,
+                {
+                    method: 'post',
+                    body: formData,
+                }
+            ).then(function (response) {
+                    if (response.status === 200) {
+                        return response.text();
+                    } else {
+                        throw "connection Error"
+                    }
+                }
+            ).then(function (text) {
+                    editProfileDiv.innerHTML = text;
+                    alert("{% translate "succesfully saved" %}")
+                }
+            ).catch(function (error) {
+                    console.log('error', error)
+                    alert(error)
+                }
+            )
+
+        }
+
         function onEditClick() {
             var url = "{% url "account:edit-address" "ffffffff-ffff-ffff-ffff-ffffffffffff" %}"
             url = url.replace("ffffffff-ffff-ffff-ffff-ffffffffffff", event.target.dataset.pk);
@@ -245,7 +275,11 @@
                     method: 'get',
                 }
             ).then(function (response) {
-                    return response.text();
+                    if (response.status === 200) {
+                        return response.text();
+                    } else {
+                        throw "connection Error"
+                    }
                 }
             ).then(function (text) {
                     editAddressModel.innerHTML = text;
@@ -265,7 +299,11 @@
                     method: 'get',
                 }
             ).then(function (response) {
-                    return response.text();
+                    if (response.status === 200) {
+                        return response.text();
+                    } else {
+                        throw "connection Error"
+                    }
                 }
             ).then(function (text) {
                     $('#deleteAddress').show()
@@ -289,9 +327,12 @@
                     body: formData,
                 }
             ).then(function (response) {
-                    console.log(response);
-                    response_value = response
-                    return response.text();
+                    if (response.status === 200) {
+                        response_value = response
+                        return response.text();
+                    } else {
+                        throw "connection Error"
+                    }
                 }
             ).then(function (text) {
 
@@ -322,9 +363,12 @@
                     body: formData,
                 }
             ).then(function (response) {
-                    console.log(response);
-                    response_value = response
-                    return response.text();
+                    if (response.status === 200) {
+                        response_value = response
+                        return response.text();
+                    } else {
+                        throw "connection Error"
+                    }
                 }
             ).then(function (text) {
 
@@ -342,10 +386,6 @@
 
         }
 
-        var newAddressForm = document.getElementById('newAddressForm');
-        var addressListDiv = document.getElementById('addressList');
-        var deleteAddressModel = document.getElementById('deleteAddressModel');
-        var editAddressModel = document.getElementById('editAddressModel');
 
         function onNewAddressFormSubmit(e) {
             e.preventDefault();
@@ -357,7 +397,11 @@
                     body: formData,
                 }
             ).then(function (response) {
-                    return response.text();
+                    if (response.status === 200) {
+                        return response.text();
+                    } else {
+                        throw "connection Error"
+                    }
                 }
             ).then(function (text) {
                     addressListDiv.innerHTML = text;
@@ -368,13 +412,6 @@
                 }
             )
         }
-
-        document.querySelectorAll('.edit-address-form').forEach(item => {
-            item.addEventListener('submit', event => {
-                event.preventDefault();
-                alert(this.dataset.pk)
-            })
-        })
 
         newAddressForm.addEventListener('submit', onNewAddressFormSubmit)
     </script>
