@@ -1,0 +1,19 @@
+{% load i18n %}
+
+
+<form
+        id="deleteAddressForm-{{ view.kwargs.pk }}"
+        method="post"
+        class="edit-address-form">
+    {% csrf_token %}
+    <p class="m-5 py-5">{% translate 'Are you sure you want to delete' %} "{{ object.address }}"?</p>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary mx-2" data-dismiss="modal">Close</button>
+        <input
+                data-pk="{{ object.pk }}"
+                onclick="onDeleteFormSubmit()"
+                class="btn btn-primary"
+                value="{% translate "Save changes" %}">
+    </div>
+</form>
