@@ -1,18 +1,94 @@
 {% load i18n %}
 {% for address in addresses %}
-    <div>
-        <div class="d-flex justify-content-between m-3">
-            <div class="">
-                <h5 class="px-5">{{ address.address }}</h5>
-            </div>
-            <div class="">
-                <span><i class="px-5 fas fa-ellipsis-h"></i></span>
+    <div class="row">
+        <div class="col-8">
+            <h5 class="">{{ address.address }}</h5>
+            <p><i class="fa fa-city"></i> &nbsp;{{ address.city }}</p>
+            <p><i class="fa fa-envelope"></i>&nbsp;&nbsp;{{ address.postal_code }}</p>
+            <p><i class="fa fa-phone"></i>&nbsp;&nbsp;{{ address.phone_number }}</p>
+            <hr>
+        </div>
+        <div class="col-4">
+            <div class="d-flex flex-column bd-highlight mb-3 ">
+                <div class="p-2 mr-auto bd-highlight">
+                    <p class="btn btn-outline-dark btn-round"
+                       id="edit-{{ address.pk }}"
+                       style="background-color: #e3d88e;"
+                       data-toggle="modal"
+                       data-target="#editAddress"
+                       data-pk="{{ address.pk }}"
+                       onclick="onEditClick()"
+                    >{% translate "Edit" %}</p>
+                </div>
+                <div class="p-2 mr-auto bd-highlight">
+                    <p class="btn btn-outline-dark btn-round"
+                       id="delete-{{ address.pk }}"
+                       style="background-color: #ff7f50;"
+                       data-toggle="modal"
+                       data-target="#deleteAddress"
+                       onclick="onDeleteClick()"
+                    >{% translate "Delete" %}</p>
+                </div>
             </div>
         </div>
-        <p><i class="fa fa-city"></i> &nbsp;{{ address.city }}</p>
-        <p><i class="fa fa-envelope"></i>&nbsp;&nbsp;{{ address.postal_code }}</p>
-        <p><i class="fa fa-phone"></i>&nbsp;&nbsp;{{ address.phone_number }}</p>
-        <hr>
     </div>
+    <script>
+        function onEditClick() {
+            var url = "{% url "account:edit-address" "ffffffff-ffff-ffff-ffff-ffffffffffff" %}"
+            url = url.replace("ffffffff-ffff-ffff-ffff-ffffffffffff", event.target.dataset.pk);
+            fetch(url
+                ,
+                {
+                    method: 'get',
+                }
+            ).then(function (response) {
+                    return response.text();
+                }
+            ).then(function (text) {
+                    editAddressModel.innerHTML = text;
+                }
+            ).catch(function (error) {
+                    console.log('error', error)
+                }
+            )
+        }
+
+        function onDeleteClick(ev) {
+            alert("delete-{{ address.pk }}")
+        }
+
+        function onFormSubmit() {
+            var form = document.querySelector(`#editAddressForm-${event.target.dataset.pk}`)
+            var formData = new FormData(form);
+            var response_value = {}
+            var url = "{% url "account:edit-address" "ffffffff-ffff-ffff-ffff-ffffffffffff" %}"
+            url = url.replace("ffffffff-ffff-ffff-ffff-ffffffffffff", event.target.dataset.pk);
+            fetch(url,
+                {
+                    method: 'post',
+                    body: formData,
+                }
+            ).then(function (response) {
+                    console.log(response);
+                    response_value = response
+                    return response.text();
+                }
+            ).then(function (text) {
+
+                    if (response_value.url.includes("{% url "account:list-address" %}")) {
+                        addressListDiv.innerHTML = text;
+                        $('#editAddress').modal('hide')
+                    } else {
+                        editAddressModel.innerHTML = text;
+                    }
+                }
+            ).catch(function (error) {
+                    console.log('error', error)
+                }
+            )
+
+        }
+    </script>
 {% endfor %}
+
 

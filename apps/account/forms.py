@@ -14,8 +14,15 @@ class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
         fields = ("owner", "province", "city", "phone_number", "area", "postal_code", "address",)
+        required = ("owner",)
         widgets = {
-            "owner": forms.TextInput(attrs={'hidden': True})
+            "owner": forms.TextInput(attrs={'hidden': True}),
+            "province": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0'}),
+            "city": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0'}),
+            "phone_number": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0'}),
+            "area": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0'}),
+            "postal_code": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0'}),
+            "address": forms.Textarea(attrs={'class': 'form-control mt-0 mb-0', 'rows': 4}),
         }
 
 

@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView, \
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, UpdateView, ListView, DetailView
+from django.views.generic import CreateView, UpdateView, ListView, DetailView, DeleteView
 
 from .forms import MyAuthenticationForm, MyPasswordResetForm, MyPasswordChangeForm, MySetPasswordForm, UserRegisterForm, \
     ProfileForm, AddressForm
@@ -100,13 +100,13 @@ class Profile(LoginRequiredMixin, UpdateView):
         return self.request.user
 
     def get_context_data(self, **kwargs):
-        data = super().get_context_data()
-        data["page"] = ProfilePage.get_data()
-        data["title"] = ProfilePage.get_data().title
-        data["orders"] = self.request.user.Orders.all()
-        data["addresses"] = Address.objects.filter(owner=self.request.user)
-        data['new_address_form'] = AddressForm({'owner': self.request.user})
-        return data
+        context = super().get_context_data()
+        context["page"] = ProfilePage.get_data()
+        context["title"] = ProfilePage.get_data().title
+        context["orders"] = self.request.user.Orders.all()
+        context["addresses"] = Address.objects.filter(owner=self.request.user)
+        context['new_address_form'] = AddressForm({'owner': self.request.user})
+        return context
 
 
 class AddressViewList(LoginRequiredMixin, ListView):
@@ -121,7 +121,22 @@ class AddressViewList(LoginRequiredMixin, ListView):
         return Address.objects.filter(owner=self.request.user)
 
 
-class AddressView(LoginRequiredMixin, UpdateView):
+class AddressUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'account/edit_address_form.html'
+    form_class = AddressForm
+
+    def get_object(self, queryset=None):
+        return Address.objects.filter(owner=self.request.user, pk=self.kwargs['pk']).first()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        return context
+
+    def get_success_url(self):
+        return reverse('account:list-address')
+
+
+class AddressDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'account'
 
     def get_object(self, queryset=None):

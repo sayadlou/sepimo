@@ -7,9 +7,9 @@ urlpatterns = [
     path('logout/', Logout.as_view(), name='logout'),
     path('signup/', SignUp.as_view(), name='signup'),
     path('profile/', Profile.as_view(), name='profile'),
-    path('profile/addresses', AddressViewList.as_view(), name='list-address'),
-    path('profile/address/create', AddressViewCreate.as_view(), name='create-address'),
-    path('profile/address/<uuid:pk>', AddressView.as_view(), name='address'),
+    path('profile/addresses/', AddressViewList.as_view(), name='list-address'),
+    path('profile/address/create/', AddressViewCreate.as_view(), name='create-address'),
+    path('profile/address/<uuid:pk>/update/', AddressUpdateView.as_view(), name='edit-address'),
 
     path('password_change/', PasswordChange.as_view(), name='password_change'),
     path('password_change/done/', PasswordChangeDone.as_view(), name='password_change_done'),

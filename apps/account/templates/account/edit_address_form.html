@@ -1,0 +1,54 @@
+{% load i18n %}
+
+
+<form id="editAddressForm-{{ view.kwargs.pk }}" method="post" data-pk="{{ view.kwargs.pk }}"
+      class="edit-address-form">
+    {% csrf_token %}
+
+    <div class="modal-body p-5">
+        {{ form.errors.as_text }}
+        <div class="row">
+            <div class="col-4 form-req-text">
+                {{ form.province.label_tag }}
+                {{ form.province }}
+                {{ form.province.errors.as_text }}
+                {{ form.owner }}
+            </div>
+            <div class="col-4 form-req-text">
+                {{ form.city.label_tag }}
+                {{ form.city }}
+                {{ form.city.errors.as_text }}
+            </div>
+            <div class="col-4 form-req-text">
+                {{ form.area.label_tag }}
+                {{ form.area }}
+                {{ form.area.errors.as_text }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 form-req-text">
+                {{ form.phone_number.label_tag }}
+                {{ form.phone_number }}
+                {{ form.phone_number.errors.as_text }}
+            </div>
+            <div class="col-6 form-req-text">
+                {{ form.postal_code.label_tag }}
+                {{ form.postal_code }}
+                {{ form.postal_code.errors.as_text }}
+            </div>
+        </div>
+        <div class="form-req-text">
+            {{ form.address.label_tag }}
+            {{ form.address }}
+            {{ form.address.errors.as_text }}
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary mx-2" data-dismiss="modal">Close</button>
+        <input
+                data-pk="{{ address.pk }}"
+                onclick="onFormSubmit()"
+                class="btn btn-primary"
+                value="{% translate "Save changes" %}">
+    </div>
+</form>
