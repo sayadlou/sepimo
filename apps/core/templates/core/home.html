@@ -129,7 +129,7 @@
                                     {% if request.user.is_authenticated %}
                                         <a href="{% url "account:profile" %}">{% translate "Profile" %}</a>
                                     {% else %}
-                                        <a href="{% url "account:login" %}?next={% url "account:profile" %}">{% translate "Sign in / Sign up" %}</a>
+                                        <a href="{% url "account:login" %}?next={% url "account:profile" %}">{% translate "Signin / Signup" %}</a>
                                     {% endif %}
                                 </li>
                             </ul>

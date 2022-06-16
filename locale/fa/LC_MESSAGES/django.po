@@ -402,7 +402,7 @@ msgstr "پیام"
 #: apps/contact_us/templates/contact_us/message_form.html:11
 #: apps/contact_us/templates/contact_us/thanks.html:11
 msgid "Contact us"
-msgstr ""
+msgstr "ارتباط با ما"
 
 #: apps/core/models.py:24
 msgid "Settings for this page not found"
@@ -410,31 +410,31 @@ msgstr ""
 
 #: apps/core/models.py:29
 msgid "add setting Error"
-msgstr ""
+msgstr "خطای اضافه کردن تغییرات"
 
 #: apps/core/templates/core/base.html:127
 msgid "Signin / Signup"
-msgstr ""
+msgstr "ورود / ثبت نام"
 
 #: apps/core/templates/core/home.html:104
 msgid "Links"
-msgstr ""
+msgstr "لینک ها"
 
 #: apps/core/templates/core/home.html:132
 msgid "Sign in / Sign up"
-msgstr ""
+msgstr "ورود / ثبت نام"
 
 #: apps/core/templates/core/home.html:145
 msgid "Toggle mobile menu"
-msgstr ""
+msgstr "منوی موبایل"
 
 #: apps/core/templates/core/home.html:163
 msgid "Search"
-msgstr ""
+msgstr "جستجو"
 
 #: apps/core/templates/core/home.html:177
 msgid "Wishlist"
-msgstr ""
+msgstr "مورد علاقه"
 
 #: apps/core/templates/core/home.html:187 apps/store/models.py:49
 msgid "Cart"
@@ -442,7 +442,7 @@ msgstr "سبد خرید"
 
 #: apps/core/templates/core/home.html:235
 msgid "Total"
-msgstr ""
+msgstr "جمع کل"
 
 #: apps/core/templates/core/home.html:257
 #, fuzzy
@@ -452,35 +452,35 @@ msgstr "دسته بندی های بلاگ"
 
 #: apps/core/templates/core/home.html:1332
 msgid "Best-selling products"
-msgstr ""
+msgstr "محصولات پرفروش"
 
 #: apps/core/templates/core/home.html:1336
 msgid "All"
-msgstr ""
+msgstr "همه"
 
 #: apps/core/templates/core/home.html:2076
 msgid "Our Store News"
-msgstr ""
+msgstr "اخبار فروشگاه ما"
 
 #: apps/core/templates/core/home.html:2165
 msgid "See more news"
-msgstr ""
+msgstr "مشاهده اخبار بیشتر"
 
 #: apps/store/forms.py:19
 msgid "requested type is not valid"
-msgstr ""
+msgstr "نوع درخواستی معتبر نیست"
 
 #: apps/store/forms.py:24
 msgid "quantity is more than allowed value"
-msgstr ""
+msgstr "مقدار بیش از مقدار مجاز است"
 
 #: apps/store/forms.py:27
 msgid "quantity is less than allowed value"
-msgstr ""
+msgstr "مقدار کمتر از مقدار مجاز است"
 
 #: apps/store/forms.py:30
 msgid "product not found"
-msgstr ""
+msgstr "محصول یافت نشد"
 
 #: apps/store/models.py:23
 msgid "Product Base Model"
