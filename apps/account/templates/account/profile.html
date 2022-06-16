@@ -44,12 +44,19 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address"
                                    role="tab" aria-controls="tab-address"
-                                   aria-selected="false">{% translate "Address" %}</a>
+                                   aria-selected="false">
+                                    {% translate "Address" %}
+                                </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account"
                                    role="tab" aria-controls="tab-account"
                                    aria-selected="false">{% translate "Account Information" %}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-password"
+                                   role="tab" aria-controls="tab-password"
+                                   aria-selected="false">{% translate "Password change" %}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'account:logout' %}">{% translate "Logout" %}</a>
@@ -118,6 +125,12 @@
                                  aria-labelledby="tab-account-link">
                                 <div id="edit-profile-div">
                                     {% include "account/edit_profile_form.html" %}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tab-password" role="tabpanel"
+                                 aria-labelledby="tab-account-link">
+                                <div id="password-reset-div">
+                                    {% include "account/password_change_form.html" %}
                                 </div>
                             </div>
                         </div><!-- .End .tab-pane -->
@@ -233,9 +246,37 @@
         var newAddressForm = document.getElementById('newAddressForm');
         var addressListDiv = document.getElementById('addressList');
         var editProfileDiv = document.getElementById('edit-profile-div');
+        var passwordResetDiv = document.getElementById('password-reset-div');
         var deleteAddressModel = document.getElementById('deleteAddressModel');
         var editAddressModel = document.getElementById('editAddressModel');
 
+        function onPasswordChangeSubmit() {
+            event.preventDefault()
+            var form = document.querySelector("#password-change-form")
+            var formData = new FormData(form);
+            var url = "{% url 'account:password_change'  %}"
+            fetch(url,
+                {
+                    method: 'post',
+                    body: formData,
+                }
+            ).then(function (response) {
+                    if (response.status === 200) {
+                        return response.text();
+                    } else {
+                        throw "connection Error"
+                    }
+                }
+            ).then(function (text) {
+                    passwordResetDiv.innerHTML = text;
+                    alert("{% translate "succesfully saved" %}")
+                }
+            ).catch(function (error) {
+                    console.log('error', error)
+                    alert(error)
+                }
+            )
+        }
 
         function onProfileFormSubmit() {
             event.preventDefault()
@@ -451,7 +492,7 @@
                                                                             class="img-thumbnail"
                                                                             style="max-height: 200px"
                                                                             alt="{% translate "profile_picture" %}"></p>
-                                <p>{% translate "address" %} : {{ user.address }}</p>
+                                <p>{% translate "Address" %} : {{ user.address }}</p>
                                 <a href="{% url "account:logout" %}"
                                    class="btn btn-outline-danger btn-equal">{% translate "logout" %}</a>
                                 <a href="{% url "account:password_reset" %}"

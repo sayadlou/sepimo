@@ -77,7 +77,6 @@ class MyPasswordChangeForm(PasswordChangeForm):
         strip=False,
         widget=forms.PasswordInput(attrs={'class': "form-control", 'autocomplete': 'new-password'}),
     )
-    captcha = CaptchaField(widget=CustomCaptchaTextInput(attrs={'class': "form-control"}))
 
 
 class MySetPasswordForm(SetPasswordForm):

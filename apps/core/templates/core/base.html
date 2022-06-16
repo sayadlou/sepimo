@@ -121,6 +121,35 @@
                                             <i class="icon-user"></i>
                                             {% translate "Profile" %}
                                         </a>
+
+{#                                        <div class="dropdown cart-dropdown">#}
+{#                                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"#}
+{#                                               aria-haspopup="true" aria-expanded="false" data-display="static"#}
+{#                                               style="font-size: 1.3rem">#}
+{##}
+{#                                                {% translate "Profile" %}#}
+{#                                            </a>#}
+{##}
+{#                                            <div class="dropdown-menu dropdown-menu-right">#}
+{#                                                <div class="dropdown-cart-products">#}
+{#                                                    <div style="text-align: center">#}
+{#                                                        <i class="icon-user"#}
+{#                                                           style="font-size: 2rem;border: #1b1e21 dashed thick ;border-radius: 50%;"#}
+{#                                                        ></i></div>#}
+{#                                                    <div style="text-align: center">#}
+{#                                                        {% translate "Profile" %}#}
+{#                                                    </div>#}
+{##}
+{#                                                    <div class="product">#}
+{##}
+{#                                                    </div><!-- End .product -->#}
+{#                                                </div><!-- End .cart-product -->#}
+{#                                            </div><!-- End .dropdown-menu -->#}
+{#                                        </div><!-- End .cart-dropdown -->#}
+
+
+
+
                                     {% else %}
                                         <a href="{% url "account:login" %}?next={{ request.path }}">
                                             <i class="icon-user"></i>

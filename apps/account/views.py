@@ -44,6 +44,11 @@ class PasswordChange(PasswordChangeView):
     template_name = 'account/password_change_form.html'
     form_class = MyPasswordChangeForm
 
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['password_change_form'] = data.get('form')
+        return data
+
 
 class PasswordChangeDone(PasswordChangeDoneView):
     template_name = 'account/password_change_done.html'
@@ -98,6 +103,8 @@ class Profile(LoginRequiredMixin, TemplateView):
         context["orders"] = self.request.user.Orders.all()
         context["addresses"] = Address.objects.filter(owner=self.request.user)
         context['new_address_form'] = AddressForm({'owner': self.request.user})
+        context['password_change_form'] = MyPasswordChangeForm(user=self.request.user)
+
         return context
 
 
