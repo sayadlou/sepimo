@@ -1,14 +1,13 @@
+import json
+import logging
+import os
 from datetime import timedelta, datetime
 from decimal import Decimal
 from pprint import pprint
 from time import mktime
-
-import os
-import requests
-import json
 from uuid import uuid4
-import logging
 
+import requests
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -17,14 +16,14 @@ from django.db import transaction
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
-from django.views import View
 from django.utils.translation import gettext as _
+from django.views import View
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
+from config.settings.base import MINIMUM_ORDER_AMOUNT
 from .forms import CartItemForm
 from .models import *
-from config.settings.base import MINIMUM_ORDER_AMOUNT
 
 logger = logging.getLogger('store.views')
 
