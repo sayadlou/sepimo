@@ -4,8 +4,6 @@ from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
 from filer.fields.image import FilerImageField
 
-
-# Create your models here.
 from tinymce.models import HTMLField
 
 
@@ -68,50 +66,28 @@ class ProfilePage(Page):
     menu_orders = models.CharField(max_length=60, default="سفارشات")
     menu_address = models.CharField(max_length=60, default="آدرس")
     menu_profile = models.CharField(max_length=60, default="جزئیات حساب کاربری")
+    menu_password_change = models.CharField(max_length=60, default="تغییر گذرواژه")
     menu_logout = models.CharField(max_length=60, default="خروج از حساب کاربری")
 
 
-class SignUpPage(Page):
+class SignPage(Page):
     background_image = FilerImageField(related_name='signup_page', on_delete=models.PROTECT)
 
 
-class LoginPage(Page):
-    background_image = FilerImageField(related_name='login_page', on_delete=models.PROTECT)
-
-
-class PasswordChangePage(Page):
-    pass
-
-
-class PasswordChangeDonePage(Page):
-    pass
-
-
 class PasswordResetPage(Page):
-    pass
+    background_image = FilerImageField(related_name='password_reset_page', on_delete=models.PROTECT)
+    text_head = models.CharField(max_length=200, default="did you forget your password?")
+    text_help = models.CharField(max_length=200, default="enter your email to reset your password")
+    password_sent_message = models.CharField(max_length=300,
+                                             default="We've emailed you instructions for setting your password, if an "
+                                                     "account exists with the email you entered. You should receive "
+                                                     "them shortly. If you don't receive an email, please make sure "
+                                                     "you've entered the address you registered with,and check your "
+                                                     "spam folder."
+                                             )
 
 
-class PasswordResetDonePage(Page):
-    pass
-
-
-class PasswordResetFormPage(Page):
-    pass
-
-
-class PasswordResetCompletePage(Page):
-    pass
-
-
-class BlogIndexPage(Page):
-    pass
-
-
-class BlogSlugPage(Page):
-    pass
-
-
-class BlogCategoryPage(Page):
+class BlogPage(Page):
     pass
 
 

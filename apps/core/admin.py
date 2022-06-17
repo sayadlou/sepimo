@@ -1,11 +1,11 @@
 from django.contrib import admin
 from modeltranslation.admin import TranslationAdmin
 
-from .models import LoginPage, AboutUsPage, Brand, CustomerReviews, ProfilePage
+from .models import AboutUsPage, Brand, CustomerReviews, ProfilePage, SignPage, PasswordResetPage
 
 
-@admin.register(LoginPage)
-class LoginPageAdmin(admin.ModelAdmin):
+@admin.register(SignPage)
+class SignPageAdmin(TranslationAdmin):
     pass
 
 
@@ -21,6 +21,11 @@ class BrandAdmin(admin.ModelAdmin):
 
 @admin.register(AboutUsPage)
 class AboutUsPageAdmin(TranslationAdmin):
+    pass
+
+
+@admin.register(PasswordResetPage)
+class PasswordResetAdmin(TranslationAdmin):
     pass
 
 

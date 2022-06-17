@@ -7,7 +7,7 @@ from django.views.generic import CreateView, UpdateView, ListView, DeleteView, T
 from .forms import MyAuthenticationForm, MyPasswordResetForm, MyPasswordChangeForm, MySetPasswordForm, UserRegisterForm, \
     AddressForm, ProfileForm
 from .models import UserProfile, Address
-from ..core.models import LoginPage, SignUpPage, ProfilePage
+from ..core.models import ProfilePage, PasswordResetPage, SignPage
 
 
 class Login(LoginView):
@@ -29,8 +29,8 @@ class Login(LoginView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context["page"] = LoginPage.get_data()
-        context["title"] = LoginPage.get_data().title
+        context["page"] = SignPage.get_data()
+        context["title"] = SignPage.get_data().title
         return context
 
 
@@ -61,9 +61,21 @@ class PasswordReset(PasswordResetView):
     success_url = reverse_lazy('account:password_reset_done')
     form_class = MyPasswordResetForm
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context["page"] = PasswordResetPage.get_data()
+        context["title"] = PasswordResetPage.get_data().title
+        return context
+
 
 class PasswordResetDone(PasswordResetDoneView):
     template_name = 'account/password_reset_done.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context["page"] = PasswordResetPage.get_data()
+        context["title"] = PasswordResetPage.get_data().title
+        return context
 
 
 class PasswordResetConfirm(PasswordResetConfirmView):
@@ -71,9 +83,21 @@ class PasswordResetConfirm(PasswordResetConfirmView):
     template_name = 'account/password_reset_confirm.html'
     form_class = MySetPasswordForm
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context["page"] = PasswordResetPage.get_data()
+        context["title"] = PasswordResetPage.get_data().title
+        return context
+
 
 class PasswordResetComplete(PasswordResetCompleteView):
     template_name = 'account/password_reset_complete.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context["page"] = PasswordResetPage.get_data()
+        context["title"] = PasswordResetPage.get_data().title
+        return context
 
 
 class SignUp(CreateView):
@@ -86,8 +110,8 @@ class SignUp(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context["page"] = SignUpPage.get_data()
-        context["title"] = SignUpPage.get_data().title
+        context["page"] = SignPage.get_data()
+        context["title"] = SignPage.get_data().title
         return context
 
 

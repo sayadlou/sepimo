@@ -11,7 +11,7 @@ class TranslationOptions(BaseTranslationOptions):
 
 class ProfileTranslationOptions(BaseTranslationOptions):
     fields = ('title', 'header_text_big', 'header_text_small', 'menu_dashboard', 'menu_orders', 'menu_address',
-              'menu_profile', 'menu_logout')
+              'menu_profile', 'menu_logout', 'menu_password_change')
     required_languages = ('fa', 'en')
 
 
@@ -20,7 +20,12 @@ class TitleTranslationOptions(BaseTranslationOptions):
     required_languages = ('fa', 'en')
 
 
-translator.register(LoginPage, TitleTranslationOptions)
-translator.register(SignUpPage, TitleTranslationOptions)
+class PasswordResetOptions(BaseTranslationOptions):
+    fields = ('title', 'text_head', 'text_help', 'password_sent_message')
+    required_languages = ('fa', 'en')
+
+
+translator.register(SignPage, TitleTranslationOptions)
+translator.register(PasswordResetPage, PasswordResetOptions)
 translator.register(AboutUsPage, TranslationOptions)
 translator.register(ProfilePage, ProfileTranslationOptions)

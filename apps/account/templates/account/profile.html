@@ -33,33 +33,41 @@
                                 <a class="nav-link active" id="tab-dashboard-link" data-toggle="tab"
                                    href="#tab-dashboard" role="tab" aria-controls="tab-dashboard"
                                    aria-selected="true">
-                                    {% translate "Dashboard" %}
+                                    {{ page.menu_dashboard }}
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders"
                                    role="tab" aria-controls="tab-orders"
-                                   aria-selected="false">{% translate "Orders" %}</a>
+                                   aria-selected="false">
+                                    {{ page.menu_orders }}
+                                </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address"
                                    role="tab" aria-controls="tab-address"
                                    aria-selected="false">
-                                    {% translate "Address" %}
+                                    {{ page.menu_address }}
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account"
                                    role="tab" aria-controls="tab-account"
-                                   aria-selected="false">{% translate "Account Information" %}</a>
+                                   aria-selected="false">
+                                    {{ page.menu_profile }}
+                                </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-password"
                                    role="tab" aria-controls="tab-password"
-                                   aria-selected="false">{% translate "Password change" %}</a>
+                                   aria-selected="false">
+                                    {{ page.menu_password_change }}
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'account:logout' %}">{% translate "Logout" %}</a>
+                                <a class="nav-link" href="{% url 'account:logout' %}">
+                                    {{ page.menu_logout }}
+                                </a>
                             </li>
                         </ul>
                     </aside><!-- End .col-lg-3 -->

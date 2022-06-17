@@ -18,22 +18,29 @@
 {% endblock breadcrumb %}
 
 {% block page_content %}
-    {% if next %}
-        <script>
-            alertify.warning("{% translate "Your account doesn't have access to this page. To proceed, please login with an account that has access" %}");
-        </script>
-    {% endif %}
-    {% if form.errors %}
-        {% for error in form.non_field_errors %}
-            <script>
+    <script>
+        {% if form.errors %}
+            {% for error in form.non_field_errors %}
                 alertify.error("{{ error }}");
-            </script>
-        {% endfor %}
-    {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if next %}
+            alertify.warning("{% translate "Your account doesn't have access to this page. To proceed, please login with an account that has access" %}");
+        {% endif %}
+    </script>
     <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
          style="background-image: url({{ page.background_image.url }})">
         <div class="container">
             <div class="form-box">
+                {% if form.errors %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger my-2 " role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+
                 <h4>{% translate "Login" %}&nbsp/&nbsp<a
                         href="{% url "account:signup" %}">{% translate "Signup" %}</a></h4>
                 <form method="post" action="{% url 'account:login' %}">
@@ -49,16 +56,16 @@
 
                     <div class="form-group">
                         <label for="singin-password-2">{{ form.password.label_tag }}</label>
-                        {{ form.password.errors }}
                         {{ form.password }}
+                        {{ form.password.errors }}
                         {% if form.password.help_text %}
                             <p class="help">{{ form.password.help_text|safe }}</p>
                         {% endif %}
                     </div><!-- End .form-group -->
 
                     <div class="form-group">
-                        {{ form.captcha.errors }}
                         {{ form.captcha }}
+                        {{ form.captcha.errors }}
                         {% if form.captcha.help_text %}
                             <p class="help">{{ form.captcha.help_text|safe }}</p>
                         {% endif %}
@@ -67,19 +74,20 @@
                         <div class="form-footer">
                             <input type="hidden" name="next" value="{{ next }}">
                             <button type="submit" class="btn btn-outline-primary-2">
-                                <span>ورود</span>
-                                <i class="icon-long-arrow-left"></i>
+                                <span>{% translate "Login" %}</span>
                             </button>
 
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input"
                                        id="signin-remember-2">
-                                <label class="custom-control-label" for="signin-remember-2">مرا به خاطر
-                                    بسپار</label>
+                                <label class="custom-control-label" for="signin-remember-2">
+                                    {% translate "Remember Me" %}
+                                </label>
                             </div><!-- End .custom-checkbox -->
 
-                            <a href="{% url "account:password_reset" %}" class="forgot-link">رمز عبور خود را فراموش کرده
-                                اید؟</a>
+                            <a href="{% url "account:password_reset" %}" class="forgot-link">
+                                {% translate "Forgot your password ? " %}
+                            </a>
                         </div><!-- End .form-footer -->
                     </div>
                 </form>
