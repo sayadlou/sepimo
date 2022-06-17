@@ -78,7 +78,7 @@ class PasswordResetPage(Page):
     background_image = FilerImageField(related_name='password_reset_page', on_delete=models.PROTECT)
     text_head = models.CharField(max_length=200, default="did you forget your password?")
     text_help = models.CharField(max_length=200, default="enter your email to reset your password")
-    password_sent_message = models.CharField(max_length=300,
+    password_sent_message = models.TextField(max_length=300,
                                              default="We've emailed you instructions for setting your password, if an "
                                                      "account exists with the email you entered. You should receive "
                                                      "them shortly. If you don't receive an email, please make sure "

@@ -26,7 +26,7 @@
 {% block page_content %}
     <div class="page-content">
         <figure class="entry-media">
-            <img src="{{ post.picture_header.url }}" alt="{{ post.picture_header_text }}">
+            <img src="{{ post.picture_header.url }}" alt="{{ post.picture_header.name }}">
         </figure><!-- End .entry-media -->
         <div class="container">
             <article class="entry single-entry entry-fullwidth">
@@ -52,36 +52,14 @@
                             <div class="entry-content editor-content">
                                 {{ post.content | safe }}
                                 <div class="pb-1"></div><!-- End .pb-1 -->
-                                <img src="{{ post.picture_content.url }}" alt="{{ post.picture_content_text }}">
+                                <img src="{{ post.picture_content.url }}" alt="{{ post.picture_content.name }}">
                                 {{ post.content2 | safe }}
                                 <div class="pb-1"></div><!-- End .pb-1 -->
                             </div><!-- End .entry-content -->
                         </div><!-- End .entry-body -->
                     </div><!-- End .col-lg-11 -->
-                    {#                    <div class="col-lg-1 order-lg-first mb-2 mb-lg-0">#}
-                    {#                        <div class="sticky-content">#}
-                    {#                            <div class="social-icons social-icons-colored social-icons-vertical">#}
-                    {#                                <span class="social-label">اشتراک گذاری</span>#}
-                    {#                                <a href="#" class="social-icon social-facebook" title="فیسبوک"#}
-                    {#                                   target="_blank"><i class="icon-facebook-f"></i></a>#}
-                    {#                                <a href="https://twitter.com/share?ref_src=twsrc%5Etfw"#}
-                    {#                                   class="social-icon social-twitter"#}
-                    {#                                   data-show-count="false">#}
-                    {#                                    <i class="icon-twitter"></i>#}
-                    {#                                </a>#}
-                    {#                                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>#}
-                    {#                                <a href="#" class="social-icon social-pinterest" title="پینترست"#}
-                    {#                                   target="_blank"><i class="icon-pinterest"></i></a>#}
-                    {#                                <a href="#" class="social-icon social-linkedin" title="لینکدین"#}
-                    {#                                   target="_blank"><i class="icon-linkedin"></i></a>#}
-                    {#                            </div><!-- End .soial-icons -->#}
-                    {#                        </div><!-- End .sticky-content -->#}
-                    {#                    </div><!-- End .col-lg-1 -->#}
                 </div><!-- End .row -->
             </article><!-- End .entry -->
-            {#            <a class="pager-link  " aria-label="Previous" tabindex="-1">#}
-            {#                <span class="pager-link-title"></span>#}
-            {#            </a>#}
             <nav class="pager-nav " aria-label="Page navigation">
                 {% if prev_post %}
                     <a class="pager-link pager-link-prev" href="{% url "blog:slug" prev_post.slug %}"
@@ -138,7 +116,7 @@
                             <figure class="entry-media">
                                 <a href="{% url "blog:slug" post.slug %}">
                                     <img src="{{ post.intro_picture.url }}"
-                                         alt="{{ post.intro_picture_text }}">
+                                         alt="{{ post.intro_picture.name }}">
                                 </a>
                             </figure><!-- End .entry-media -->
 

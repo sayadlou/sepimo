@@ -15,6 +15,11 @@ class ProfileTranslationOptions(BaseTranslationOptions):
     required_languages = ('fa', 'en')
 
 
+class BlogPageTranslationOptions(BaseTranslationOptions):
+    fields = ('title',)
+    required_languages = ('fa', 'en')
+
+
 class TitleTranslationOptions(BaseTranslationOptions):
     fields = ('title',)
     required_languages = ('fa', 'en')
@@ -29,3 +34,4 @@ translator.register(SignPage, TitleTranslationOptions)
 translator.register(PasswordResetPage, PasswordResetOptions)
 translator.register(AboutUsPage, TranslationOptions)
 translator.register(ProfilePage, ProfileTranslationOptions)
+translator.register(BlogPage, BlogPageTranslationOptions)

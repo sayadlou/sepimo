@@ -1,4 +1,5 @@
 from django.contrib import admin
+from modeltranslation.admin import TranslationAdmin
 from mptt.admin import MPTTModelAdmin, DraggableMPTTAdmin
 
 from .models import Post, Category
@@ -10,7 +11,7 @@ class CategoryAdmin(DraggableMPTTAdmin):
 
 
 @admin.register(Post)
-class PostAdmin(admin.ModelAdmin):
+class PostAdmin(TranslationAdmin):
     search_fields = ['title', 'slug']
     list_display = ['title', 'slug']
     # readonly_fields = ['id']
