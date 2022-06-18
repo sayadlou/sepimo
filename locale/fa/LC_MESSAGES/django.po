@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-16 12:51+0430\n"
+"POT-Creation-Date: 2022-06-18 19:22+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -91,8 +91,7 @@ msgstr "منطقه"
 msgid "Postal Code"
 msgstr "کدپستی"
 
-#: apps/account/models.py:31 apps/account/templates/account/profile.html:48
-#: apps/account/templates/account/profile.html:495
+#: apps/account/models.py:31 apps/account/templates/account/profile.html:503
 msgid "Address"
 msgstr "آدرس"
 
@@ -114,7 +113,7 @@ msgstr "آیا مطئن به حذف هستید؟"
 
 #: apps/account/templates/account/delete_address_form.html:17
 #: apps/account/templates/account/edit_address_form.html:52
-#: apps/account/templates/account/profile.html:197
+#: apps/account/templates/account/profile.html:205
 msgid "Save changes"
 msgstr "ذخیره تغییرات"
 
@@ -124,17 +123,15 @@ msgid "You have successfully logged out!"
 msgstr "شما با موفقیت از حساب کاربری خود خارج شدید."
 
 #: apps/account/templates/account/logged_out.html:39
-#: apps/account/templates/account/password_reset_complete.html:38
-#: apps/account/templates/account/password_reset_confirm.html:131
 #: apps/account/templates/account/password_reset_done.html:39
-#: apps/account/templates/account/profile.html:473
+#: apps/account/templates/account/profile.html:481
 #: apps/core/templates/core/base.html:122
 #: apps/core/templates/core/home.html:130
 msgid "Profile"
 msgstr "پروفایل"
 
-#: apps/account/templates/account/login.html:23
-#: apps/account/templates/account/login.html:107
+#: apps/account/templates/account/login.html:28
+#: apps/account/templates/account/login.html:115
 msgid ""
 "Your account doesn't have access to this page. To proceed, please login with "
 "an account that has access"
@@ -142,22 +139,33 @@ msgstr ""
 "حساب کاربری شما به این صفحه دسترسی ندارد. برای ادامه، لطفا با حسابی که "
 "دسترسی دارد وارد شوید"
 
-#: apps/account/templates/account/login.html:37
-#: apps/account/templates/account/login.html:104
-#: apps/account/templates/account/login.html:109
-#: apps/account/templates/account/login.html:136
+#: apps/account/templates/account/login.html:44
+#: apps/account/templates/account/login.html:77
+#: apps/account/templates/account/login.html:112
+#: apps/account/templates/account/login.html:117
+#: apps/account/templates/account/login.html:144
 #: apps/account/templates/account/signup.html:40
 #: apps/account/templates/account/signup.html:109
 msgid "Login"
 msgstr "ورود به سایت"
 
-#: apps/account/templates/account/login.html:38
+#: apps/account/templates/account/login.html:45
 #: apps/account/templates/account/signup.html:39
 #: apps/account/templates/account/signup.html:109
 msgid "Signup"
 msgstr "ثبت نام در سایت"
 
-#: apps/account/templates/account/login.html:138
+#: apps/account/templates/account/login.html:84
+msgid "Remember Me"
+msgstr "مرا به خاطر بسپار"
+
+#: apps/account/templates/account/login.html:89
+#, fuzzy
+#| msgid "did you forget your password?"
+msgid "Forgot your password ? "
+msgstr "رمز خود را فراموش کرده اید؟"
+
+#: apps/account/templates/account/login.html:146
 msgid "Forget Password"
 msgstr "بازیابی رمز عبور"
 
@@ -170,137 +178,92 @@ msgid "Change password"
 msgstr "تغییر رمز عبور"
 
 #: apps/account/templates/account/password_reset_complete.html:25
-#: apps/account/templates/account/password_reset_complete.html:41
 msgid "Your password has been set. You may go ahead and sign in now"
 msgstr "رمز عبور شما با موفقیت تغییر کرد. اکنون می توانید وارد سایت شوید"
 
-#: apps/account/templates/account/password_reset_confirm.html:25
-#: apps/account/templates/account/password_reset_confirm.html:73
-#: apps/account/templates/account/password_reset_form.html:24
-#: apps/account/templates/account/password_reset_form.html:57
-msgid "did you forget your password?"
-msgstr "رمز خود را فراموش کرده اید؟"
-
-#: apps/account/templates/account/password_reset_confirm.html:27
-#: apps/account/templates/account/password_reset_confirm.html:75
-#: apps/account/templates/account/password_reset_form.html:26
-#: apps/account/templates/account/password_reset_form.html:59
-msgid "enter your email to reset your password"
-msgstr ""
-"آدرس ایمیل خود را وارد کنید. لینک بازیابی رمز عبور برای شما ارسال می گردد."
-
-#: apps/account/templates/account/password_reset_confirm.html:55
-#: apps/account/templates/account/password_reset_confirm.html:111
-msgid "Change Passoword"
+#: apps/account/templates/account/password_reset_confirm.html:24
+#, fuzzy
+#| msgid "password change"
+msgid "Password change"
 msgstr "تغییر رمز عبور"
 
-#: apps/account/templates/account/password_reset_confirm.html:134
-msgid ""
-"The password reset link was invalid, possibly because it has already been "
-"used.Please request a new password reset."
-msgstr ""
-"لینک بازنشانی رمز عبور معتبر نبود، احتمالاً به این دلیل که قبلاً استفاده شده "
-"است. لطفاً فرآیند بازیابی رمز عبور  را مجددا درخواست نمایید"
-
-#: apps/account/templates/account/password_reset_done.html:25
-#: apps/account/templates/account/password_reset_done.html:42
-msgid ""
-"We've emailed you instructions for setting your password, if an account "
-"exists with the email you entered. You should receive them shortly. If you "
-"don't receive an email, please make sure you've entered the address you "
-"registered with,and check your spam folder."
-msgstr ""
-"اگر حسابی با ایمیلی که وارد کرده‌اید وجود داشته باشد، دستورالعمل‌های تنظیم رمز "
-"عبور را برای شما ایمیل کرده‌ایم. شما باید به زودی آنها را دریافت کنید. اگر "
-"ایمیلی دریافت نکردید، لطفاً مطمئن شوید که آدرسی را که با آن ثبت نام کرده بوده "
-"اید را وارد کرده اید همچنین پوشه اسپم خود را نیز بررسی نمایید."
+#: apps/account/templates/account/password_reset_confirm.html:54
+msgid "Change Passoword"
+msgstr "تغییر رمز عبور"
 
 #: apps/account/templates/account/password_reset_form.html:41
 #: apps/account/templates/account/password_reset_form.html:79
 msgid "reset"
 msgstr "بازیابی رمز عبور"
 
-#: apps/account/templates/account/profile.html:36
-msgid "Dashboard"
-msgstr "داشبورد"
+#: apps/account/templates/account/password_reset_form.html:57
+msgid "did you forget your password?"
+msgstr "رمز خود را فراموش کرده اید؟"
 
-#: apps/account/templates/account/profile.html:42 apps/store/models.py:95
-msgid "Orders"
-msgstr "سفارشات"
+#: apps/account/templates/account/password_reset_form.html:59
+msgid "enter your email to reset your password"
+msgstr ""
+"آدرس ایمیل خود را وارد کنید. لینک بازیابی رمز عبور برای شما ارسال می گردد."
 
-#: apps/account/templates/account/profile.html:54
-msgid "Account Information"
-msgstr "اطلاعات حساب کاربری"
-
-#: apps/account/templates/account/profile.html:59
-#, fuzzy
-#| msgid "password change"
-msgid "Password change"
-msgstr "تغییر رمز عبور"
-
-#: apps/account/templates/account/profile.html:62
-msgid "Logout"
-msgstr "خروج"
-
-#: apps/account/templates/account/profile.html:103
+#: apps/account/templates/account/profile.html:111
 msgid "Your addresses"
 msgstr "آدرس شما"
 
-#: apps/account/templates/account/profile.html:110
+#: apps/account/templates/account/profile.html:118
 msgid "New Address +"
 msgstr "آدرس جدید"
 
-#: apps/account/templates/account/profile.html:155
+#: apps/account/templates/account/profile.html:163
 msgid "Add new address"
 msgstr "اضافه کردن آدرس جدید"
 
-#: apps/account/templates/account/profile.html:212
+#: apps/account/templates/account/profile.html:220
 msgid "Edit address"
 msgstr "ویرایش آدرس"
 
-#: apps/account/templates/account/profile.html:233
+#: apps/account/templates/account/profile.html:241
 msgid "Delete address"
 msgstr "پاک کردن آدرس"
 
-#: apps/account/templates/account/profile.html:272
-#: apps/account/templates/account/profile.html:300
+#: apps/account/templates/account/profile.html:280
+#: apps/account/templates/account/profile.html:308
 msgid "succesfully saved"
 msgstr "با موفقیت دخیره شد"
 
-#: apps/account/templates/account/profile.html:480
+#: apps/account/templates/account/profile.html:488
 msgid "Purchases"
 msgstr "خرید ها"
 
-#: apps/account/templates/account/profile.html:487
+#: apps/account/templates/account/profile.html:495
 msgid "username"
 msgstr "نام کاربری"
 
-#: apps/account/templates/account/profile.html:488
+#: apps/account/templates/account/profile.html:496
 msgid "first_name"
 msgstr "نام"
 
-#: apps/account/templates/account/profile.html:489
+#: apps/account/templates/account/profile.html:497
 msgid "last_name"
 msgstr "نام خانوادگی"
 
-#: apps/account/templates/account/profile.html:490
+#: apps/account/templates/account/profile.html:498
 msgid "email"
 msgstr "ایمیل"
 
-#: apps/account/templates/account/profile.html:491
-#: apps/account/templates/account/profile.html:494
+#: apps/account/templates/account/profile.html:499
+#: apps/account/templates/account/profile.html:502
 msgid "profile_picture"
 msgstr "تصویر پروفایل"
 
-#: apps/account/templates/account/profile.html:497
+#: apps/account/templates/account/profile.html:505
 msgid "logout"
 msgstr "خروج"
 
-#: apps/account/templates/account/profile.html:499
+#: apps/account/templates/account/profile.html:507
 msgid "password reset"
 msgstr "بازنشانی رمز عبور"
 
-#: apps/account/templates/account/profile.html:501
+#: apps/account/templates/account/profile.html:509
 msgid "password change"
 msgstr "تغییر رمز عبور"
 
@@ -318,41 +281,67 @@ msgstr "دسته بندی بلاگ"
 msgid "Blog Categories"
 msgstr "دسته بندی های بلاگ"
 
-#: apps/blog/models.py:47
+#: apps/blog/models.py:44 apps/blog/models.py:70
 msgid "Date"
-msgstr ""
+msgstr "تاریخ"
 
-#: apps/blog/models.py:51
+#: apps/blog/models.py:48
 msgid "Blog Post"
 msgstr "مطلب بلاگ"
 
-#: apps/blog/models.py:52
+#: apps/blog/models.py:49
 msgid "Blog Posts"
 msgstr "مطالب بلاگ"
 
-#: apps/blog/templates/blog/index.html:71
+#: apps/blog/templates/blog/index.html:49
+msgid "Comments"
+msgstr "دیدگاه ها"
+
+#: apps/blog/templates/blog/index.html:72
 msgid "No Post for display"
 msgstr "مطلبی برای نمایش وجود ندارد"
 
+#: apps/blog/templates/blog/index.html:138
+#: apps/blog/templates/blog/index.html:144
+#: apps/core/templates/core/home.html:163
+msgid "Search"
+msgstr "جستجو"
+
+#: apps/blog/templates/blog/index.html:140
+msgid "search post"
+msgstr "جستجو در مطالب"
+
+#: apps/blog/templates/blog/index.html:142
+msgid "Search in Blog"
+msgstr "جستجو در وبلاگ"
+
+#: apps/blog/templates/blog/index.html:149
+msgid "Categories"
+msgstr "دسته بندی"
+
+#: apps/blog/templates/blog/index.html:163
+msgid "Popular Posts"
+msgstr "مطالب بلاگ"
+
 #: apps/contact_us/forms.py:10
 msgid "Department1"
-msgstr ""
+msgstr "دپارتمان 1"
 
 #: apps/contact_us/forms.py:11
 msgid "Department2"
-msgstr ""
+msgstr "دپارتمان 1"
 
 #: apps/contact_us/forms.py:12
 msgid "Department3"
-msgstr ""
+msgstr "دپارتمان 1"
 
 #: apps/contact_us/forms.py:22 apps/contact_us/forms.py:36
 msgid "Subject"
-msgstr ""
+msgstr "موضوع"
 
 #: apps/contact_us/forms.py:26 apps/contact_us/forms.py:37
 msgid "Phone number"
-msgstr ""
+msgstr "شماره تلفن"
 
 #: apps/contact_us/forms.py:33 apps/contact_us/forms.py:39
 #: apps/contact_us/models.py:21
@@ -368,11 +357,11 @@ msgstr "پیام"
 msgid "Contact us"
 msgstr "ارتباط با ما"
 
-#: apps/core/models.py:24
+#: apps/core/models.py:22
 msgid "Settings for this page not found"
-msgstr ""
+msgstr "محتوا برای این صفحه یافت نشد"
 
-#: apps/core/models.py:29
+#: apps/core/models.py:27
 msgid "add setting Error"
 msgstr "خطای اضافه کردن تغییرات"
 
@@ -388,10 +377,6 @@ msgstr "لینک ها"
 #: apps/core/templates/core/home.html:145
 msgid "Toggle mobile menu"
 msgstr "منوی موبایل"
-
-#: apps/core/templates/core/home.html:163
-msgid "Search"
-msgstr "جستجو"
 
 #: apps/core/templates/core/home.html:177
 msgid "Wishlist"
@@ -473,6 +458,10 @@ msgstr "اقلام سبد خرید"
 msgid "Order"
 msgstr "سفارش"
 
+#: apps/store/models.py:95
+msgid "Orders"
+msgstr "سفارشات"
+
 #: apps/store/models.py:110
 msgid "order item"
 msgstr "اقلام سفارش"
@@ -539,30 +528,30 @@ msgstr "پرداخت ها"
 
 #: apps/store/templates/store/cart.html:92
 msgid "error in response"
-msgstr ""
+msgstr "خطا در پاسخ"
 
 #: apps/store/templates/store/cart.html:109
 msgid "Pay Order"
-msgstr ""
+msgstr "پرداخت سفارش"
 
 #: apps/store/templates/store/cart.html:112
 msgid "your cart is empty"
-msgstr ""
+msgstr "سبد خرید شما خالی است"
 
 #: apps/store/templates/store/order.html:39
 #: apps/store/templates/store/orders.html:41
 #: apps/store/templates/store/payments.html:41
 msgid "Make Payment"
-msgstr ""
+msgstr "پرداخت"
 
 #: apps/store/templates/store/orders.html:46
 #: apps/store/templates/store/payments.html:46
 msgid "you have no order"
-msgstr ""
+msgstr "شما سفارشی ندارید"
 
 #: apps/store/templates/store/payment.html:13
 msgid "you have no payment"
-msgstr ""
+msgstr "شما پرداختی ندارید"
 
 #: apps/store/views.py:50
 msgid "product added to cart"

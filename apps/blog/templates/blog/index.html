@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load jformat %}
 {% load static %}
-
+{% get_current_language as LANGUAGE_CODE %}
 {% block page_header %}
     <div class="page-header text-center"
          style="background-image: url({% static 'core/en/images/page-header-bg.jpg' %})">
@@ -21,6 +21,7 @@
             </ol>
         </div><!-- End .container -->
     </nav><!-- End .breadcrumb-nav -->
+
 {% endblock breadcrumb %}
 
 {% block page_content %}
@@ -44,9 +45,9 @@
                                     <div class="col-md-7">
                                         <div class="entry-body">
                                             <div class="entry-meta">
-                                                <a>{{ post.pub_date|jformat:'%Y/%m/%d' }}</a>
+                                                <span>{{ post.pub_date|jformat:'%Y/%m/%d' }}</span>
                                                 <span class="meta-separator">|</span>
-                                                <a href="#">2 دیدگاه</a>
+                                                <span>{% translate "Comments" %}&nbsp;{{ post.comment_set.count }}</span>
                                             </div><!-- End .entry-meta -->
 
                                             <h2 class="entry-title">
@@ -71,6 +72,8 @@
                     {% else %}
                         <h4 class="text-right">{% translate "No Post for display" %}</h4>
                     {% endif %}
+
+
                     <nav aria-label="Page navigation ">
                         <ul class="pagination ml-2">
                             {% if page_obj.has_previous %}
@@ -78,8 +81,16 @@
                                     <a class="page-link page-link-prev" aria-label="Previous" tabindex="-1"
                                        href="?page={{ page_obj.previous_page_number }}">
                                         <span aria-hidden="true">
-                                            <i class="icon-long-arrow-right"></i>
-                                            قبلی
+                                            {% if LANGUAGE_CODE == 'fa' %}
+                                                <i class="icon-long-arrow-right"></i>
+                                                قبل
+                                            {% else %}
+                                                <i class="icon-long-arrow-left"></i>
+                                                Previous
+                                            {% endif %}
+
+
+
                                         </span>
                                     </a>
                                 </li>
@@ -88,8 +99,13 @@
                                     <a class="page-link page-link-prev" href="#" aria-label="Previous"
                                        aria-disabled="true">
                                         <span aria-hidden="true">
-                                            <i class="icon-long-arrow-right"></i>
-                                            قبلی
+                                            {% if LANGUAGE_CODE == 'fa' %}
+                                                <i class="icon-long-arrow-right"></i>
+                                                قبل
+                                            {% else %}
+                                                <i class="icon-long-arrow-left"></i>
+                                                Previous
+                                            {% endif %}
                                         </span>
                                     </a>
                                 </li>
@@ -113,8 +129,14 @@
                                 <li class="page-item ">
                                     <a class="page-link page-link-next" href="?page={{ page_obj.next_page_number }}"
                                        aria-label="Next">
-                                         <span aria-hidden="true">بعدی
-                                        <i class="icon-long-arrow-left"></i>
+                                         <span aria-hidden="true">
+                                             {% if LANGUAGE_CODE == 'fa' %}
+                                                 بعد
+                                                 <i class="icon-long-arrow-left"></i>
+                                             {% else %}
+                                                 Next
+                                                 <i class="icon-long-arrow-right"></i>
+                                             {% endif %}
                                     </span>
                                     </a>
                                 </li>
@@ -122,8 +144,14 @@
                                 <li class="page-item disabled " aria-label="Next">
                                     <a class="page-link page-link-next" href="#"
                                        aria-label="Next" aria-disabled="true">
-                                    <span aria-hidden="true">بعدی
-                                        <i class="icon-long-arrow-left"></i>
+                                    <span aria-hidden="true">
+                                        {% if LANGUAGE_CODE == 'fa' %}
+                                            بعد
+                                            <i class="icon-long-arrow-left"></i>
+                                        {% else %}
+                                            Next
+                                            <i class="icon-long-arrow-right"></i>
+                                        {% endif %}
                                     </span>
                                     </a>
                                 </li>
@@ -135,19 +163,18 @@
                 <aside class="col-lg-3">
                     <div class="sidebar">
                         <div class="widget widget-search">
-                            <h3 class="widget-title">جستجو</h3><!-- End .widget-title -->
-
+                            <h3 class="widget-title">{% translate "Search" %}</h3><!-- End .widget-title -->
                             <form action="#">
-                                <label for="ws" class="sr-only">جستجوی اخبار</label>
+                                <label for="ws" class="sr-only">{% translate "search post" %}</label>
                                 <input type="search" class="form-control" name="ws" id="ws"
-                                       placeholder="جستجوی خبر مورد نظر" required>
+                                       placeholder="{% translate "Search in Blog" %}" required>
                                 <button type="submit" class="btn"><i class="icon-search"></i><span
-                                        class="sr-only">جستجو</span></button>
+                                        class="sr-only">{% translate "Search" %}</span></button>
                             </form>
                         </div><!-- End .widget -->
 
                         <div class="widget widget-cats">
-                            <h3 class="widget-title">دسته بندی ها</h3><!-- End .widget-title -->
+                            <h3 class="widget-title">{% translate "Categories" %}</h3><!-- End .widget-title -->
                             <ul>
                                 {% for category_name , category_count  in categories %}
                                     <li>
@@ -161,7 +188,7 @@
                         </div><!-- End .widget -->
 
                         <div class="widget">
-                            <h3 class="widget-title">محبوب ترین اخبار</h3><!-- End .widget-title -->
+                            <h3 class="widget-title">{% translate "Popular Posts" %}</h3><!-- End .widget-title -->
                             <ul class="posts-list">
                                 {% for post in popular_post %}
                                     <li>
@@ -188,75 +215,3 @@
 {% endblock page_content %}
 
 
-
-{% block content2 %}
-    <div id="" class="wide">
-        <div class="filter row">
-            <div class="blog-categoty col-4">
-                <a type="button" class="btn btn-dark btn-sm btn-tag" href="{% url "blog:home" %}">همه</a>
-                {% for category in categories %}
-                    <a type="button" class="btn btn-light btn-sm btn-tag"
-                       href="{% url "blog:category" category.name %}">{{ category.name }}</a>
-                {% endfor %}
-            </div>
-            <div class="blog-tag col-8">
-                <a type="button" class="btn btn-dark btn-sm btn-tag" href="{% url "blog:home" %}">همه</a>
-                {% for tag in tags %}
-                    <a type="button" class="btn btn-light btn-sm btn-tag"
-                       href="{% url "blog:tag" %}?tag={{ tag }}">{{ tag }}</a>
-                {% endfor %}
-            </div>
-        </div>
-        <hr>
-        <div class="row">
-            {% for post in page_obj %}
-                <div class="col-4 blog-single">
-                    <div class="blog-image">
-                        <a class="post-title" href="{{ post.get_absolute_url }}"><h1>{{ post.title }}</h1></a>
-                        <strong class="post-date">{{ post.pub_date|jformat:'%Y/%m/%d' }}</strong>
-                        <a href="{{ post.get_absolute_url }}">
-                            <img class="" src="{{ post.picture.url }}" alt="">
-                        </a>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-        <div class="row">
-            <div class="col-12 mt-4">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center mb-0">
-                        {% if page_obj.has_previous %}
-                            <li class="page-item"><a class="page-link"
-                                                     href="?page={{ page_obj.previous_page_number }}"><i
-                                    class="fa fa-chevron-right"
-                                    aria-hidden="true"></i></a></li>
-                        {% else %}
-                            <li class="page-item"><a class="page-link disabled"><i
-                                    class="fa fa-chevron-right"
-                                    aria-hidden="true"></i></a></li>
-                        {% endif %}
-                        {% for i in page_obj.paginator.page_range %}
-                            {% if page_obj.number == i %}
-                                <li class="page-item active">
-                                    <a class="page-link" href="?page={{ i }}">{{ i }}</a>
-                                    {#                                        <span>{{ i }} <span class="sr-only">(current)</span></span>#}
-                                </li>
-                            {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
-                                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-                            {% endif %}
-                        {% endfor %}
-                        {% if page_obj.has_next %}
-                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}"><i
-                                    class="fa fa-chevron-left"
-                                    aria-hidden="true"></i></a></li>
-                        {% else %}
-                            <li class="page-item"><a class="page-link disabled"><i
-                                    class="fa fa-chevron-left"
-                                    aria-hidden="true"></i></a></li>
-                        {% endif %}
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </div>
-{% endblock %}

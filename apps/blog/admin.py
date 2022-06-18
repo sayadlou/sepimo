@@ -1,8 +1,9 @@
 from django.contrib import admin
+from django.contrib.admin import ModelAdmin
 from modeltranslation.admin import TranslationAdmin
 from mptt.admin import MPTTModelAdmin, DraggableMPTTAdmin
 
-from .models import Post, Category
+from .models import Post, Category, Comment
 
 
 @admin.register(Category)
@@ -16,3 +17,8 @@ class PostAdmin(TranslationAdmin):
     list_display = ['title', 'slug']
     # readonly_fields = ['id']
     prepopulated_fields = {'slug': ('title',)}
+
+
+@admin.register(Comment)
+class PostAdmin(ModelAdmin):
+    pass

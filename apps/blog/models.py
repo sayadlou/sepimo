@@ -53,3 +53,19 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog:slug', kwargs={'slug': self.slug})
+
+
+class Comment(models.Model):
+    STATUS = (
+        ('Published', 'Published'),
+        ('Draft', 'Draft'),
+        ('Trash', 'Trash'),
+    )
+    name = models.CharField(max_length=50)
+    status = models.CharField(max_length=10, choices=STATUS)
+    email = models.EmailField()
+    text = models.TextField(max_length=1000)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    replay = models.TextField(max_length=1000)
+    pub_date = models.DateField(_("Date"), default=datetime.date.today)
+
