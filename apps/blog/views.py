@@ -5,6 +5,8 @@ from .models import Post, Category
 import datetime
 from django.utils import timezone
 
+from ..core.models import BlogPage
+
 
 class Blog(ListView):
     template_name = 'blog/index.html'
@@ -24,6 +26,8 @@ class Blog(ListView):
         categories = Category.objects.all()
         context['categories'] = [(category.name, category.post_set.all().count()) for category in categories]
         context['popular_post'] = self.get_queryset().order_by('-view')[:4]
+        context['page'] = BlogPage.get_data()
+        context['title'] = BlogPage.get_data().title
         return context
 
     # def get_last_month_date(self, months: int) -> datetime.date:
