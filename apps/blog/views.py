@@ -1,10 +1,9 @@
-from django.db.models import QuerySet, Q
+import datetime
+
+from django.db.models import QuerySet, Q, Count
 from django.views.generic import ListView, DetailView
 
-from .models import Post, Category
-import datetime
-from django.utils import timezone
-
+from .models import Post, Category, PostViewHistory
 from ..core.models import BlogPage
 
 
@@ -31,7 +30,7 @@ class Blog(ListView):
         context = super().get_context_data(**kwargs)
         categories = Category.objects.all()
         context['categories'] = [(category.name, category.post_set.all().count()) for category in categories]
-        context['popular_post'] = self.get_queryset().order_by('-view')[:4]
+        context['popular_post'] = self.get_popular_posts(4)
         context['page'] = BlogPage.get_data()
         context['title'] = BlogPage.get_data().title
         context['search'] = self.get_search_parameter()
@@ -43,6 +42,15 @@ class Blog(ListView):
             return f"&search={parameter}"
         return ""
 
+    def get_last_months_date(self, months):
+        current_date = datetime.date.today()
+        return current_date - datetime.timedelta(days=30 * months)
+
+    def get_popular_posts(self, count):
+        return Post.objects.filter(postviewhistory__pub_date__gte=self.get_last_months_date(3)) \
+                   .annotate(count=Count('postviewhistory')) \
+                   .order_by('-count')[:count]
+
 
 class Slug(DetailView):
     template_name = 'blog/slug.html'
@@ -50,6 +58,7 @@ class Slug(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.log_post_view()
         context['next_post'] = self.model.objects. \
             order_by('id'). \
             filter(id__gt=self.object.id). \
@@ -61,3 +70,12 @@ class Slug(DetailView):
         context['same_post'] = self.model.objects.order_by('pub_date').filter(status='Published') \
             .filter(category=self.object.category).all()
         return context
+
+    def log_post_view(self):
+        user = self.request.user if self.request.user.is_authenticated else None
+        PostViewHistory.objects.create(
+            post=self.object,
+            viewer=user
+        )
+        self.object.view += 1
+        self.object.save()

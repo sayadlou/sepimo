@@ -3,7 +3,7 @@ from django.contrib.admin import ModelAdmin
 from modeltranslation.admin import TranslationAdmin
 from mptt.admin import MPTTModelAdmin, DraggableMPTTAdmin
 
-from .models import Post, Category, Comment
+from .models import Post, Category, Comment, PostViewHistory
 
 
 @admin.register(Category)
@@ -20,5 +20,10 @@ class PostAdmin(TranslationAdmin):
 
 
 @admin.register(Comment)
+class PostAdmin(ModelAdmin):
+    pass
+
+
+@admin.register(PostViewHistory)
 class PostAdmin(ModelAdmin):
     pass

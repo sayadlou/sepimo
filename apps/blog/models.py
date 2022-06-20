@@ -8,6 +8,8 @@ from mptt.models import MPTTModel, TreeForeignKey
 from filer.fields.image import FilerImageField
 from tinymce.models import HTMLField
 
+from apps.account.models import UserProfile
+
 
 class Category(MPTTModel):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
@@ -69,3 +71,14 @@ class Comment(models.Model):
     replay = models.TextField(max_length=1000)
     pub_date = models.DateField(_("Date"), default=datetime.date.today)
 
+
+class PostViewHistory(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    pub_date = models.DateTimeField(_("Visit Date"), default=datetime.datetime.now)
+    viewer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        if self.viewer:
+            return f'{self.viewer.username} at {self.pub_date.strftime("%Y-%m-%d %H:%M:%S")}'
+        else:
+            return f'unknown visitor at {self.pub_date.strftime("%Y-%m-%d %H:%M:%S")}'
