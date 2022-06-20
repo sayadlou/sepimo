@@ -15,7 +15,7 @@
     <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
         <div class="container">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index-1.html">خانه</a></li>
+                <li class="breadcrumb-item"><a href="#">خانه</a></li>
                 <li class="breadcrumb-item"><a href="#">اخبار</a></li>
                 <li class="breadcrumb-item active" aria-current="page">لیست</li>
             </ol>
@@ -69,35 +69,12 @@
                                 </div><!-- End .row -->
                             </article><!-- End .entry -->
                         {% endfor %}
-                    {% else %}
-                        <h4 class="text-right">{% translate "No Post for display" %}</h4>
-                    {% endif %}
-
-
-                    <nav aria-label="Page navigation ">
-                        <ul class="pagination ml-2">
-                            {% if page_obj.has_previous %}
-                                <li class="page-item ">
-                                    <a class="page-link page-link-prev" aria-label="Previous" tabindex="-1"
-                                       href="?page={{ page_obj.previous_page_number }}">
-                                        <span aria-hidden="true">
-                                            {% if LANGUAGE_CODE == 'fa' %}
-                                                <i class="icon-long-arrow-right"></i>
-                                                قبل
-                                            {% else %}
-                                                <i class="icon-long-arrow-left"></i>
-                                                Previous
-                                            {% endif %}
-
-
-
-                                        </span>
-                                    </a>
-                                </li>
-                            {% else %}
-                                <li class="page-item disabled">
-                                    <a class="page-link page-link-prev" href="#" aria-label="Previous"
-                                       aria-disabled="true">
+                        <nav aria-label="Page navigation ">
+                            <ul class="pagination ml-2">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item ">
+                                        <a class="page-link page-link-prev" aria-label="Previous" tabindex="-1"
+                                           href="?page={{ page_obj.previous_page_number }}{{ search }}">
                                         <span aria-hidden="true">
                                             {% if LANGUAGE_CODE == 'fa' %}
                                                 <i class="icon-long-arrow-right"></i>
@@ -107,28 +84,44 @@
                                                 Previous
                                             {% endif %}
                                         </span>
-                                    </a>
-                                </li>
-                            {% endif %}
-                            {% for i in page_obj.paginator.page_range %}
-                                {% if page_obj.number == i %}
-                                    <li class="page-item active" aria-current="page">
-                                        <a class="page-link" href="?page={{ i }}">
-                                            {{ i }}
                                         </a>
                                     </li>
-                                {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
-                                    <li class="page-item" aria-current="page">
-                                        <a class="page-link" href="?page={{ i }}">
-                                            {{ i }}
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link page-link-prev" href="#" aria-label="Previous"
+                                           aria-disabled="true">
+                                        <span aria-hidden="true">
+                                            {% if LANGUAGE_CODE == 'fa' %}
+                                                <i class="icon-long-arrow-right"></i>
+                                                قبل
+                                            {% else %}
+                                                <i class="icon-long-arrow-left"></i>
+                                                Previous
+                                            {% endif %}
+                                        </span>
                                         </a>
                                     </li>
                                 {% endif %}
-                            {% endfor %}
-                            {% if page_obj.has_next %}
-                                <li class="page-item ">
-                                    <a class="page-link page-link-next" href="?page={{ page_obj.next_page_number }}"
-                                       aria-label="Next">
+                                {% for i in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == i %}
+                                        <li class="page-item active" aria-current="page">
+                                            <a class="page-link" href="?page={{ i }}{{ search }}">
+                                                {{ i }}
+                                            </a>
+                                        </li>
+                                    {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                                        <li class="page-item" aria-current="page">
+                                            <a class="page-link" href="?page={{ i }}{{ search }}">
+                                                {{ i }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if page_obj.has_next %}
+                                    <li class="page-item ">
+                                        <a class="page-link page-link-next"
+                                           href="?page={{ page_obj.next_page_number }}{{ search }}"
+                                           aria-label="Next">
                                          <span aria-hidden="true">
                                              {% if LANGUAGE_CODE == 'fa' %}
                                                  بعد
@@ -138,12 +131,12 @@
                                                  <i class="icon-long-arrow-right"></i>
                                              {% endif %}
                                     </span>
-                                    </a>
-                                </li>
-                            {% else %}
-                                <li class="page-item disabled " aria-label="Next">
-                                    <a class="page-link page-link-next" href="#"
-                                       aria-label="Next" aria-disabled="true">
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled " aria-label="Next">
+                                        <a class="page-link page-link-next" href="#"
+                                           aria-label="Next" aria-disabled="true">
                                     <span aria-hidden="true">
                                         {% if LANGUAGE_CODE == 'fa' %}
                                             بعد
@@ -153,20 +146,24 @@
                                             <i class="icon-long-arrow-right"></i>
                                         {% endif %}
                                     </span>
-                                    </a>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </nav>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% else %}
+                        <h4 class="text-right">{% translate "No Post for display" %}</h4>
+                    {% endif %}
+
                 </div><!-- End .col-lg-9 -->
 
                 <aside class="col-lg-3">
                     <div class="sidebar">
                         <div class="widget widget-search">
                             <h3 class="widget-title">{% translate "Search" %}</h3><!-- End .widget-title -->
-                            <form action="#">
-                                <label for="ws" class="sr-only">{% translate "search post" %}</label>
-                                <input type="search" class="form-control" name="ws" id="ws"
+                            <form method="get">
+                                <label for="search" class="sr-only">{% translate "search post" %}</label>
+                                <input type="search" class="form-control" name="search" id="search"
                                        placeholder="{% translate "Search in Blog" %}" required>
                                 <button type="submit" class="btn"><i class="icon-search"></i><span
                                         class="sr-only">{% translate "Search" %}</span></button>
@@ -206,6 +203,17 @@
                                 {% endfor %}
                             </ul><!-- End .posts-list -->
                         </div><!-- End .widget -->
+
+                        <div class="widget widget-banner-sidebar">
+                            <div class="banner-sidebar-title">ad box 280 x 280</div><!-- End .ad-title -->
+                            <div class="banner-sidebar banner-overlay">
+                                <a href="#">
+                                    <img src="{% static "core/en/images/blog/sidebar/banner.jpg" %}" alt="banner">
+                                </a>
+                            </div><!-- End .banner-ad -->
+                        </div>
+
+
                     </div><!-- End .sidebar -->
                 </aside><!-- End .col-lg-3 -->
             </div><!-- End .row -->

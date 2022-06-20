@@ -1,4 +1,4 @@
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Q
 from django.views.generic import ListView, DetailView
 
 from .models import Post, Category
@@ -15,11 +15,17 @@ class Blog(ListView):
 
     def get_queryset(self) -> QuerySet:
         category = self.kwargs.get('category')
+        search = self.request.GET.get("search")
+        queryset = self.model.objects \
+            .prefetch_related('comment_set') \
+            .order_by('pub_date') \
+            .filter(status='Published')
         if category:
-            return self.model.objects.prefetch_related('comment_set').order_by('pub_date').filter(
-                status='Published').filter(
-                category__name__iexact=category)
-        return self.model.objects.prefetch_related('comment_set').order_by('pub_date').filter(status='Published')
+            queryset = queryset.filter(category__name__iexact=category)
+        if search:
+            queryset = queryset.filter(
+                Q(title__icontains=search) | Q(content__icontains=search) | Q(content2__icontains=search))
+        return queryset
 
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
@@ -28,12 +34,14 @@ class Blog(ListView):
         context['popular_post'] = self.get_queryset().order_by('-view')[:4]
         context['page'] = BlogPage.get_data()
         context['title'] = BlogPage.get_data().title
+        context['search'] = self.get_search_parameter()
         return context
 
-    # def get_last_month_date(self, months: int) -> datetime.date:
-    #     today = timezone.now().date()
-    #     today_mins_months = today - datetime.timedelta(weeks=4 * months)
-    #     return today_mins_months
+    def get_search_parameter(self) -> str:
+        parameter = self.request.GET.get("search")
+        if parameter:
+            return f"&search={parameter}"
+        return ""
 
 
 class Slug(DetailView):
