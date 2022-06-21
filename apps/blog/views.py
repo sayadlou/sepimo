@@ -10,7 +10,7 @@ from ..core.models import BlogPage
 class Blog(ListView):
     template_name = 'blog/index.html'
     model = Post
-    paginate_by = 2
+    paginate_by = 6
 
     def get_queryset(self) -> QuerySet:
         category = self.kwargs.get('category')

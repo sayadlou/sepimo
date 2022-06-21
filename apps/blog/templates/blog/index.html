@@ -212,8 +212,15 @@
                                 </a>
                             </div><!-- End .banner-ad -->
                         </div>
+                        {% if page.about_blog_active %}
+                            <div class="widget widget-text">
+                                <h3 class="widget-title">{{ page.about_blog_title }}</h3><!-- End .widget-title -->
 
-
+                                <div class="widget-text-content">
+                                    <p>{{ page.about_blog_text }}</p>
+                                </div><!-- End .widget-text-content -->
+                            </div>
+                        {% endif %}
                     </div><!-- End .sidebar -->
                 </aside><!-- End .col-lg-3 -->
             </div><!-- End .row -->

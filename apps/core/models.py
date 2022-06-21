@@ -88,7 +88,9 @@ class PasswordResetPage(Page):
 
 
 class BlogPage(Page):
-    pass
+    about_blog_active = models.BooleanField(default=False)
+    about_blog_title = models.CharField(max_length=50, null=True, blank=True)
+    about_blog_text = models.TextField(max_length=200, null=True, blank=True)
 
 
 class ContactUsPage(Page):
