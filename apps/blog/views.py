@@ -1,8 +1,12 @@
 import datetime
 
 from django.db.models import QuerySet, Q, Count
-from django.views.generic import ListView, DetailView
+from django.http import HttpResponseForbidden
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, DetailView, TemplateView
+from django.views.generic.edit import ModelFormMixin, CreateView, FormMixin
 
+from .forms import CommentForm
 from .models import Post, Category, PostViewHistory
 from ..core.models import BlogPage
 
@@ -52,9 +56,24 @@ class Blog(ListView):
                    .order_by('-count')[:count]
 
 
-class Slug(DetailView):
+class Slug(ModelFormMixin, DetailView):
     template_name = 'blog/slug.html'
     model = Post
+    form_class = CommentForm
+
+    def get_success_url(self):
+        return reverse('blog:slug', kwargs={'slug': self.object.post.slug})
+
+    def get_initial(self):
+        return {"post": self.model.objects.get(slug=self.kwargs.get("slug"))}
+
+    def post(self, request, *args, **kwargs):
+        # self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -79,3 +98,16 @@ class Slug(DetailView):
         )
         self.object.view += 1
         self.object.save()
+
+#
+# class CommentViewCreateForm(CreateView):
+#     template_name = 'account/new_address_form.html'
+#     form_class = CommentForm
+#     success_url = reverse('account:list-address')
+#
+#     def get_success_url(self):
+#         return reverse('account:list-address')
+#
+#
+# class CommentViewCreateSuccess(TemplateView):
+#     template_name = 'account/new_address_form.html'

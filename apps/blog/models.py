@@ -64,12 +64,12 @@ class Comment(models.Model):
         ('Trash', 'Trash'),
     )
     name = models.CharField(max_length=50)
-    status = models.CharField(max_length=10, choices=STATUS)
+    status = models.CharField(max_length=10, default='Draft', choices=STATUS)
     email = models.EmailField()
     text = models.TextField(max_length=1000)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    replay = models.TextField(max_length=1000)
-    pub_date = models.DateField(_("Date"), default=datetime.date.today)
+    replay = models.TextField(max_length=1000, null=True, blank=True)
+    pub_date = models.DateTimeField(_("Date"), default=datetime.datetime.now)
 
 
 class PostViewHistory(models.Model):
