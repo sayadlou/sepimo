@@ -1,10 +1,10 @@
 import datetime
 
 from django.db.models import QuerySet, Q, Count
-from django.http import HttpResponseForbidden
-from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, DetailView, TemplateView
-from django.views.generic.edit import ModelFormMixin, CreateView, FormMixin
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
+from django.views.generic import ListView
+from django.views.generic.edit import CreateView
 
 from .forms import CommentForm
 from .models import Post, Category, PostViewHistory
@@ -56,48 +56,51 @@ class Blog(ListView):
                    .order_by('-count')[:count]
 
 
-class Slug(ModelFormMixin, DetailView):
+class Slug(CreateView):
     template_name = 'blog/slug.html'
-    model = Post
+    post_model = Post
     form_class = CommentForm
+    post_obj: Post
 
     def get_success_url(self):
-        return reverse('blog:slug', kwargs={'slug': self.object.post.slug})
+        return reverse('blog:slug', kwargs={'slug': self.post_obj.slug})
 
     def get_initial(self):
-        return {"post": self.model.objects.get(slug=self.kwargs.get("slug"))}
+        self.post_obj = get_object_or_404(self.post_model, slug=self.kwargs.get("slug"))
+        return {"post": self.post_obj}
 
-    def post(self, request, *args, **kwargs):
-        # self.object = self.get_object()
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
+    # def post(self, request, *args, **kwargs):
+    #     # self.object = self.get_object()
+    #     form = self.get_form()
+    #     if form.is_valid():
+    #         return self.form_valid(form)
+    #     else:
+    #         return self.form_invalid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         self.log_post_view()
-        context['next_post'] = self.model.objects. \
+        context['post'] = self.post_obj
+        context['next_post'] = self.post_model.objects. \
             order_by('id'). \
-            filter(id__gt=self.object.id). \
+            filter(id__gt=self.post_obj.id). \
             first()
-        context['prev_post'] = self.model.objects. \
+        context['prev_post'] = self.post_model.objects. \
             order_by('id'). \
-            filter(id__lt=self.object.id). \
+            filter(id__lt=self.post_obj.id). \
             last()
-        context['same_post'] = self.model.objects.order_by('pub_date').filter(status='Published') \
-            .filter(category=self.object.category).all()
+        context['same_post'] = self.post_model.objects.order_by('pub_date').filter(status='Published') \
+            .filter(category=self.post_obj.category).all()
         return context
 
     def log_post_view(self):
         user = self.request.user if self.request.user.is_authenticated else None
         PostViewHistory.objects.create(
-            post=self.object,
+            post=self.post_obj,
             viewer=user
         )
-        self.object.view += 1
-        self.object.save()
+        self.post_obj.view += 1
+        self.post_obj.save()
 
 #
 # class CommentViewCreateForm(CreateView):
