@@ -9,7 +9,7 @@ class CommentForm(forms.ModelForm):
         fields = ("name", "email", "text", "post",)
         widgets = {
             "post": forms.TextInput(attrs={'hidden': True}),
-            "text": forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'دیدگاه شما *'}),
-            "name": forms.TextInput(attrs={'class': 'form-control'}),
-            "email": forms.EmailInput(attrs={'class': 'form-control'}),
+            "text": forms.Textarea(attrs={'class': 'form-control mb-0 mt-0'}),
+            "name": forms.TextInput(attrs={'class': 'form-control mb-0 mt-0'}),
+            "email": forms.EmailInput(attrs={'class': 'form-control mb-0 mt-0'}),
         }

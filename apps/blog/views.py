@@ -56,28 +56,14 @@ class Blog(ListView):
                    .order_by('-count')[:count]
 
 
-class Slug(ModelFormMixin, DetailView):
+class Slug(DetailView):
     template_name = 'blog/slug.html'
     model = Post
-    form_class = CommentForm
-
-    def get_success_url(self):
-        return reverse('blog:slug', kwargs={'slug': self.object.post.slug})
-
-    def get_initial(self):
-        return {"post": self.model.objects.get(slug=self.kwargs.get("slug"))}
-
-    def post(self, request, *args, **kwargs):
-        # self.object = self.get_object()
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         self.log_post_view()
+        context['form'] = CommentForm({'post': self.object})
         context['next_post'] = self.model.objects. \
             order_by('id'). \
             filter(id__gt=self.object.id). \
@@ -99,15 +85,57 @@ class Slug(ModelFormMixin, DetailView):
         self.object.view += 1
         self.object.save()
 
-#
-# class CommentViewCreateForm(CreateView):
-#     template_name = 'account/new_address_form.html'
+
+class CommentCreateFormView(CreateView):
+    template_name = 'blog/comment_form.html'
+    form_class = CommentForm
+
+    def get_success_url(self):
+        return reverse('blog:comment_made')
+
+
+class CommentCreateSuccessView(TemplateView):
+    template_name = 'blog/comment_form_success.html'
+
+# class Slug(FormMixin, DetailView):
+#     template_name = 'blog/slug.html'
+#     model = Post
 #     form_class = CommentForm
-#     success_url = reverse('account:list-address')
 #
 #     def get_success_url(self):
-#         return reverse('account:list-address')
+#         return reverse('blog:slug', kwargs={'slug': self.kwargs.get("slug")})
 #
+#     def get_initial(self):
+#         return {"post": self.model.objects.get(slug=self.kwargs.get("slug"))}
 #
-# class CommentViewCreateSuccess(TemplateView):
-#     template_name = 'account/new_address_form.html'
+#     def post(self, request, *args, **kwargs):
+#         # self.object = self.get_object()
+#         form = self.get_form()
+#         if form.is_valid():
+#             return self.form_valid(form)
+#         else:
+#             return self.form_invalid(form)
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         self.log_post_view()
+#         context['next_post'] = self.model.objects. \
+#             order_by('id'). \
+#             filter(id__gt=self.object.id). \
+#             first()
+#         context['prev_post'] = self.model.objects. \
+#             order_by('id'). \
+#             filter(id__lt=self.object.id). \
+#             last()
+#         context['same_post'] = self.model.objects.order_by('pub_date').filter(status='Published') \
+#             .filter(category=self.object.category).all()
+#         return context
+#
+#     def log_post_view(self):
+#         user = self.request.user if self.request.user.is_authenticated else None
+#         PostViewHistory.objects.create(
+#             post=self.object,
+#             viewer=user
+#         )
+#         self.object.view += 1
+#         self.object.save()

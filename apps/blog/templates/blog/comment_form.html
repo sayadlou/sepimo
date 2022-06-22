@@ -1,0 +1,74 @@
+<div
+id="divHere"
+>
+    <form method="post"
+          id="commentForm"
+          data-formid="commentForm"
+          data-url="{% url "blog:comment_form" %}"
+          data-resultsection="divHere"
+    >
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-lg-6 form-req-text">
+                {{ form.name.label_tag }}
+                {{ form.name }}
+                {{ form.name.errors.as_text }}
+            </div>
+            <div class="col-lg-6 form-req-text">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                {{ form.email.errors.as_text }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 form-req-text">
+                {{ form.text.label_tag }}
+                {{ form.text }}
+                {{ form.text.errors.as_text }}
+            </div>
+        </div>
+
+        <input
+                type="submit"
+                onclick="datasetFormSubmit()"
+                class="btn btn-primary"
+
+        >
+    </form>
+</div>
+
+<script>
+    function datasetFormSubmit() {
+        //data-formid is html id of form
+        //data-url is url of form
+        //data-resultsection is section for showing result of post action
+        event.preventDefault();
+        formId = event.target.dataset.formid
+        resultSection = document.querySelector(`#${event.target.dataset.resultsection}`)
+        var formData = new FormData(event.target);
+        fetch(
+            `${event.target.dataset.url}`,
+            {
+                method: 'post',
+                body: formData,
+            }
+        ).then(function (response) {
+                if (response.status === 200) {
+                    return response.text();
+                } else {
+                    throw "connection Error"
+                }
+            }
+        ).then(function (text) {
+                resultSection.innerHTML = text;
+                form.reset()
+            }
+        ).catch(function (error) {
+                console.log('error', error)
+            }
+        )
+    }
+    var form = document.getElementById("commentForm")
+    form.addEventListener('submit', datasetFormSubmit)
+</script>

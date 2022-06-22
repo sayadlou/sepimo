@@ -149,11 +149,7 @@
                     <p class="title-desc">ایمیل شما منتشر نخواهد شد، فیلد های اجباری با علامت * مشخص
                         شده اند.</p>
                 </div><!-- End .heading -->
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form }}
-                    <input type="submit">
-                </form>
+                {% include "blog/comment_form.html" %}
                 {#                <form action="#">#}
                 {#                    <label for="reply-message" class="sr-only">دیدگاه</label>#}
                 {#                    <textarea name="reply-message" id="reply-message" cols="30" rows="4" class="form-control"#}
