@@ -2,4 +2,4 @@ from captcha.fields import CaptchaTextInput
 
 
 class CustomCaptchaTextInput(CaptchaTextInput):
-    template_name = 'admin/captcha.html'
+    template_name = 'core/custom_field.html'

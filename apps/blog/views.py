@@ -81,6 +81,7 @@ class Slug(CreateView):
         context = super().get_context_data(**kwargs)
         self.log_post_view()
         context['post'] = self.post_obj
+        context['comments'] = self.post_obj.comment_set.filter(status='Published')
         context['next_post'] = self.post_model.objects. \
             order_by('id'). \
             filter(id__gt=self.post_obj.id). \
@@ -101,16 +102,3 @@ class Slug(CreateView):
         )
         self.post_obj.view += 1
         self.post_obj.save()
-
-#
-# class CommentViewCreateForm(CreateView):
-#     template_name = 'account/new_address_form.html'
-#     form_class = CommentForm
-#     success_url = reverse('account:list-address')
-#
-#     def get_success_url(self):
-#         return reverse('account:list-address')
-#
-#
-# class CommentViewCreateSuccess(TemplateView):
-#     template_name = 'account/new_address_form.html'

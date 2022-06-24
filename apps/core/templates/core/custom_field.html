@@ -1,0 +1,14 @@
+{% load i18n %}
+{% spaceless %}
+    <div class="form-group my-3">
+        <label class="text-right">{% translate "Security code" %} </label>
+        <div class="input-group ">
+            <div class="input-group-prepend">
+                <img src="{{ image }}" alt="captcha" loading="eager" class="captcha mx-2"/>
+            </div>
+            {% for widget in widget.subwidgets %}
+                {% include widget.template_name %}
+            {% endfor %}
+        </div>
+    </div>
+{% endspaceless %}

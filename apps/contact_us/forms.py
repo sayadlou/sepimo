@@ -4,7 +4,7 @@ from .models import Message
 from captcha.fields import CaptchaField, CaptchaTextInput
 from django.utils.translation import ugettext_lazy as _
 
-from ..account.widget import CustomCaptchaTextInput
+from apps.core.widget import CustomCaptchaTextInput
 
 owner_email = (
     ('Department1@example.com', _('Department1')),

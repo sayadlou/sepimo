@@ -1,0 +1,32 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+asgiref = "==3.4.*"
+django = "==3.2.*"
+pytz = "==2021.*"
+sqlparse = "==0.4.*"
+pillow = "==9.1.*"
+django-ranged-response = "==0.2.*"
+django-simple-captcha = "==0.5.*"
+psycopg2-binary = "==2.9.*"
+redis = "==4.1.*"
+celery = "==5.2.*"
+requests = "==2.27.*"
+django-tinymce = "==3.4.*"
+django-jalali = "==6.0.*"
+django-mptt = "==0.13.*"
+az-iranian-bank-gateways = "==1.6.*"
+django-modeltranslation = "==0.18.*"
+django-filer = "==2.2.*"
+django-sitetree = "==1.17.*"
+django-vanilla-views = "*"
+
+[dev-packages]
+django-debug-toolbar = "==3.2.*"
+mock = "==4.0.*"
+
+[requires]
+python_version = "3.8"

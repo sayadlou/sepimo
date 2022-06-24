@@ -1,5 +1,7 @@
+from captcha.fields import CaptchaField
 from django import forms
 
+from .widget import CustomCaptchaTextInput
 from .models import Comment
 
 
@@ -13,3 +15,6 @@ class CommentForm(forms.ModelForm):
             "name": forms.TextInput(attrs={'class': 'form-control mb-0 mt-0'}),
             "email": forms.EmailInput(attrs={'class': 'form-control mb-0 mt-0'}),
         }
+
+    captcha = CaptchaField(
+        widget=CustomCaptchaTextInput(attrs={'class': "form-control", 'aria-describedby': 'button-submit'}))

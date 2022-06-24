@@ -6,8 +6,8 @@ from django.contrib.auth.forms import AuthenticationForm, UsernameField, Passwor
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
 
+from apps.core.widget import CustomCaptchaTextInput
 from .models import UserProfile, Address
-from .widget import CustomCaptchaTextInput
 
 
 class AddressForm(forms.ModelForm):
