@@ -1,33 +1,70 @@
+from decimal import Decimal
 from uuid import uuid4
 
 from azbankgateways.models import Bank
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 
 from apps.account.models import UserProfile
+
+
+class Category(MPTTModel):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    name = models.CharField(max_length=50, unique=True)
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _('Blog Category')
+        verbose_name_plural = _('Blog Categories')
+
+    class MPTTMeta:
+        order_insertion_by = ['name']
 
 
 class Product(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=50, unique=True, allow_unicode=True)
-    price = models.DecimalField(max_digits=12, decimal_places=0)
-    max_order_quantity = models.DecimalField(max_digits=12, decimal_places=0)
-    min_order_quantity = models.DecimalField(max_digits=12, decimal_places=0)
-    purchaser = models.ManyToManyField(UserProfile, blank=True)
-
-    class Meta:
-        verbose_name = _('Product Base Model')
-        verbose_name_plural = _('Product Base Models')
+    description = models.TextField(max_length=1000)
+    stock_inventory = models.DecimalField(max_digits=12, decimal_places=0, default=0)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+    has_variant = models.BooleanField(default=False)
+    price = models.DecimalField(max_digits=12, decimal_places=0, null=True, blank=True, default=Decimal('0.0'),
+                                validators=[MinValueValidator(Decimal('0.0'))])
+    variant_title = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         return f"{self.title}"
 
-    def add_buyer(self, user):
-        self.purchaser.add(user)
+    def clean(self):
+        if self.has_variant is False and self.price is None:
+            raise ValidationError(_('a product without a variant should have a price'))
+        if self.has_variant is False and self.price == Decimal('0.0'):
+            raise ValidationError(_('a product without a variant should have price more than 0'))
+        if self.has_variant and self.variant_title == "":
+            raise ValidationError(_('variant title should be defined'))
+        # if self.has_variant and self.variant_set.all().count() == 0:
+        #     raise ValidationError(_('variant should be defined'))
+        # if self.has_variant:
+        #     self.price = Decimal('0.01')
+        # else:
+        #     self.variant_title = ""
+        #     self.variant_set.set(Variant.objects.none())
+
+
+class Variant(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+    price = models.DecimalField(max_digits=12, decimal_places=0)
+    differentiation_value = models.CharField(max_length=200)
 
 
 class Cart(models.Model):

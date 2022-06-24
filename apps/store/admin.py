@@ -27,9 +27,20 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInLine]
 
 
+class VariantInLine(admin.TabularInline):
+    model = Variant
+    fields = ('price', 'differentiation_value')
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    pass
+    class Media:
+        css = {
+            'all': ('core/css/admin_product.css',)
+        }
+        js = ('core/js/admin_product.js',)
+
+    inlines = [VariantInLine]
 
 
 @admin.register(Payment)
