@@ -40,6 +40,8 @@ class ProductAdmin(admin.ModelAdmin):
         }
         js = ('core/js/admin_product.js',)
 
+    prepopulated_fields = {'slug': ('title',)}
+    exclude = ('code','slug')
     inlines = [VariantInLine]
 
 
