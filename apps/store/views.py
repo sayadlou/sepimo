@@ -20,7 +20,7 @@ logger = logging.getLogger('store.views')
 
 class ProductListView(ListView):
     model = Product
-    template_name = 'store/products.html'
+    template_name = 'store/product_list.html'
 
     def get_queryset(self):
         return Product.objects.filter(status='Published') \
@@ -32,6 +32,13 @@ class ProductView(DetailView):
     model = Product
     template_name = 'store/product.html'
     lookup_url_kwarg = 'code'
+
+    def get_object(self, queryset=None):
+        code = self.kwargs.get('pk')
+        slug = self.kwargs.get('slug')
+        if slug:
+            return get_object_or_404(self.model, slug=slug, code=code)
+        return get_object_or_404(self.model, code=code)
 
 
 class CartView(ListView):

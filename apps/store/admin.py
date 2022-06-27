@@ -1,5 +1,6 @@
 from django.contrib import admin
 from modeltranslation.admin import TranslationAdmin
+from mptt.admin import DraggableMPTTAdmin
 
 from .models import *
 
@@ -33,6 +34,10 @@ class VariantInLine(admin.TabularInline):
     fields = ('price', 'differentiation_value')
 
 
+class ImageInline(admin.StackedInline):
+    model = Image
+
+
 @admin.register(Product)
 class ProductAdmin(TranslationAdmin):
     class Media:
@@ -42,12 +47,17 @@ class ProductAdmin(TranslationAdmin):
         js = ('core/js/admin_product.js',)
 
     exclude = ('code',)
-    inlines = [VariantInLine]
+    inlines = [ImageInline, VariantInLine]
 
 
 @admin.register(Payment)
 class ProductAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(Category)
+class CategoryAdmin(DraggableMPTTAdmin):
+    mptt_level_indent = 20
 
 
 @admin.register(Review)

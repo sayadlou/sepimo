@@ -23,10 +23,6 @@ class Category(MPTTModel):
     def __str__(self):
         return self.name
 
-    class Meta:
-        verbose_name = _('Blog Category')
-        verbose_name_plural = _('Blog Categories')
-
     class MPTTMeta:
         order_insertion_by = ['name']
 
@@ -54,11 +50,11 @@ class Product(models.Model):
     stock_inventory = models.DecimalField(max_digits=12, decimal_places=0, default=0)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     has_variant = models.BooleanField(default=False)
-    picture_list = FilerImageField(related_name='store_picture_list', on_delete=models.PROTECT)  # Todo clear migrations
     price = models.DecimalField(max_digits=12, decimal_places=0, null=True, blank=True, default=Decimal('0.0'),
-                                validators=(MinValueValidator(Decimal('0.0')),))
+                            validators=(MinValueValidator(Decimal('0.0')),))
     variant_title = models.CharField(max_length=200, null=True, blank=True)
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
+    picture_list = FilerImageField(related_name='store_picture_list', on_delete=models.PROTECT)  # Todo clear migrations
 
     def __str__(self):
         return f"{self.title}"
@@ -84,6 +80,11 @@ class Product(models.Model):
         # else:
         #     self.variant_title = ""
         #     self.variant_set.set(Variant.objects.none())
+
+
+class Image(models.Model):
+    image_file = FilerImageField(related_name='store_product_picture', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
 
 class Review(models.Model):

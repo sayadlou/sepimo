@@ -4,8 +4,6 @@ from .views import *
 
 urlpatterns = [
     path('products', ProductListView.as_view(), name='product-list'),
-    path('product/<str:code>/<str:slug>', ProductView.as_view(), name='product'),
-    path('orders/', OrderListView.as_view(), name='orders'),
-    path('order/<uuid:pk>', OrderDetailView.as_view(), name='order_item'),
-    path('payment/', PaymentListAddView.as_view(), name='payments'),
+    path('product/<str:pk>/', ProductView.as_view(), name='product-code'),
+    path('product/<str:pk>/<str:slug>', ProductView.as_view(), name='product-code-slug'),
 ]

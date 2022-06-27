@@ -40,7 +40,7 @@
                                 <figure class="product-media">
                                     <span class="product-label label-new"
                                           style="background-color: {{ product.label_color }}">{{ product.label_text }}</span>
-                                    <a href="{% url "store:product" code=product.code slug=product.slug %}">
+                                    <a href="{% url "store:product-code-slug" pk=product.code slug=product.slug %}">
                                         <img src="{{ product.picture_list.url }}"
                                              alt="{{ product.picture_list.alt }}"
                                              class="product-image">
