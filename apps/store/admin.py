@@ -1,4 +1,5 @@
 from django.contrib import admin
+from modeltranslation.admin import TranslationAdmin
 
 from .models import *
 
@@ -33,15 +34,14 @@ class VariantInLine(admin.TabularInline):
 
 
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(TranslationAdmin):
     class Media:
         css = {
             'all': ('core/css/admin_product.css',)
         }
         js = ('core/js/admin_product.js',)
 
-    prepopulated_fields = {'slug': ('title',)}
-    exclude = ('code','slug')
+    exclude = ('code', )
     inlines = [VariantInLine]
 
 

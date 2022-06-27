@@ -30,6 +30,13 @@ class Category(MPTTModel):
         order_insertion_by = ['name']
 
 
+class Brand(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Product(models.Model):
     code = models.CharField(max_length=11, blank=True, unique=True)
     title = models.CharField(max_length=200)
@@ -41,12 +48,18 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=12, decimal_places=0, null=True, blank=True, default=Decimal('0.0'),
                                 validators=(MinValueValidator(Decimal('0.0')),))
     variant_title = models.CharField(max_length=200, null=True, blank=True)
+    brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f"{self.title}"
 
-    def clean(self):
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.slug
         self.code = f"sep-{self.id:07d}"
+        super().save(*args, **kwargs)
+
+    def clean(self):
         if self.has_variant is False and self.price is None:
             raise ValidationError(_('a product without a variant should have a price'))
         if self.has_variant is False and self.price == Decimal('0.0'):

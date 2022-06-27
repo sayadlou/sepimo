@@ -3,12 +3,11 @@ import logging
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
-from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
+from django.shortcuts import render, get_object_or_404
 from django.utils.translation import gettext as _
 from django.views import View
-from django.views.generic.detail import DetailView
+from vanilla import ListView, DetailView
 
 from .forms import CartItemForm
 from .models import *
@@ -16,7 +15,22 @@ from .models import *
 logger = logging.getLogger('store.views')
 
 
-class CartListAddView(LoginRequiredMixin, View):
+class ProductView(DetailView):
+    model = Product
+    template_name = 'store/product.html'
+    lookup_url_kwarg = 'code'
+
+
+class ProductsView(ListView):
+    model = Product
+    template_name = 'store/products.html'
+
+
+class CartView(ListView):
+    model = Cart
+
+
+class CartApiView(View):
 
     def get(self, request, *args, **kwargs):
         context = {'cart': request.user.cart}
@@ -42,30 +56,6 @@ class CartListAddView(LoginRequiredMixin, View):
                 for error in form.errors[key]:
                     messages.error(request, error)
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-
-
-class CartPutDeleteView(LoginRequiredMixin, View):
-    def post(self, request, *args, **kwargs):
-        cart_item = get_object_or_404(CartItem, pk=kwargs['pk'])
-        post_copy = request.POST.copy()
-        post_copy['cart'] = self.request.user.cart
-        form = CartItemForm(data=post_copy, instance=cart_item)
-        if form.is_valid():
-            messages.success(request, _('product updated'))
-            form.save_or_update()
-        else:
-            for key in form.errors:
-                for error in form.errors[key]:
-                    messages.error(request, error)
-        return redirect(reverse('store:cart'), permanent=True)
-
-    def delete(self, request, *args, **kwargs):
-        obj = get_object_or_404(CartItem, pk=kwargs['pk'])
-        if request.user.cart.pk == obj.cart.pk:
-            obj.delete()
-            return HttpResponse("deleted")
-        else:
-            return HttpResponse(status=404)
 
 
 class OrderListView(LoginRequiredMixin, View):
@@ -140,38 +130,9 @@ class PaymentListAddView(LoginRequiredMixin, View):
         return new_order
 
 
-class ProductView(DetailView):
-    model = Product
-    template_name = 'store/product.html'
+class WishListView(ListView):
+    pass
 
-# class CallbackGatewayView(LoginRequiredMixin, View):
-#
-#     def get(self, request, *args, **kwargs):
-#         tracking_code = request.GET.get(settings.TRACKING_CODE_QUERY_PARAM, None)
-#         if not tracking_code:
-#             logging.error("tracking code is not in url query param.")
-#             raise Http404
-#         try:
-#             bank_record = bank_models.Bank.objects.get(tracking_code=tracking_code)
-#         except bank_models.Bank.DoesNotExist:
-#             logging.error("bank record is not valid")
-#             raise Http404
-#         if bank_record.is_success:
-#             try:
-#                 payment = Payment.objects.get(content_type=ContentType.objects.get_for_model(bank_record),
-#                                               object_id=bank_record.pk)
-#                 payment.status = Payment.STATUS_CONFIRMED
-#                 payment.save()
-#                 payment.order.status = Order.ORDER_STATUS_PAYED
-#                 payment.order.save()
-#                 paid_order_items = payment.order.orderitem_set.all()
-#                 bayer = payment.owner
-#                 for item in paid_order_items:
-#                     item.product.add_buyer(bayer)
-#                 return HttpResponse("پرداخت با موفقیت انجام شد.")
-#             except Payment.DoesNotExist:
-#                 logging.error(f"payment for {bank_record.pk} was successful but has no oder")
-#                 return HttpResponse("خطایی در پرداخت رخ داده است جهت بازپرداخت وجه با پشتیبانی تماس حاصل نمایید.")
-#         logging.error(f"payment {bank_record.pk} with amount {bank_record.amount} was not successful")
-#         return HttpResponse(
-#             "پرداخت با شکست مواجه شده است.اگر پول کم شده است ظرف مدت ۴۸ ساعت پول به حساب شما بازخواهد گشت.")
+
+class WishListApiView(View):
+    pass
