@@ -5,7 +5,7 @@ $(document).ready(function () {
     owlCarousels();
     quantityInputs();
 
-    // Header Search Toggle
+    // Header Search Togglebtn-quickview
 
     var $searchWrapper = $('.header-search-wrapper'),
     	$body = $('body'),

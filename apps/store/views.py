@@ -3,11 +3,14 @@ import logging
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
+from django.db.models import Avg, Count
+from django.db.models.functions import Coalesce
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import gettext as _
 from django.views import View
-from vanilla import ListView, DetailView
+# from vanilla import ListView, DetailView
+from django.views.generic import ListView, DetailView
 
 from .forms import CartItemForm
 from .models import *
@@ -15,15 +18,20 @@ from .models import *
 logger = logging.getLogger('store.views')
 
 
+class ProductListView(ListView):
+    model = Product
+    template_name = 'store/products.html'
+
+    def get_queryset(self):
+        return Product.objects.filter(status='Published') \
+            .annotate(rate=Coalesce(Avg("review__rate"), 0.0)) \
+            .annotate(reviws=Count("review"))
+
+
 class ProductView(DetailView):
     model = Product
     template_name = 'store/product.html'
     lookup_url_kwarg = 'code'
-
-
-class ProductsView(ListView):
-    model = Product
-    template_name = 'store/products.html'
 
 
 class CartView(ListView):

@@ -41,10 +41,15 @@ class ProductAdmin(TranslationAdmin):
         }
         js = ('core/js/admin_product.js',)
 
-    exclude = ('code', )
+    exclude = ('code',)
     inlines = [VariantInLine]
 
 
 @admin.register(Payment)
 class ProductAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
     pass

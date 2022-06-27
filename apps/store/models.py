@@ -5,9 +5,10 @@ from azbankgateways.models import Bank
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from filer.fields.image import FilerImageField
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 
@@ -38,13 +39,22 @@ class Brand(models.Model):
 
 
 class Product(models.Model):
+    STATUS = (
+        ('Published', 'Published'),
+        ('Draft', 'Draft'),
+        ('Trash', 'Trash'),
+    )
+    status = models.CharField(max_length=50, choices=STATUS, default='Draft')
     code = models.CharField(max_length=11, blank=True, unique=True)
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=50, allow_unicode=True)
+    label_text = models.CharField(max_length=20)
+    label_color = models.CharField(max_length=20)
     description = models.TextField(max_length=1000)
     stock_inventory = models.DecimalField(max_digits=12, decimal_places=0, default=0)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     has_variant = models.BooleanField(default=False)
+    picture_list = FilerImageField(related_name='store_picture_list', on_delete=models.PROTECT)  # Todo clear migrations
     price = models.DecimalField(max_digits=12, decimal_places=0, null=True, blank=True, default=Decimal('0.0'),
                                 validators=(MinValueValidator(Decimal('0.0')),))
     variant_title = models.CharField(max_length=200, null=True, blank=True)
@@ -74,6 +84,12 @@ class Product(models.Model):
         # else:
         #     self.variant_title = ""
         #     self.variant_set.set(Variant.objects.none())
+
+
+class Review(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    rate = models.IntegerField(validators=(MinValueValidator(0), MaxValueValidator(100)))
+    comment = models.TextField(max_length=1000)
 
 
 class Variant(models.Model):
