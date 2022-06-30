@@ -32,22 +32,28 @@ class OrderAdmin(admin.ModelAdmin):
 class VariantInLine(admin.TabularInline):
     model = Variant
     fields = ('price', 'differentiation_value')
+    min_num = 1
+    extra = 0
 
 
 class ImageInline(admin.StackedInline):
     model = Image
+    min_num = 1
+    max_num = 4
+    extra = 0
 
 
 @admin.register(Product)
 class ProductAdmin(TranslationAdmin):
-    class Media:
-        css = {
-            'all': ('core/css/admin_product.css',)
-        }
-        js = ('core/js/admin_product.js',)
+    # class Media:
+    #     css = {
+    #         'all': ('core/css/admin_product.css',)
+    #     }
+    #     js = ('core/js/admin_product.js',)
 
     exclude = ('code',)
-    inlines = [ImageInline, VariantInLine]
+    inlines = [VariantInLine, ImageInline]
+
 
 
 @admin.register(Payment)

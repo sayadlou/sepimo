@@ -11,8 +11,10 @@ from django.utils.translation import ugettext_lazy as _
 from filer.fields.image import FilerImageField
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
+from tinymce.models import HTMLField
 
 from apps.account.models import UserProfile
+from config.settings.base import LANGUAGES
 
 
 class Category(MPTTModel):
@@ -46,32 +48,34 @@ class Product(models.Model):
     slug = models.SlugField(max_length=50, allow_unicode=True)
     label_text = models.CharField(max_length=20)
     label_color = models.CharField(max_length=20)
-    description = models.TextField(max_length=1000)
+    intro = models.TextField(max_length=1000)
+    description = HTMLField()
+    more_info = HTMLField()
+    send_and_return = HTMLField()
     stock_inventory = models.DecimalField(max_digits=12, decimal_places=0, default=0)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
-    has_variant = models.BooleanField(default=False)
-    price = models.DecimalField(max_digits=12, decimal_places=0, null=True, blank=True, default=Decimal('0.0'),
-                            validators=(MinValueValidator(Decimal('0.0')),))
-    variant_title = models.CharField(max_length=200, null=True, blank=True)
+    # has_variant = models.BooleanField(default=False)
+    # price = models.DecimalField(max_digits=12, decimal_places=0, null=True, blank=True, default=Decimal('0.0'),
+    #                             validators=(MinValueValidator(Decimal('0.0')),))
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
-    picture_list = FilerImageField(related_name='store_picture_list', on_delete=models.PROTECT)  # Todo clear migrations
+    introduction_picture = FilerImageField(related_name='store_picture_introduction', on_delete=models.PROTECT)  # Todo clear migrations
+    variant_title = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         return f"{self.title}"
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        self.slug
         self.code = f"sep-{self.id:07d}"
         super().save(*args, **kwargs)
 
-    def clean(self):
-        if self.has_variant is False and self.price is None:
-            raise ValidationError(_('a product without a variant should have a price'))
-        if self.has_variant is False and self.price == Decimal('0.0'):
-            raise ValidationError(_('a product without a variant should have price more than 0'))
-        if self.has_variant and self.variant_title == "":
-            raise ValidationError(_('variant title should be defined'))
+    # def clean(self):
+        # if self.has_variant is False and self.price is None:
+        #     raise ValidationError(_('a product without a variant should have a price'))
+        # if self.has_variant is False and self.price == Decimal('0.0'):
+        #     raise ValidationError(_('a product without a variant should have price more than 0'))
+        # if self.has_variant and self.variant_title == "":
+        #     raise ValidationError(_('variant title should be defined'))
 
         # if self.has_variant and self.variant_set.all().count() == 0:
         #     raise ValidationError(_('variant should be defined'))
@@ -88,15 +92,25 @@ class Image(models.Model):
 
 
 class Review(models.Model):
+    STATUS = (
+        ('Published', 'Published'),
+        ('Draft', 'Draft'),
+        ('Trash', 'Trash'),
+    )
+    status = models.CharField(max_length=50, choices=STATUS, default='Draft')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     rate = models.IntegerField(validators=(MinValueValidator(0), MaxValueValidator(100)))
     comment = models.TextField(max_length=1000)
+    title = models.CharField(max_length=100)
+    like = models.IntegerField(validators=(MinValueValidator(0),))
+    dislike = models.IntegerField(validators=(MinValueValidator(0),))
+    language = models.CharField(max_length=50, choices=LANGUAGES, default='fa')
 
 
 class Variant(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
     price = models.DecimalField(max_digits=12, decimal_places=0)
-    differentiation_value = models.CharField(max_length=200)
+    differentiation_value = models.CharField(max_length=200, null=True, blank=True)
 
 
 class Cart(models.Model):

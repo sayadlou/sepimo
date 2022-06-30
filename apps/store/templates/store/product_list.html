@@ -41,8 +41,8 @@
                                     <span class="product-label label-new"
                                           style="background-color: {{ product.label_color }}">{{ product.label_text }}</span>
                                     <a href="{% url "store:product-code-slug" pk=product.code slug=product.slug %}">
-                                        <img src="{{ product.picture_list.url }}"
-                                             alt="{{ product.picture_list.alt }}"
+                                        <img src="{{ product.introduction_picture.url }}"
+                                             alt="{{ product.introduction_picture.alt }}"
                                              class="product-image">
                                     </a>
 
@@ -61,9 +61,15 @@
 
                                 <div class="product-body">
                                     <div class="product-cat">
-                                        <a href="#">{{ product.category.name }}</a>
+                                        <a href="#">
+                                            {{ product.category.name }}
+                                        </a>
                                     </div><!-- End .product-cat -->
-                                    <h3 class="product-title"><a href="product.html">{{ product.title }}</a></h3>
+                                    <h3 class="product-title">
+                                        <a href="{% url "store:product-code-slug" pk=product.code slug=product.slug %}">
+                                            {{ product.title }}
+                                        </a>
+                                    </h3>
                                     <!-- End .product-title -->
                                     {#                                    <div class="product-price">#}
                                     {#                                        50,000 تومان#}
@@ -233,10 +239,10 @@
                     {#                    </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->#}
                     {#                </div><!-- End .row -->#}
 
-                    <div class="load-more-container text-center">
-                        <a href="#" class="btn btn-outline-darker btn-load-more">محصولات بیشتر <i
-                                class="icon-refresh"></i></a>
-                    </div><!-- End .load-more-container -->
+{#                    <div class="load-more-container text-center">#}
+{#                        <a href="#" class="btn btn-outline-darker btn-load-more">محصولات بیشتر <i#}
+{#                                class="icon-refresh"></i></a>#}
+{#                    </div><!-- End .load-more-container -->#}
                 </div><!-- End .products -->
 
                 <div class="sidebar-filter-overlay"></div><!-- End .sidebar-filter-overlay -->

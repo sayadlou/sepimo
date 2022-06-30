@@ -3,29 +3,34 @@ import logging
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
-from django.db.models import Avg, Count
+from django.db.models import Avg, Count, Q
 from django.db.models.functions import Coalesce
+from django.db.models.sql import AND
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import gettext as _
 from django.views import View
 # from vanilla import ListView, DetailView
 from django.views.generic import ListView, DetailView
+from django_filters.views import FilterView
 
 from .forms import CartItemForm
 from .models import *
+from .filters import ProductFilter
 
 logger = logging.getLogger('store.views')
 
 
-class ProductListView(ListView):
+class ProductListView(FilterView):
     model = Product
     template_name = 'store/product_list.html'
+    # filterset_fields = ('status', 'category__name')
+    filterset_class = ProductFilter
 
     def get_queryset(self):
-        return Product.objects.filter(status='Published') \
+        return self.model.objects.filter(status='Published') \
             .annotate(rate=Coalesce(Avg("review__rate"), 0.0)) \
-            .annotate(reviws=Count("review"))
+            .annotate(reviws=Count("review", filter=Q(review__status='Published')))
 
 
 class ProductView(DetailView):
@@ -36,15 +41,28 @@ class ProductView(DetailView):
     def get_object(self, queryset=None):
         code = self.kwargs.get('pk')
         slug = self.kwargs.get('slug')
+
         if slug:
-            return get_object_or_404(self.model, slug=slug, code=code)
-        return get_object_or_404(self.model, code=code)
+            my_object = self.model.objects.filter(slug=slug, code=code).first()
+        my_object = self.model.objects.filter(code=code).first()
+        return my_object
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['reviews'] = self.object.review_set.filter(status='Published').filter(
+            language=self.request.LANGUAGE_CODE)
+        context['same_products'] = self.model.objects.filter(category=self.object.category).filter(status='Published') \
+            .annotate(rate=Coalesce(Avg("review__rate"), 0.0)) \
+            .annotate(reviws=Count("review", filter=Q(review__status='Published')))
+
+        return context
 
 
 class CartView(ListView):
     model = Cart
 
 
+# is_ajax = request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 class CartApiView(View):
 
     def get(self, request, *args, **kwargs):
