@@ -13,3 +13,11 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+function productListFormSend(e) {
+    event.preventDefault();
+    var filterFormData = $('#filter-form').serialize()
+    var sortFormData = $('#sort-form').serialize()
+    var url = window.location.pathname + "?" + sortFormData + "&" + filterFormData
+    window.location.replace(url)
+}

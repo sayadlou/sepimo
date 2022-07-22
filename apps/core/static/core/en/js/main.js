@@ -126,11 +126,11 @@ $(document).ready(function () {
     });
 
     // Clear All checkbox/remove filters in sidebar filter
-    $('.sidebar-filter-clear').on('click', function (e) {
-    	$('.sidebar-shop').find('input').prop('checked', false);
-
-    	e.preventDefault();
-    });
+    // $('.sidebar-filter-clear').on('click', function (e) {
+    // 	$('.sidebar-shop').find('input').prop('checked', false);
+    //
+    // 	e.preventDefault();
+    // });
 
     // Popup - Iframe Video - Map etc.
     if ( $.fn.magnificPopup ) {

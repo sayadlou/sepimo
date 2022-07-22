@@ -49,8 +49,12 @@
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.rtl.min.css"/>
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.rtl.min.css"/>
     {% endif %}
+    <script src={% static "core/en/js/jquery.min.js" %}></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <link rel="stylesheet" href="{% static "core/css/saeid.css" %}">
     <script src={% static "core/js/saeid.js" %}></script>
+    <script src={% static "core/js/humanize.min.js" %}></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
 </head>
 
@@ -883,7 +887,7 @@
 </div><!-- End .modal -->
 
 <!-- Plugins JS File -->
-<script src={% static "core/en/js/jquery.min.js" %}></script>
+
 <script src={% static "core/en/js/bootstrap.bundle.min.js" %}></script>
 <script src={% static "core/en/js/jquery.hoverIntent.min.js" %}></script>
 <script src={% static "core/en/js/jquery.waypoints.min.js" %}></script>

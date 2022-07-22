@@ -1,7 +1,7 @@
 from django.contrib import admin
 from modeltranslation.admin import TranslationAdmin
 
-from .models import AboutUsPage, Brand, CustomerReviews, ProfilePage, SignPage, PasswordResetPage, BlogPage
+from .models import AboutUsPage, BrandPage, CustomerReviews, ProfilePage, SignPage, PasswordResetPage, BlogPage
 
 
 @admin.register(SignPage)
@@ -9,7 +9,7 @@ class SignPageAdmin(TranslationAdmin):
     pass
 
 
-@admin.register(Brand)
+@admin.register(BrandPage)
 class BrandAdmin(admin.ModelAdmin):
     pass
 

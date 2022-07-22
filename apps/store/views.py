@@ -3,9 +3,8 @@ import logging
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
-from django.db.models import Avg, Count, Q
+from django.db.models import Avg, Count, Q, Max, Min
 from django.db.models.functions import Coalesce
-from django.db.models.sql import AND
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import gettext as _
@@ -14,9 +13,9 @@ from django.views import View
 from django.views.generic import ListView, DetailView
 from django_filters.views import FilterView
 
+from .filters import ProductFilter
 from .forms import CartItemForm
 from .models import *
-from .filters import ProductFilter
 
 logger = logging.getLogger('store.views')
 
@@ -24,8 +23,70 @@ logger = logging.getLogger('store.views')
 class ProductListView(FilterView):
     model = Product
     template_name = 'store/product_list.html'
-    # filterset_fields = ('status', 'category__name')
     filterset_class = ProductFilter
+    min_price: int = 0
+    max_price: int = 99999999
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=object_list, **kwargs)
+        context['category'] = self.get_category_filter()
+        context['brand'] = self.get_brand_filter()
+        context['price_min'] = self.get_price_min_filter_default()
+        context['price_max'] = self.get_price_max_filter_default()
+        context['price_lte'] = self.get_price_lte_filter_default()
+        context['price_gte'] = self.get_price_gte_filter_default()
+
+        return context
+
+    def get_category_filter(self):
+        categories_name = Category.objects.values_list('name', flat=True)
+        categories_filter: list = []
+        for category_name in categories_name:
+            categories_filter.append({
+                'name': "category",
+                'value': category_name,
+                'count': Product.objects.filter(category__name=category_name).count(),
+                'check': 'checked' if category_name in self.request.GET.getlist('category') else '',
+            })
+        return categories_filter
+
+    def get_brand_filter(self):
+        brands_name = Brand.objects.values_list('name', flat=True)
+        brands_filter: list = []
+        for brand_name in brands_name:
+            brands_filter.append({
+                'name': "brand",
+                'value': brand_name,
+                'count': Product.objects.filter(brand__name=brand_name).count(),
+                'check': 'checked' if brand_name in self.request.GET.getlist('brand') else '',
+            })
+        return brands_filter
+
+    def get_price_max_filter_default(self):
+        max_price_dict = Variant.objects.aggregate(Max('price'))
+        max_price = max_price_dict.get('price__max', 9999999999999)
+        self.max_price = int(max_price)
+        return self.max_price
+
+    def get_price_min_filter_default(self):
+        min_price_dict = Variant.objects.aggregate(Min('price'))
+        min_price = min_price_dict.get('price__min', 0)
+        self.min_price = int(min_price)
+        return self.min_price
+
+    def get_price_gte_filter_default(self):
+        default = (self.max_price - self.min_price) * 2 // 3
+        price_gte = self.request.GET.get('price_gte', default)
+        price_gte = default if price_gte == "" else price_gte
+        print(price_gte)
+        return price_gte
+
+    def get_price_lte_filter_default(self):
+        default = (self.max_price - self.min_price) // 3
+        price_lte = self.request.GET.get('price_lte', default)
+        price_lte = default if price_lte == "" else price_lte
+        print(price_lte)
+        return price_lte
 
     def get_queryset(self):
         return self.model.objects.filter(status='Published') \

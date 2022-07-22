@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView
 
-from apps.core.models import AboutUsPage, Brand, CustomerReviews
+from apps.core.models import AboutUsPage, CustomerReviews
+from apps.store.models import Brand
 
 
 class Home(TemplateView):

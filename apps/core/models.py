@@ -31,7 +31,7 @@ class homePage(Page):
     pass
 
 
-class Brand(models.Model):
+class BrandPage(Page):
     picture = FilerImageField(related_name='brand_image', on_delete=models.PROTECT)
     brand_name = models.CharField(max_length=60)
 
