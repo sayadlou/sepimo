@@ -192,11 +192,11 @@
                                                         range: true,
                                                         min: {{ price_min }},
                                                         max: {{ price_max }},
-                                                        values: [{{ price_lte }}, {{ price_gte }}],
+                                                        values: [{{price_gte  }}, {{ price_lte }}],
                                                         slide: function (event, ui) {
                                                             $("#amount").val("" + Humanize.intComma(ui.values[0]) + " -  " + Humanize.intComma(ui.values[1]) + " تومان");
-                                                            $("#price_gte").val(ui.values[1])
-                                                            $("#price_lte").val(ui.values[0])
+                                                            $("#price_gte").val(ui.values[0])
+                                                            $("#price_lte").val(ui.values[1])
                                                         }
 
                                                     });

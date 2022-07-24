@@ -75,23 +75,31 @@ class ProductListView(FilterView):
         return self.min_price
 
     def get_price_gte_filter_default(self):
-        default = (self.max_price - self.min_price) * 2 // 3
+        default = (self.max_price - self.min_price) // 3
         price_gte = self.request.GET.get('price_gte', default)
         price_gte = default if price_gte == "" else price_gte
-        print(price_gte)
         return price_gte
 
     def get_price_lte_filter_default(self):
-        default = (self.max_price - self.min_price) // 3
+        default = (self.max_price - self.min_price) * 2 // 3
         price_lte = self.request.GET.get('price_lte', default)
         price_lte = default if price_lte == "" else price_lte
-        print(price_lte)
         return price_lte
 
     def get_queryset(self):
         return self.model.objects.filter(status='Published') \
             .annotate(rate=Coalesce(Avg("review__rate"), 0.0)) \
-            .annotate(reviws=Count("review", filter=Q(review__status='Published')))
+            .annotate(reviws=Count("review", filter=Q(review__status='Published'))) \
+            .order_by(self.get_order_parameter())
+
+    def get_order_parameter(self):
+        order_by_url = self.request.GET.get("sortby")
+        order_strategy = {
+            "date": "pk",
+            "rating": "pk",
+            "popularity": "pk",
+        }
+        return order_strategy.get("order_strategy", "pk")
 
 
 class ProductView(DetailView):
