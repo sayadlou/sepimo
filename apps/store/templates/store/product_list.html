@@ -79,9 +79,9 @@
                                         </a>
                                     </h3>
                                     <!-- End .product-title -->
-                                    {#                                    <div class="product-price">#}
-                                    {#                                        50,000 تومان#}
-                                    {#                                    </div><!-- End .product-price -->#}
+                                    <div class="product-price">
+                                        {{ product.price|intcomma:False  }} تومان
+                                    </div><!-- End .product-price -->
                                     <div class="ratings-container">
                                         <div class="ratings">
                                             <div class="ratings-val" style="width: {{ product.rate }}%;"></div>
@@ -89,7 +89,6 @@
                                         </div><!-- End .ratings -->
                                         <span class="ratings-text">( {{ product.reviws }} دیدگاه )</span>
                                     </div><!-- End .rating-container -->
-
                                     {#                                    <div class="product-nav product-nav-dots">#}
                                     {#                                        <a href="#" style="background: #cc9966;"><span class="sr-only">نام#}
                                     {#                                                    رنگ</span></a>#}
@@ -195,6 +194,7 @@
                                                 $(function () {
                                                     $("#slider-range").slider({
                                                         range: true,
+                                                        step:1000,
                                                         min: {{ price_min }},
                                                         max: {{ price_max }},
                                                         values: [{{price_gte  }}, {{ price_lte }}],

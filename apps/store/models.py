@@ -54,12 +54,10 @@ class Product(models.Model):
     send_and_return = HTMLField()
     stock_inventory = models.DecimalField(max_digits=12, decimal_places=0, default=0)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
-    # has_variant = models.BooleanField(default=False)
     price = models.DecimalField(max_digits=12, decimal_places=0, null=True, blank=True, default=Decimal('0.0'),
                                 validators=(MinValueValidator(Decimal('0.0')),))
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
-    introduction_picture = FilerImageField(related_name='store_picture_introduction', on_delete=models.PROTECT)  # Todo clear migrations
-    variant_title = models.CharField(max_length=200, null=True, blank=True)
+    introduction_picture = FilerImageField(related_name='store_picture_introduction', on_delete=models.PROTECT)
 
     def __str__(self):
         return f"{self.title}"

@@ -9,7 +9,6 @@ from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import gettext as _
 from django.views import View
-# from vanilla import ListView, DetailView
 from django.views.generic import ListView, DetailView
 from django_filters.views import FilterView
 
