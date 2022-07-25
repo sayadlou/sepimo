@@ -29,13 +29,6 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInLine]
 
 
-class VariantInLine(admin.TabularInline):
-    model = Variant
-    fields = ('price', 'differentiation_value')
-    min_num = 1
-    extra = 0
-
-
 class ImageInline(admin.StackedInline):
     model = Image
     min_num = 1
@@ -52,8 +45,7 @@ class ProductAdmin(TranslationAdmin):
     #     js = ('core/js/admin_product.js',)
 
     exclude = ('code',)
-    inlines = [VariantInLine, ImageInline]
-
+    inlines = [ImageInline]
 
 
 @admin.register(Brand)

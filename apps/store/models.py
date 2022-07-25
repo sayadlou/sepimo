@@ -55,8 +55,8 @@ class Product(models.Model):
     stock_inventory = models.DecimalField(max_digits=12, decimal_places=0, default=0)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     # has_variant = models.BooleanField(default=False)
-    # price = models.DecimalField(max_digits=12, decimal_places=0, null=True, blank=True, default=Decimal('0.0'),
-    #                             validators=(MinValueValidator(Decimal('0.0')),))
+    price = models.DecimalField(max_digits=12, decimal_places=0, null=True, blank=True, default=Decimal('0.0'),
+                                validators=(MinValueValidator(Decimal('0.0')),))
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
     introduction_picture = FilerImageField(related_name='store_picture_introduction', on_delete=models.PROTECT)  # Todo clear migrations
     variant_title = models.CharField(max_length=200, null=True, blank=True)
@@ -107,10 +107,10 @@ class Review(models.Model):
     language = models.CharField(max_length=50, choices=LANGUAGES, default='fa')
 
 
-class Variant(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
-    price = models.DecimalField(max_digits=12, decimal_places=0)
-    differentiation_value = models.CharField(max_length=200, null=True, blank=True)
+# class Variant(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+#     price = models.DecimalField(max_digits=12, decimal_places=0)
+#     differentiation_value = models.CharField(max_length=200, null=True, blank=True)
 
 
 class Cart(models.Model):

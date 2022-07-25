@@ -29,9 +29,21 @@ class ProductListView(FilterView):
         self.min_price: int = 0
         self.max_price: int = 99999999
         self.order_strategy = [
-            {"strategy": "date", "name": "تاریخ", "orm_arg": "pk"},
-            {"strategy": "rating", "name": "امتیاز", "orm_arg": "pk"},
-            {"strategy": "popularity", "name": "محبوبیت", "orm_arg": "pk"},
+            {
+                "strategy": "date",
+                "name": "تاریخ",
+                "orm_arg": "pk"
+            },
+            {
+                "strategy": "rating",
+                "name": "امتیاز",
+                "orm_arg": "pk"
+            },
+            {
+                "strategy": "popularity",
+                "name": "محبوبیت",
+                "orm_arg": "pk"
+            },
         ]
         super().__init__(*args, **kwargs)
 
@@ -71,25 +83,25 @@ class ProductListView(FilterView):
         return brands_filter
 
     def get_price_max_filter_default(self):
-        max_price_dict = Variant.objects.aggregate(Max('price'))
+        max_price_dict = Product.objects.aggregate(Max('price'))
         max_price = max_price_dict.get('price__max', 9999999999999)
         self.max_price = int(max_price)
         return self.max_price
 
     def get_price_min_filter_default(self):
-        min_price_dict = Variant.objects.aggregate(Min('price'))
+        min_price_dict = Product.objects.aggregate(Min('price'))
         min_price = min_price_dict.get('price__min', 0)
         self.min_price = int(min_price)
         return self.min_price
 
     def get_price_gte_filter_default(self):
-        default = (self.max_price - self.min_price) // 3
+        default =  self.min_price
         price_gte = self.request.GET.get('price_gte', default)
         price_gte = default if price_gte == "" else price_gte
         return price_gte
 
     def get_price_lte_filter_default(self):
-        default = (self.max_price - self.min_price) * 2 // 3
+        default = self.max_price
         price_lte = self.request.GET.get('price_lte', default)
         price_lte = default if price_lte == "" else price_lte
         return price_lte
@@ -103,7 +115,7 @@ class ProductListView(FilterView):
     def get_order_parameter(self):
         order_by_url = self.request.GET.get("sortby")
 
-        return self.order_strategy[0].get("order_strategy", "pk")
+        return self.order_strategy[0].get("orm_arg", "pk")
 
 
 class ProductView(DetailView):
