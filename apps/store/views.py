@@ -24,8 +24,16 @@ class ProductListView(FilterView):
     model = Product
     template_name = 'store/product_list.html'
     filterset_class = ProductFilter
-    min_price: int = 0
-    max_price: int = 99999999
+
+    def __init__(self, *args, **kwargs):
+        self.min_price: int = 0
+        self.max_price: int = 99999999
+        self.order_strategy = [
+            {"strategy": "date", "name": "تاریخ", "orm_arg": "pk"},
+            {"strategy": "rating", "name": "امتیاز", "orm_arg": "pk"},
+            {"strategy": "popularity", "name": "محبوبیت", "orm_arg": "pk"},
+        ]
+        super().__init__(*args, **kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
@@ -35,7 +43,7 @@ class ProductListView(FilterView):
         context['price_max'] = self.get_price_max_filter_default()
         context['price_lte'] = self.get_price_lte_filter_default()
         context['price_gte'] = self.get_price_gte_filter_default()
-
+        context['order_strategy'] = self.order_strategy
         return context
 
     def get_category_filter(self):
@@ -94,12 +102,8 @@ class ProductListView(FilterView):
 
     def get_order_parameter(self):
         order_by_url = self.request.GET.get("sortby")
-        order_strategy = {
-            "date": "pk",
-            "rating": "pk",
-            "popularity": "pk",
-        }
-        return order_strategy.get("order_strategy", "pk")
+
+        return self.order_strategy[0].get("order_strategy", "pk")
 
 
 class ProductView(DetailView):

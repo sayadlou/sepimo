@@ -23,11 +23,19 @@
                         <label for="sortby">مرتب سازی بر اساس : </label>
                         <div class="select-custom">
                             <form id="sort-form" method="get" onchange="productListFormSend()">
-                                <select name="sortby"  class="form-control">
-                                <option value="popularity" selected="selected">محبوب ترین ها</option>
-                                <option value="rating">بیشترین فروش</option>
-                                <option value="date">تاریخ</option>
-                            </select>
+                                <select name="sortby" class="form-control">
+                                    {% for strategy in order_strategy %}
+                                        <option
+                                                value="{{ strategy.strategy }}"
+                                                {% if strategy.strategy == request.GET.sortby %}selected="selected"{% endif %}
+                                        >
+                                            {{ strategy.name }}
+                                        </option>
+                                        {#                                <option value="rating">بیشترین فروش</option>#}
+                                        {#                                <option value="date">تاریخ</option>#}
+                                    {% endfor %}
+
+                                </select>
                             </form>
 
                         </div>
@@ -205,8 +213,6 @@
                                                         " - " +
                                                         Humanize.intComma($("#slider-range").slider("values", 1))
                                                         + " تومان");
-
-
                                                 });
                                             </script>
 
