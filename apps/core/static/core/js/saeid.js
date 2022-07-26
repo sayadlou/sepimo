@@ -21,3 +21,16 @@ function productListFormSend(e) {
     var url = window.location.pathname + "?" + sortFormData + "&" + filterFormData
     window.location.replace(url)
 }
+
+// add-cart-plus
+function addCartMinusOnClick() {
+    var cartValue = document.getElementById("cart-value")
+    var value = parseInt(cartValue.value) - 1
+    cartValue.value = value.toString();
+}
+
+function addCartPlusOnClick() {
+    var cartValue = document.getElementById("cart-value")
+    var value = parseInt(cartValue.value) + 1
+    cartValue.value = value.toString();
+}

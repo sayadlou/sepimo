@@ -129,20 +129,31 @@
                                                        step="1" data-decimals="0" required="" style="display: none;">
                                                 <div class="input-group  input-spinner">
                                                     <div class="input-group-prepend">
-                                                        <button style="min-width: 26px"
+                                                        <button
+                                                                style="min-width: 26px"
                                                                 class="btn btn-decrement btn-spinner"
-                                                                type="button"><i class="icon-minus"></i></button>
+                                                                type="button"
+                                                                id="add-cart-minus"
+                                                                onclick="addCartMinusOnClick()"
+                                                        >
+                                                            <i class="icon-minus"></i>
+                                                        </button>
                                                     </div>
                                                     <input type="text"
+                                                           value="1"
                                                            style="text-align: center;min-width:80px ; width: 100px"
                                                            class="form-control "
-                                                           required=""
-                                                           placeholder="">
+                                                            id="cart-value">
                                                     <div class="input-group-append">
                                                         <button style="min-width: 26px"
                                                                 class="btn btn-increment btn-spinner"
-                                                                type="button"><i class="icon-plus"></i></button>
+                                                                type="button"
+                                                                id="add-cart-plus"
+                                                                onclick="addCartPlusOnClick()"
+                                                        >
+                                                            <i class="icon-plus"></i></button>
                                                     </div>
+
                                                 </div>
                                             </div><!-- End .product-details-quantity -->
                                         </div><!-- End .details-filter-row -->

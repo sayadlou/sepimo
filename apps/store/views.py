@@ -144,7 +144,8 @@ class ProductView(DetailView):
             language=self.request.LANGUAGE_CODE)
         context['same_products'] = self.model.objects.filter(category=self.object.category).filter(status='Published') \
             .annotate(rate=Coalesce(Avg("review__rate"), 0.0)) \
-            .annotate(reviws=Count("review", filter=Q(review__status='Published')))
+            .annotate(reviws=Count("review", filter=Q(review__status='Published'))) \
+            .exclude(pk=self.object.pk)
 
         return context
 
