@@ -21,29 +21,29 @@ logger = logging.getLogger('store.views')
 
 class ProductListView(FilterView):
     model = Product
+    paginate_by = 2
     template_name = 'store/product_list.html'
     filterset_class = ProductFilter
 
     def __init__(self, *args, **kwargs):
         self.min_price: int = 0
         self.max_price: int = 99999999
-        self.order_strategy = [
-            {
-                "strategy": "date",
+        self.order_strategy = {
+            "date": {
                 "name": "تاریخ",
-                "orm_arg": "pk"
+                "orm_arg": "created_at"
             },
-            {
-                "strategy": "rating",
+            "rating": {
                 "name": "امتیاز",
-                "orm_arg": "pk"
+                "orm_arg": "rate"
             },
-            {
-                "strategy": "popularity",
+            "popularity": {
                 "name": "محبوبیت",
-                "orm_arg": "pk"
+                "orm_arg": "sold"
             },
-        ]
+
+        }
+
         super().__init__(*args, **kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -55,6 +55,9 @@ class ProductListView(FilterView):
         context['price_lte'] = self.get_price_lte_filter_default()
         context['price_gte'] = self.get_price_gte_filter_default()
         context['order_strategy'] = self.order_strategy
+        context['total_product'] = self.get_queryset().count()
+        context['paginate_by'] = self.paginate_by
+
         return context
 
     def get_category_filter(self):
@@ -94,7 +97,7 @@ class ProductListView(FilterView):
         return self.min_price
 
     def get_price_gte_filter_default(self):
-        default =  self.min_price
+        default = self.min_price
         price_gte = self.request.GET.get('price_gte', default)
         price_gte = default if price_gte == "" else price_gte
         return price_gte
@@ -112,9 +115,13 @@ class ProductListView(FilterView):
             .order_by(self.get_order_parameter())
 
     def get_order_parameter(self):
-        order_by_url = self.request.GET.get("sortby")
 
-        return self.order_strategy[0].get("orm_arg", "pk")
+        orm_arg = "pk"
+        requested_order = self.request.GET.get("sortby")
+        strategy = self.order_strategy.get(requested_order)
+        if strategy:
+            orm_arg = strategy["orm_arg"]
+        return orm_arg
 
 
 class ProductView(DetailView):

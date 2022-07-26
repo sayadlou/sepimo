@@ -4,7 +4,6 @@ from uuid import uuid4
 from azbankgateways.models import Bank
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -58,6 +57,9 @@ class Product(models.Model):
                                 validators=(MinValueValidator(Decimal('0.0')),))
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
     introduction_picture = FilerImageField(related_name='store_picture_introduction', on_delete=models.PROTECT)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    sold = models.PositiveBigIntegerField(default=0)
 
     def __str__(self):
         return f"{self.title}"
@@ -68,20 +70,20 @@ class Product(models.Model):
         super().save(*args, **kwargs)
 
     # def clean(self):
-        # if self.has_variant is False and self.price is None:
-        #     raise ValidationError(_('a product without a variant should have a price'))
-        # if self.has_variant is False and self.price == Decimal('0.0'):
-        #     raise ValidationError(_('a product without a variant should have price more than 0'))
-        # if self.has_variant and self.variant_title == "":
-        #     raise ValidationError(_('variant title should be defined'))
+    # if self.has_variant is False and self.price is None:
+    #     raise ValidationError(_('a product without a variant should have a price'))
+    # if self.has_variant is False and self.price == Decimal('0.0'):
+    #     raise ValidationError(_('a product without a variant should have price more than 0'))
+    # if self.has_variant and self.variant_title == "":
+    #     raise ValidationError(_('variant title should be defined'))
 
-        # if self.has_variant and self.variant_set.all().count() == 0:
-        #     raise ValidationError(_('variant should be defined'))
-        # if self.has_variant:
-        #     self.price = Decimal('0.01')
-        # else:
-        #     self.variant_title = ""
-        #     self.variant_set.set(Variant.objects.none())
+    # if self.has_variant and self.variant_set.all().count() == 0:
+    #     raise ValidationError(_('variant should be defined'))
+    # if self.has_variant:
+    #     self.price = Decimal('0.01')
+    # else:
+    #     self.variant_title = ""
+    #     self.variant_set.set(Variant.objects.none())
 
 
 class Image(models.Model):

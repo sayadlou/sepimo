@@ -14,7 +14,7 @@
 
                 <div class="toolbox-center">
                     <div class="toolbox-info">
-                        نمایش <span>12 از 56</span> محصول
+                        نمایش <span>{{ paginate_by }} از {{ total_product }}</span> محصول
                     </div><!-- End .toolbox-info -->
                 </div><!-- End .toolbox-center -->
 
@@ -24,12 +24,12 @@
                         <div class="select-custom">
                             <form id="sort-form" method="get" onchange="productListFormSend()">
                                 <select name="sortby" class="form-control">
-                                    {% for strategy in order_strategy %}
+                                    {% for strategy,strategy_vlaue in order_strategy.items %}
                                         <option
-                                                value="{{ strategy.strategy }}"
-                                                {% if strategy.strategy == request.GET.sortby %}selected="selected"{% endif %}
+                                                value="{{ strategy }}"
+                                                {% if strategy == request.GET.sortby %}selected="selected"{% endif %}
                                         >
-                                            {{ strategy.name }}
+                                            {{ strategy_vlaue.name }}
                                         </option>
                                     {% endfor %}
                                 </select>
@@ -80,7 +80,7 @@
                                     </h3>
                                     <!-- End .product-title -->
                                     <div class="product-price">
-                                        {{ product.price|intcomma:False  }} تومان
+                                        {{ product.price|intcomma:False }} تومان
                                     </div><!-- End .product-price -->
                                     <div class="ratings-container">
                                         <div class="ratings">
@@ -194,7 +194,7 @@
                                                 $(function () {
                                                     $("#slider-range").slider({
                                                         range: true,
-                                                        step:1000,
+                                                        step: 1000,
                                                         min: {{ price_min }},
                                                         max: {{ price_max }},
                                                         values: [{{price_gte  }}, {{ price_lte }}],
@@ -223,5 +223,89 @@
                     </aside><!-- End .sidebar-filter -->
                 </form>
             </div><!-- End .container -->
-        </div><!-- End .page-content -->
+        </div><!-- End .container -->
+
+        <nav aria-label="Page navigation ">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item ">
+                        <a class="page-link page-link-prev" aria-label="Previous" tabindex="-1"
+                           href="?page={{ page_obj.previous_page_number }}">
+                        <span aria-hidden="true">
+                            {% if LANGUAGE_CODE == 'fa' %}
+                                <i class="icon-long-arrow-right"></i>
+                                قبل
+                            {% else %}
+                                <i class="icon-long-arrow-left"></i>
+                                Previous
+                            {% endif %}
+                        </span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link page-link-prev" href="#" aria-label="Previous"
+                           aria-disabled="true">
+                        <span aria-hidden="true">
+                            {% if LANGUAGE_CODE == 'fa' %}
+                                <i class="icon-long-arrow-right"></i>
+                                قبل
+                            {% else %}
+                                <i class="icon-long-arrow-left"></i>
+                                Previous
+                            {% endif %}
+                        </span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% for i in page_obj.paginator.page_range %}
+                    {% if page_obj.number == i %}
+                        <li class="page-item active" aria-current="page">
+                            <a class="page-link" href="{{ request.get_full_path }}&page={{ i }}">
+                                {{ i }}
+                            </a>
+                        </li>
+                    {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                        <li class="page-item" aria-current="page">
+                            <a class="page-link" href="{{ request.get_full_path }}&page={{ i }}">
+                                {{ i }}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <li class="page-item ">
+                        <a class="page-link page-link-next"
+                           href="{{ request.get_full_path }}&page={{ i }}"
+                           aria-label="Next">
+                         <span aria-hidden="true">
+                             {% if LANGUAGE_CODE == 'fa' %}
+                                 بعد
+                                 <i class="icon-long-arrow-left"></i>
+                             {% else %}
+                                 Next
+                                 <i class="icon-long-arrow-right"></i>
+                             {% endif %}
+                        </span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled " aria-label="Next">
+                        <a class="page-link page-link-next" href="#"
+                           aria-label="Next" aria-disabled="true">
+                        <span aria-hidden="true">
+                            {% if LANGUAGE_CODE == 'fa' %}
+                                بعد
+                                <i class="icon-long-arrow-left"></i>
+                            {% else %}
+                                Next
+                                <i class="icon-long-arrow-right"></i>
+                            {% endif %}
+                        </span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div><!-- End .page-content -->
 {% endblock %}
