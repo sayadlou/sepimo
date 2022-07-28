@@ -141,7 +141,8 @@ class ProductView(DetailView):
         context['next_product'] = self._get_next_product()
         context['prev_product'] = self._get_prev_product()
         context['form'] = self._get_review_form()
-        self.request.cart ="saeid"
+        self.request.cart.add_cart_product(self.object, 6)
+        print(self.request.cart.get_cart_item())
         return context
 
     def _get_review_form(self):

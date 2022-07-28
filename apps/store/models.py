@@ -102,8 +102,8 @@ class Review(models.Model):
     rate = models.IntegerField(validators=(MinValueValidator(0), MaxValueValidator(100)))
     comment = models.TextField(max_length=1000)
     title = models.CharField(max_length=100)
-    like = models.IntegerField(validators=(MinValueValidator(0),),default=0)
-    dislike = models.IntegerField(validators=(MinValueValidator(0),),default=0)
+    like = models.IntegerField(validators=(MinValueValidator(0),), default=0)
+    dislike = models.IntegerField(validators=(MinValueValidator(0),), default=0)
     language = models.CharField(max_length=50, choices=LANGUAGES, default='fa')
     name = models.CharField(max_length=50)
     email = models.EmailField()
@@ -130,6 +130,13 @@ class Cart(models.Model):
     status = models.CharField(choices=CART_STATUS_CHOICES, max_length=20, default=CART_STATUS_WAITING)
     status_change_date = models.DateTimeField(auto_now_add=True)
 
+    def add_product(self, product, quantity):
+        self.cartitem_set.create(
+            cart=self,
+            product=product,
+            quantity=quantity
+        )
+
     class Meta:
         verbose_name = _('Cart')
         verbose_name_plural = _('Carts')
@@ -137,9 +144,6 @@ class Cart(models.Model):
 
     def __str__(self):
         return self.owner.username
-
-    def add_product(self):
-        pass
 
 
 class CartItem(models.Model):
