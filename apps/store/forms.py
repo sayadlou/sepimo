@@ -1,8 +1,10 @@
+from captcha.fields import CaptchaField
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
 
-from .models import CartItem
+from .models import *
+from .widget import CustomCaptchaTextInput
 
 
 class CartItemForm(forms.ModelForm):
@@ -41,3 +43,19 @@ class CartItemForm(forms.ModelForm):
             data.save()
         except CartItem.DoesNotExist:
             self.save()
+
+
+class ReviewForm(forms.ModelForm):
+    captcha = CaptchaField(
+        widget=CustomCaptchaTextInput(attrs={'class': "form-control", 'aria-describedby': 'button-submit'}))
+
+    class Meta:
+        model = Review
+        fields = ("name", "email", "title", "comment", "product",)
+        widgets = {
+            "product": forms.TextInput(attrs={'hidden': True}),
+            "comment": forms.Textarea(attrs={'class': 'form-control mb-0 mt-0'}),
+            "name": forms.TextInput(attrs={'class': 'form-control mb-0 mt-0'}),
+            "title": forms.TextInput(attrs={'class': 'form-control mb-0 mt-0'}),
+            "email": forms.EmailInput(attrs={'class': 'form-control mb-0 mt-0'}),
+        }

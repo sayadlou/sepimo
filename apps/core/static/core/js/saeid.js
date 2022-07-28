@@ -34,3 +34,18 @@ function addCartPlusOnClick() {
     var value = parseInt(cartValue.value) + 1
     cartValue.value = value.toString();
 }
+
+function reviewSubmitOnClick(){
+    event.preventDefault()
+    formData = FormData()
+    $.ajax({
+      type: "POST",
+      url: "process.php",
+      data: formData,
+      dataType: "json",
+      encode: true,
+    }).done(function (data) {
+      console.log(data);
+    });
+
+}

@@ -13,7 +13,8 @@ from django.views.generic import ListView, DetailView
 from django_filters.views import FilterView
 
 from .filters import ProductFilter
-from .forms import CartItemForm
+from .forms import CartItemForm, ReviewForm
+from .mixin import AjaxMixin
 from .models import *
 
 logger = logging.getLogger('store.views')
@@ -21,7 +22,7 @@ logger = logging.getLogger('store.views')
 
 class ProductListView(FilterView):
     model = Product
-    paginate_by = 2
+    paginate_by = 8
     template_name = 'store/product_list.html'
     filterset_class = ProductFilter
 
@@ -115,7 +116,6 @@ class ProductListView(FilterView):
             .order_by(self.get_order_parameter())
 
     def get_order_parameter(self):
-
         orm_arg = "pk"
         requested_order = self.request.GET.get("sortby")
         strategy = self.order_strategy.get(requested_order)
@@ -127,35 +127,54 @@ class ProductListView(FilterView):
 class ProductView(DetailView):
     model = Product
     template_name = 'store/product.html'
-    lookup_url_kwarg = 'code'
+    review_form = ReviewForm
 
     def get_object(self, queryset=None):
         code = self.kwargs.get('pk')
-        slug = self.kwargs.get('slug')
-
-        if slug:
-            my_object = self.model.objects.filter(slug=slug, code=code).first()
-        my_object = self.model.objects.filter(code=code).first()
-        return my_object
+        return self.model.objects.filter(code=code).first()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context['reviews'] = self.object.review_set.filter(status='Published').filter(
-            language=self.request.LANGUAGE_CODE)
-        context['same_products'] = self.model.objects.filter(category=self.object.category).filter(status='Published') \
+        context['reviews'] = self._get_reviews()
+        context['title'] = self._get_page_title()
+        context['same_products'] = self._get_same_product()
+        context['next_product'] = self._get_next_product()
+        context['prev_product'] = self._get_prev_product()
+        context['form'] = self._get_review_form()
+        self.request.cart ="saeid"
+        return context
+
+    def _get_review_form(self):
+        return self.review_form(initial={"product": self.object})
+
+    def _get_page_title(self):
+        return self.object.title
+
+    def _get_same_product(self):
+        return self.model.objects.filter(category=self.object.category).filter(status='Published') \
             .annotate(rate=Coalesce(Avg("review__rate"), 0.0)) \
             .annotate(reviws=Count("review", filter=Q(review__status='Published'))) \
             .exclude(pk=self.object.pk)
 
-        return context
+    def _get_reviews(self):
+        return self.object.review_set.filter(status='Published').filter(
+            language=self.request.LANGUAGE_CODE)
+
+    def _get_next_product(self):
+        return self.model.objects.order_by('id').filter(category=self.object.category).filter(
+            id__gt=self.object.id).first()
+
+    def _get_prev_product(self):
+        return self.model.objects.order_by('id').filter(category=self.object.category).filter(
+            id__lt=self.object.id).last()
 
 
-class CartView(ListView):
-    model = Cart
+class CartView(AjaxMixin, View):
+    def ajax_get(self, request, *args, **kwargs):
+        pass
 
-
-# is_ajax = request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
-class CartApiView(View):
+    def ajax_post(self, request, *args, **kwargs):
+        pass
 
     def get(self, request, *args, **kwargs):
         context = {'cart': request.user.cart}

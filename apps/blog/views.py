@@ -82,17 +82,17 @@ class Slug(CreateView):
         self.log_post_view()
         context['post'] = self.post_obj
         context['comments'] = self.post_obj.comment_set.filter(status='Published')
-        context['next_post'] = self.post_model.objects. \
-            order_by('id'). \
-            filter(id__gt=self.post_obj.id). \
-            first()
-        context['prev_post'] = self.post_model.objects. \
-            order_by('id'). \
-            filter(id__lt=self.post_obj.id). \
-            last()
+        context['next_post'] = self.get_next_post()
+        context['prev_post'] = self.get_prev_post()
         context['same_post'] = self.post_model.objects.order_by('pub_date').filter(status='Published') \
             .filter(category=self.post_obj.category).all()
         return context
+
+    def get_next_post(self):
+        return self.post_model.objects.order_by('id').filter(id__gt=self.post_obj.id).first()
+
+    def get_prev_post(self):
+        return self.post_model.objects.order_by('id').filter(id__lt=self.post_obj.id).last()
 
     def log_post_view(self):
         user = self.request.user if self.request.user.is_authenticated else None
