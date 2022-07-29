@@ -6,4 +6,4 @@ class StoreConfig(AppConfig):
     name = 'apps.store'
 
     def ready(self):
-        from ..store.signals import create_cart
+        from ..store.signals import create_cart,post_login

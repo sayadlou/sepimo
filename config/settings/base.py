@@ -79,6 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'apps.store.context_processors.cart_processor'
             ],
         },
     },
@@ -194,3 +195,6 @@ TINYMCE_DEFAULT_CONFIG = {
 MINIMUM_ORDER_AMOUNT = 100000
 
 USE_THOUSAND_SEPARATOR = True
+
+SESSION_ENGINE = 'apps.core.session_backend'
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # 30 Days

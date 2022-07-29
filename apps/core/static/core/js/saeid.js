@@ -35,17 +35,57 @@ function addCartPlusOnClick() {
     cartValue.value = value.toString();
 }
 
-function reviewSubmitOnClick(){
+function reviewSubmitOnClick() {
     event.preventDefault()
     formData = FormData()
     $.ajax({
-      type: "POST",
-      url: "process.php",
-      data: formData,
-      dataType: "json",
-      encode: true,
+        type: "POST",
+        url: "process.php",
+        data: formData,
+        dataType: "json",
+        encode: true,
     }).done(function (data) {
-      console.log(data);
+        console.log(data);
     });
+
+}
+
+function cartDeleteOnClick(e) {
+    event.preventDefault();
+    console.log(event.target.dataset.pk)
+    var csrftoken = getCookie('csrftoken');
+
+    var postData = {
+        product: event.target.dataset.pk,
+        type: 'premium'
+    }
+    $.ajax({
+        url: event.target.dataset.url,
+        type: 'post',
+        data: postData,
+        headers: {'X-CSRFToken': csrftoken},
+
+    })
+        .done(
+        function (response) {
+            alert("success");
+            console.log(response)
+        })
+        .fail(
+            function (response) {
+                console.log(response)
+            });
+
+
+    // $.post(event.target.dataset.url, data)
+    //     .done(
+    //         function (response) {
+    //             alert("success");
+    //             console.log(response)
+    //         })
+    //     .fail(
+    //         function (response) {
+    //             console.log(response)
+    //         });
 
 }

@@ -4,6 +4,7 @@ from uuid import uuid4
 from azbankgateways.models import Bank
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.sessions.models import Session
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -124,7 +125,8 @@ class Cart(models.Model):
         (CART_STATUS_TRANSFERRED, 'Transferred'),
         (CART_STATUS_FAILED, 'Failed')
     ]
-    owner = models.OneToOneField(UserProfile, on_delete=models.RESTRICT, related_name="cart")
+    owner = models.OneToOneField(UserProfile, on_delete=models.RESTRICT, related_name="cart", blank=True, null=True)
+    session_key = models.OneToOneField(Session, on_delete=models.SET_NULL, blank=True, null=True)
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(choices=CART_STATUS_CHOICES, max_length=20, default=CART_STATUS_WAITING)

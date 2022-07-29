@@ -1,20 +1,17 @@
 import logging
 
-from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.db.models import Avg, Count, Q, Max, Min
 from django.db.models.functions import Coalesce
-from django.http import HttpResponseRedirect, HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, HttpResponse
 from django.shortcuts import render, get_object_or_404
-from django.utils.translation import gettext as _
 from django.views import View
 from django.views.generic import ListView, DetailView
 from django_filters.views import FilterView
 
 from .filters import ProductFilter
-from .forms import CartItemForm, ReviewForm
-from .mixin import AjaxMixin
+from .forms import ReviewForm
 from .models import *
 
 logger = logging.getLogger('store.views')
@@ -58,6 +55,7 @@ class ProductListView(FilterView):
         context['order_strategy'] = self.order_strategy
         context['total_product'] = self.get_queryset().count()
         context['paginate_by'] = self.paginate_by
+        print(self.request.cart.get_cart_item())
 
         return context
 
@@ -142,7 +140,6 @@ class ProductView(DetailView):
         context['prev_product'] = self._get_prev_product()
         context['form'] = self._get_review_form()
         self.request.cart.add_cart_product(self.object, 6)
-        print(self.request.cart.get_cart_item())
         return context
 
     def _get_review_form(self):
@@ -170,37 +167,52 @@ class ProductView(DetailView):
             id__lt=self.object.id).last()
 
 
-class CartView(AjaxMixin, View):
-    def ajax_get(self, request, *args, **kwargs):
-        pass
-
-    def ajax_post(self, request, *args, **kwargs):
-        pass
-
+class CartView(View):
     def get(self, request, *args, **kwargs):
-        context = {'cart': request.user.cart}
-        cart_has_item = CartItem.objects.filter(cart=request.user.cart).exists()
-        context['cart_has_item'] = cart_has_item
-        if cart_has_item:
-            context['cart_item'] = CartItem.objects.filter(cart=request.user.cart).order_by('id')
-            cart_sum = 0
-            for item in context['cart_item']:
-                cart_sum += item.product.price * Decimal(item.quantity)
-            context['cart_sum'] = cart_sum
-        return render(request=self.request, template_name="store/cart.html", context=context)
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            return self.ajax_get(request, *args, **kwargs)
+        return self.browser_get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        post_copy = request.POST.copy()
-        post_copy['cart'] = self.request.user.cart
-        form = CartItemForm(data=post_copy)
-        if form.is_valid():
-            messages.success(request, _('product added to cart'))
-            form.save_or_update()
-        else:
-            for key in form.errors:
-                for error in form.errors[key]:
-                    messages.error(request, error)
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            return self.ajax_post(request, *args, **kwargs)
+        return self.browser_post(request, *args, **kwargs)
+
+    def ajax_get(self, request, *args, **kwargs):
+        print("ajax get")
+        return HttpResponse("OK")
+
+    def ajax_post(self, request, *args, **kwargs):
+        if request.cart.edit_cat_item(self.request.POST):
+            return HttpResponse("OK")
+        return HttpResponse("NOK")
+
+    def browser_get(self, request, *args, **kwargs):
+        print("normal get")
+        # context = {'cart': request.user.cart}
+        # cart_has_item = CartItem.objects.filter(cart=request.user.cart).exists()
+        # context['cart_has_item'] = cart_has_item
+        # if cart_has_item:
+        #     context['cart_item'] = CartItem.objects.filter(cart=request.user.cart).order_by('id')
+        #     cart_sum = 0
+        #     for item in context['cart_item']:
+        #         cart_sum += item.product.price * Decimal(item.quantity)
+        #     context['cart_sum'] = cart_sum
+        # return render(request=self.request, template_name="store/cart.html", context=context)
+
+    def browser_post(self, request, *args, **kwargs):
+        print("normal post")
+        # post_copy = request.POST.copy()
+        # post_copy['cart'] = self.request.user.cart
+        # form = CartItemEditForm(data=post_copy)
+        # if form.is_valid():
+        #     messages.success(request, _('product added to cart'))
+        #     form.save_or_update()
+        # else:
+        #     for key in form.errors:
+        #         for error in form.errors[key]:
+        #             messages.error(request, error)
+        # return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 class OrderListView(LoginRequiredMixin, View):
