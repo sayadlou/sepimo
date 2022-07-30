@@ -55,7 +55,7 @@ class ProductListView(FilterView):
         context['order_strategy'] = self.order_strategy
         context['total_product'] = self.get_queryset().count()
         context['paginate_by'] = self.paginate_by
-        print(self.request.cart.get_cart_item())
+        print(self.request.cart.cartitem_set.all())
 
         return context
 
@@ -139,7 +139,8 @@ class ProductView(DetailView):
         context['next_product'] = self._get_next_product()
         context['prev_product'] = self._get_prev_product()
         context['form'] = self._get_review_form()
-        self.request.cart.add_cart_product(self.object, 6)
+        CartItem.objects.create(product=self.object, quantity=2, cart=self.request.cart)
+
         return context
 
     def _get_review_form(self):

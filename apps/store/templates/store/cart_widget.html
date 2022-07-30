@@ -3,11 +3,11 @@
     <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
        aria-haspopup="true" aria-expanded="false" data-display="static">
         <i class="icon-shopping-cart"></i>
-        <span class="cart-count">{{ request.cart.get_cart_item_count }}</span>
+        <span class="cart-count">{{ request.cart.cartitem_set.count }}</span>
     </a>
     <div class="dropdown-menu dropdown-menu-right">
         <div class="dropdown-cart-products">
-            {% for product in request.cart.get_cart_item %}
+            {% for product in request.cart.cartitem_set.all %}
                 <div class="product">
                     <div class="product-cart-details">
                         <h4 class="product-title">

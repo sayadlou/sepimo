@@ -1,4 +1,4 @@
-from apps.store.models import Cart, Order, OrderItem
+from apps.store.models import Cart, Order, OrderItem, CartItem
 
 
 def cart_to_order(request):
@@ -27,3 +27,13 @@ def print_attributes(obj):
         return {
             name: getattr(obj, name) for name in dir(obj)
             if name[0] != '_' and name not in disallowed_names and hasattr(obj, name)}
+
+
+def copy_session_cart_to_user_cart(session_car: Cart, user_cart: Cart):
+    for cart_item in session_car.cartitem_set.all():
+        CartItem.objects.create(
+            cart=user_cart,
+            quantity=cart_item.quantity,
+            product=cart_item.product,
+        )
+        print(cart_item)

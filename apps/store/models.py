@@ -126,7 +126,7 @@ class Cart(models.Model):
         (CART_STATUS_FAILED, 'Failed')
     ]
     owner = models.OneToOneField(UserProfile, on_delete=models.RESTRICT, related_name="cart", blank=True, null=True)
-    session_key = models.OneToOneField(Session, on_delete=models.SET_NULL, blank=True, null=True)
+    session = models.OneToOneField(Session, on_delete=models.SET_NULL, blank=True, null=True)
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(choices=CART_STATUS_CHOICES, max_length=20, default=CART_STATUS_WAITING)
@@ -145,7 +145,7 @@ class Cart(models.Model):
         ordering = ('id',)
 
     def __str__(self):
-        return self.owner.username
+        return f"{self.id}"
 
 
 class CartItem(models.Model):
