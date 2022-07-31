@@ -1,7 +1,7 @@
 {% load static %}
 <div class="dropdown cart-dropdown my-4">
-    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
-       aria-haspopup="true" aria-expanded="false" data-display="static">
+    <a  class="dropdown-toggle" role="button"
+       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
         <i class="icon-shopping-cart"></i>
         <span class="cart-count">{{ request.cart.cartitem_set.count }}</span>
     </a>
@@ -57,7 +57,7 @@
         <div class="dropdown-cart-total">
             <span>مجموع</span>
 
-            <span class="cart-total-price">{{request.cart.get_sum }} تومان</span>
+            <span class="cart-total-price">{{ request.cart.get_sum }} تومان</span>
         </div><!-- End .dropdown-cart-total -->
 
         <div class="dropdown-cart-action">

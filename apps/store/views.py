@@ -189,17 +189,8 @@ class CartView(View):
         return HttpResponse("NOK")
 
     def browser_get(self, request, *args, **kwargs):
-        print("normal get")
-        # context = {'cart': request.user.cart}
-        # cart_has_item = CartItem.objects.filter(cart=request.user.cart).exists()
-        # context['cart_has_item'] = cart_has_item
-        # if cart_has_item:
-        #     context['cart_item'] = CartItem.objects.filter(cart=request.user.cart).order_by('id')
-        #     cart_sum = 0
-        #     for item in context['cart_item']:
-        #         cart_sum += item.product.price * Decimal(item.quantity)
-        #     context['cart_sum'] = cart_sum
-        # return render(request=self.request, template_name="store/cart.html", context=context)
+        context = {}
+        return render(request=self.request, template_name="store/cart.html", context=context)
 
     def browser_post(self, request, *args, **kwargs):
         print("normal post")

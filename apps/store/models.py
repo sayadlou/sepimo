@@ -149,6 +149,10 @@ class Cart(models.Model):
     def get_sum(self):
         return sum((item.quantity * item.product.price) for item in self.cartitem_set.all())
 
+    @property
+    def has_item(self):
+        return self.cartitem_set.all().count() > 0
+
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, verbose_name=_('cart'), on_delete=models.CASCADE)
