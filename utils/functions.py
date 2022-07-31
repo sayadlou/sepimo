@@ -29,8 +29,8 @@ def print_attributes(obj):
             if name[0] != '_' and name not in disallowed_names and hasattr(obj, name)}
 
 
-def copy_session_cart_to_user_cart(session_car: Cart, user_cart: Cart):
-    for cart_item in session_car.cartitem_set.all():
+def copy_session_cart_to_user_cart(session_cart: Cart, user_cart: Cart):
+    for cart_item in session_cart.cartitem_set.all():
         CartItem.objects.create(
             cart=user_cart,
             quantity=cart_item.quantity,

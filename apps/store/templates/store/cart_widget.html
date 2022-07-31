@@ -7,26 +7,29 @@
     </a>
     <div class="dropdown-menu dropdown-menu-right">
         <div class="dropdown-cart-products">
-            {% for product in request.cart.cartitem_set.all %}
+            {% for item in request.cart.cartitem_set.all %}
                 <div class="product">
                     <div class="product-cart-details">
                         <h4 class="product-title">
-                            <a href="product.html">کتونی ورزشی مخصوص دویدن رنگ بژ</a>
+                            <a href="{{ item.product.get_absolute_url }}">{{ item.product.title }}</a>
                         </h4>
 
                         <span class="cart-product-info">
-                                                <span class="cart-product-qty">1 x </span>
-                                                84,000 تومان
+                                                <span class="cart-product-qty">{{ item.quantity }} x </span>
+                                                {{ item.product.price }}
+                            تومان
                                             </span>
                     </div><!-- End .product-cart-details -->
 
                     <figure class="product-image-container">
-                        <a href="product.html" class="product-image">
-                            <img src="{% static "core/en/images/products/cart/product-1.jpg" %}"
-                                 alt="product">
+                        <a href="{{ item.product.get_absolute_url }}" class="product-image">
+                            <img src="{{ item.product.introduction_picture.url }}"
+                                 alt="{{ item.product.title }}">
                         </a>
                     </figure>
-                    <a href="#" class="btn-remove"   title="حذف محصول"><i data-url="{% url "store:cart" %}" data-pk="saeid" onclick="cartDeleteOnClick()" class="icon-close"></i></a>
+                    <a href="#" class="btn-remove" title="حذف محصول"><i data-url="{% url "store:cart" %}"
+                                                                        data-pk="saeid" onclick="cartDeleteOnClick()"
+                                                                        class="icon-close"></i></a>
                 </div><!-- End .product -->
             {% endfor %}
             {#                                <div class="product">#}
@@ -54,7 +57,7 @@
         <div class="dropdown-cart-total">
             <span>مجموع</span>
 
-            <span class="cart-total-price">160,000 تومان</span>
+            <span class="cart-total-price">{{request.cart.get_sum }} تومان</span>
         </div><!-- End .dropdown-cart-total -->
 
         <div class="dropdown-cart-action">
