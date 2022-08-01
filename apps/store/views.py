@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.db.models import Avg, Count, Q, Max, Min
 from django.db.models.functions import Coalesce
+from django.forms import formset_factory
 from django.http import HttpResponseBadRequest, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views import View
@@ -11,7 +12,7 @@ from django.views.generic import ListView, DetailView
 from django_filters.views import FilterView
 
 from .filters import ProductFilter
-from .forms import ReviewForm
+from .forms import ReviewForm, CartItemEditFormSet
 from .models import *
 
 logger = logging.getLogger('store.views')
@@ -189,7 +190,15 @@ class CartView(View):
         return HttpResponse("NOK")
 
     def browser_get(self, request, *args, **kwargs):
-        context = {}
+        CartItemFormset = formset_factory(CartItemEditFormSet, extra=0)
+        formset = CartItemFormset(
+            initial=list(request.cart.cartitem_set.all().order_by('id').values('quantity', 'cart', 'product')))
+        product_pic_url = list(request.cart.cartitem_set.values_list('product__introduction_picture__file', flat=True))
+        print(product_pic_url)
+        context = {
+            "formset": formset,
+            "product_pic_url": product_pic_url,
+        }
         return render(request=self.request, template_name="store/cart.html", context=context)
 
     def browser_post(self, request, *args, **kwargs):

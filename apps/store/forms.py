@@ -7,6 +7,18 @@ from .models import *
 from .widget import CustomCaptchaTextInput
 
 
+class CartItemEditFormSet(forms.ModelForm):
+
+    class Meta:
+        model = CartItem
+        fields = ['cart', 'quantity', 'product', ]
+        widgets = {
+            "cart": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0 '}),
+            "quantity": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0'}),
+            "product": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0 '}),
+        }
+
+
 class CartItemEditForm(forms.ModelForm):
     request_type = forms.CharField(max_length=3, required=True)
 
@@ -61,7 +73,6 @@ class CartItemAddForm(forms.ModelForm):
 
         except CartItem.DoesNotExist:
             super().save(commit=commit)
-
 
 
 class ReviewForm(forms.ModelForm):
