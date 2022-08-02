@@ -14,7 +14,7 @@ class CartItemEditFormSet(forms.ModelForm):
         fields = ['cart', 'quantity', 'product', ]
         widgets = {
             "cart": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0 '}),
-            "quantity": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0'}),
+            "quantity": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0 cart_qty'}),
             "product": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0 '}),
         }
 

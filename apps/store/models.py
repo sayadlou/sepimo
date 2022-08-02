@@ -72,6 +72,10 @@ class Product(models.Model):
         self.code = f"sep-{self.id:07d}"
         super().save(*args, **kwargs)
 
+    @property
+    def absolute_url(self):
+        return reverse('store:product-code-slug', kwargs={'slug': self.slug, 'pk': self.code})
+
     def get_absolute_url(self):
         return reverse('store:product-code-slug', kwargs={'slug': self.slug, 'pk': self.code})
 
@@ -163,6 +167,10 @@ class CartItem(models.Model):
     cart = models.ForeignKey(Cart, verbose_name=_('cart'), on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(verbose_name=_('quantity'))
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    @property
+    def get_cartitem_total_price(self):
+        return int(self.product.price) * int(self.quantity)
 
     class Meta:
         verbose_name = _('Cart item')

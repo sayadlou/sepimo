@@ -191,10 +191,9 @@ class CartView(View):
 
     def browser_get(self, request, *args, **kwargs):
         CartItemFormset = formset_factory(CartItemEditFormSet, extra=0)
-        formset = CartItemFormset(
+        formset: CartItemFormset = CartItemFormset(
             initial=list(request.cart.cartitem_set.all().order_by('id').values('quantity', 'cart', 'product')))
         product_pic_url = list(request.cart.cartitem_set.values_list('product__introduction_picture__file', flat=True))
-        print(product_pic_url)
         context = {
             "formset": formset,
             "product_pic_url": product_pic_url,
