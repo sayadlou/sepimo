@@ -7,7 +7,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.sessions.models import Session
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from django.db.models import Sum
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from filer.fields.image import FilerImageField
@@ -163,9 +162,20 @@ class WishItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
 
+class CartItemManager(models.Manager):
+
+    def add_or_create(self, **kwargs):
+        try:
+            obj = super().get(**kwargs)
+            super().filter(id=obj.id).update(quantity=obj.quantity + kwargs.get("quantity", 0))
+        except self.model.DoesNotExist:
+            super().create(**kwargs)
+
+
 class CartItem(models.Model):
+    objects = CartItemManager()
     cart = models.ForeignKey(Cart, verbose_name=_('cart'), on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(verbose_name=_('quantity'))
+    quantity = models.PositiveIntegerField(verbose_name=_('quantity'), default=0)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
     @property
@@ -176,19 +186,6 @@ class CartItem(models.Model):
         verbose_name = _('Cart item')
         verbose_name_plural = _('Cart items')
         ordering = ('id',)
-
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        try:
-            cart_item = CartItem.objects.get(cart=self.cart, product=self.product)
-            self.quantity += cart_item.quantity
-            cart_item.delete()
-        except CartItem.DoesNotExist:
-            pass
-        except CartItem.MultipleObjectsReturned:
-            cart_items_sum = CartItem.objects.filter(cart=self.cart, product=self.product).aggregate(Sum('quantity'))
-            CartItem.objects.filter(cart=self.cart, product=self.product).delete()
-            self.quantity += cart_items_sum["quantity__sum"]
-        super().save(force_insert, force_update, using, update_fields)
 
     def __str__(self):
         return f'{self.quantity} of {self.product.title}'

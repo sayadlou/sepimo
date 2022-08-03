@@ -4,85 +4,104 @@
 {% load store_tag %}
 {% load static %}
 
+
+{#{% block page_content %}#}
+{#    {{ formset }}#}
+{#{% endblock page_content %}#}
 {% block page_content %}
+{#    {% if messages %}#}
+{#        {% for message in messages %}#}
+{#            <script>#}
+{#                {% if message.tags == 'success' %}#}
+{#                    alertify.success('{{ message }}');#}
+{#                {% endif %}#}
+{#                {% if message.tags == 'error' %}#}
+{#                    alertify.error('{{ message }}');#}
+{#                {% endif %}#}
+{#                {% if message.tags == 'warning' %}#}
+{#                    alertify.warning('{{ message }}');#}
+{#                {% endif %}#}
+{#                {% if message.tags == 'info' %}#}
+{#                    alertify.message('{{ message }}');#}
+{#                {% endif %}#}
+{#            </script>#}
+{#        {% endfor %}#}
+{#    {% endif %}#}
+    {% if formset.errors %}
+        {% for error in formset.non_field_errors %}
+            <script>
+                alertify.error("{{ error }}");
+            </script>
+        {% endfor %}
+    {% endif %}
     <div class="page-content">
         <div class="cart">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-9">
-                        <table class="table table-cart table-mobile">
-                            <thead>
-                            <th>محصول</th>
-                            <th>قیمت</th>
-                            <th>تعداد</th>
-                            <th>مجموع</th>
-                            <th></th>
-                            {% for form in formset.forms %}
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td class="product-col">
-                                        <div class="product">
-                                            <figure class="product-media">
-                                                <a href="#">
-                                                    <img src="{% get_product_picture forloop.counter0 %}"
-                                                         alt="تصویر محصول">
-                                                </a>
-                                            </figure>
+                        <form method="post">
+                            <table class="table table-cart table-mobile">
+                                <thead>
+                                <th>محصول</th>
+                                <th>قیمت</th>
+                                <th class="pr-5">تعداد</th>
+                                <th>مجموع</th>
+                                <th>حذف</th>
+                                {% csrf_token %}
+                                {{ formset.management_form }}
+                                {% for form in formset.forms %}
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="product-col">
+                                            <div class="product">
+                                                <figure class="product-media">
+                                                    <a href="#">
+                                                        <img src="{% get_product_picture forloop.counter0 %}"
+                                                             alt="تصویر محصول">
+                                                    </a>
+                                                </figure>
 
-                                            <h3 class="product-title">
-                                                <a href="{% get_product_attr "absolute_url" forloop.counter0 %}">{% get_product_attr "title" forloop.counter0 %}</a>
-                                            </h3><!-- End .product-title -->
-                                        </div><!-- End .product -->
-                                    </td>
-                                    <td class="price-col">{% get_product_attr "price" forloop.counter0 %}</td>
-                                    <td class="quantity-col">
-{#                                        <div class="cart-product-quantity">#}
-<div class="ml-5 pl-5  " style="width: 60%">
-                                            {{ form.quantity }}
+                                                <h3 class="product-title">
+                                                    <a href="{% get_product_attr "absolute_url" forloop.counter0 %}">{% get_product_attr "title" forloop.counter0 %}</a>
+                                                </h3><!-- End .product-title -->
+                                            </div><!-- End .product -->
+                                        </td>
+                                        <td class="price-col">{% get_product_attr "price" forloop.counter0 %}</td>
+                                        <td class="quantity-col">
+                                            <div class="ml-5 pl-5 quantity-input " style="width: 60%">
+                                                {{ form.quantity }}
+                                                {{ form.cart }}
+                                                {{ form.product }}
+                                                {{ form.id }}
+                                            </div>
+                                        </td>
+                                        <td class="total-col">{% get_cartitem_total_price forloop.counter0 %}</td>
+                                        <td class="remove-col">
+                                            <button class="btn-remove">{{ form.DELETE }}</button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
 
-</div>
-{#                                        </div><!-- End .cart-product-quantity -->#}
-                                        <style>
-                                            .table.table-cart .quantity-col {
-                                                width: 280px;
-                                            }
-                                        </style>
-
-                                    </td>
-                                    <td class="total-col">{% get_cartitem_total_price forloop.counter0 %}</td>
-                                    <td class="remove-col">
-                                        <button class="btn-remove"><i class="icon-close"></i></button>
-                                    </td>
-                                    {#                    <td class="product-col">#}
-                                    {#                        {% get_product_picture forloop.counter0 %}#}
-                                    {#                    </td>#}
-                                    {#                    <td class="product-col">#}
-                                    {#                        {% get_product_attr "title" forloop.counter0 %}#}
-                                    {#                    </td>#}
-                                    {#                    {% for field in form %}#}
-                                    {#                        <td class="product-col">{{ field }}</td>#}
-                                    {#                    {% endfor %}#}
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                        <div class="cart-bottom">
-                            <div class="cart-discount">
-                                <form action="#">
+                            <div class="cart-bottom">
+                                <div class="cart-discount">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" required="" placeholder="کد تخفیف">
+                                        <input type="text" class="form-control" placeholder="کد تخفیف">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-primary-2" type="submit"><i
                                                     class="icon-long-arrow-left"></i></button>
                                         </div><!-- .End .input-group-append -->
                                     </div><!-- End .input-group -->
-                                </form>
-                            </div><!-- End .cart-discount -->
+                                </div><!-- End .cart-discount -->
 
-                            <a href="#" class="btn btn-outline-dark-2"><span>به روز رسانی سبد خرید</span><i
-                                    class="icon-refresh"></i></a>
-                        </div><!-- End .cart-bottom -->
+                                <button type="submit" class="btn btn-outline-dark-2">
+                                    <span>به روز رسانی سبد خرید</span>
+                                    <i class="icon-refresh"></i>
+                                </button>
+                            </div><!-- End .cart-bottom -->
+                        </form>
                     </div><!-- End .col-lg-9 -->
                     <aside class="col-lg-3">
                         <div class="summary summary-cart">

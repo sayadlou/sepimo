@@ -1,18 +1,21 @@
 import logging
 
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.db.models import Avg, Count, Q, Max, Min
 from django.db.models.functions import Coalesce
-from django.forms import formset_factory
+from django.forms import modelformset_factory
+from django import forms
 from django.http import HttpResponseBadRequest, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views import View
 from django.views.generic import ListView, DetailView
 from django_filters.views import FilterView
+from django.utils.translation import gettext as _
 
 from .filters import ProductFilter
-from .forms import ReviewForm, CartItemEditFormSet
+from .forms import ReviewForm, CartItemAddForm
 from .models import *
 
 logger = logging.getLogger('store.views')
@@ -140,8 +143,11 @@ class ProductView(DetailView):
         context['next_product'] = self._get_next_product()
         context['prev_product'] = self._get_prev_product()
         context['form'] = self._get_review_form()
-        CartItem.objects.create(product=self.object, quantity=2, cart=self.request.cart)
-
+        form = CartItemAddForm(data={
+            "product": self.object, "quantity": 2, "cart": self.request.cart
+        })
+        if form.is_valid():
+            form.save()
         return context
 
     def _get_review_form(self):
@@ -170,6 +176,18 @@ class ProductView(DetailView):
 
 
 class CartView(View):
+    cart_item_formset = modelformset_factory(CartItem, extra=0, can_delete=True,
+                                             fields=['cart', 'quantity', 'product', ],
+                                             widgets={
+                                                 "cart": forms.TextInput(
+                                                     attrs={'class': 'form-control mt-0 mb-0 d-none'}),
+                                                 "quantity": forms.TextInput(
+                                                     attrs={'class': 'form-control mt-0 mb-0 cart_qty'}),
+                                                 "product": forms.TextInput(
+                                                     attrs={'class': 'form-control mt-0 mb-0 d-none'}),
+                                             }
+                                             )
+
     def get(self, request, *args, **kwargs):
         if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
             return self.ajax_get(request, *args, **kwargs)
@@ -190,29 +208,38 @@ class CartView(View):
         return HttpResponse("NOK")
 
     def browser_get(self, request, *args, **kwargs):
-        CartItemFormset = formset_factory(CartItemEditFormSet, extra=0)
-        formset: CartItemFormset = CartItemFormset(
-            initial=list(request.cart.cartitem_set.all().order_by('id').values('quantity', 'cart', 'product')))
-        product_pic_url = list(request.cart.cartitem_set.values_list('product__introduction_picture__file', flat=True))
+        formset = self.cart_item_formset(queryset=self.get_formset_initial_value)
+        product_pictures = self.get_product_pictures
         context = {
             "formset": formset,
-            "product_pic_url": product_pic_url,
+            "product_pictures": product_pictures,
         }
         return render(request=self.request, template_name="store/cart.html", context=context)
 
     def browser_post(self, request, *args, **kwargs):
         print("normal post")
-        # post_copy = request.POST.copy()
-        # post_copy['cart'] = self.request.user.cart
-        # form = CartItemEditForm(data=post_copy)
-        # if form.is_valid():
-        #     messages.success(request, _('product added to cart'))
-        #     form.save_or_update()
-        # else:
-        #     for key in form.errors:
-        #         for error in form.errors[key]:
-        #             messages.error(request, error)
-        # return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        # Check if submitted forms are valid
+        formset = self.cart_item_formset(data=request.POST)
+        product_pictures = self.get_product_pictures
+        if formset.is_valid():
+            formset.save()
+            messages.info(request, _('Cart Updated'))
+            formset = self.cart_item_formset(queryset=self.get_formset_initial_value)
+        else:
+            messages.error(request, _('Cart Not Valid'))
+        context = {
+            "formset": formset,
+            "product_pictures": product_pictures,
+        }
+        return render(request=self.request, template_name="store/cart.html", context=context)
+
+    @property
+    def get_product_pictures(self):
+        return self.request.cart.cartitem_set.values_list('product__introduction_picture__file', flat=True)
+
+    @property
+    def get_formset_initial_value(self):
+        return self.request.cart.cartitem_set.all().order_by('id')
 
 
 class OrderListView(LoginRequiredMixin, View):

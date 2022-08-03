@@ -13,9 +13,9 @@ class CartItemEditFormSet(forms.ModelForm):
         model = CartItem
         fields = ['cart', 'quantity', 'product', ]
         widgets = {
-            "cart": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0 '}),
+            "cart": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0 d-none'}),
             "quantity": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0 cart_qty'}),
-            "product": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0 '}),
+            "product": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0 d-none'}),
         }
 
 
@@ -64,15 +64,9 @@ class CartItemAddForm(forms.ModelForm):
         model = CartItem
         fields = ('cart', 'quantity', 'product', 'request_type')
 
-    def save(self, commit=True):
-        try:
-            cart_item = CartItem.objects.get(product=self.cleaned_data['product'])
-            if self.cleaned_data["request_type"] == "add":
-                cart_item.quantity += self.cleaned_data['quantity']
-                cart_item.save()
+    def clean(self):
+        cleaned_data = super().clean()
 
-        except CartItem.DoesNotExist:
-            super().save(commit=commit)
 
 
 class ReviewForm(forms.ModelForm):

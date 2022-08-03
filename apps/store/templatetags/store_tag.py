@@ -9,8 +9,8 @@ register = template.Library()
 
 @register.simple_tag(takes_context=True)
 def print_fild(context, counter, arg=None):
-    print(context["product_pic_url"][0], counter)
-    url = context["product_pic_url"][counter]
+    print(context["product_pictures"][0], counter)
+    url = context["product_pictures"][counter]
     return mark_safe(f'<img src="/media/{url}">')
 
 
