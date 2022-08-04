@@ -33,21 +33,27 @@ class CartItemEditForm(forms.ModelForm):
             except CartItem.DoesNotExist:
                 raise ValidationError(_("product not found"))
 
+    def save(self, commit=True):
+        return super().save(commit)
+
     def save_or_update(self):
 
         if self.cleaned_data["request_type"] == "add":
             try:
-                cart_item = self.Meta.model.objects.get(cart=self.instance.cart, product=self.instance.product)
+                cart_item = self.Meta.model.objects.get(cart=self.cleaned_data["cart"],
+                                                        product=self.cleaned_data["product"])
                 cart_item.quantity += self.instance.quantity
                 cart_item.save()
             except CartItem.DoesNotExist:
-                self.instance.save()
+                self.save()
             except CartItem.MultipleObjectsReturned:
-                cart_items_sum = CartItem.objects.filter(cart=self.cart, product=self.product).aggregate(
-                    Sum('quantity'))
-                self.Meta.model.objects.filter(cart=self.cart, product=self.product).delete()
+                cart_items_sum = CartItem.objects \
+                    .filter(cart=self.cleaned_data["cart"], product=self.cleaned_data["product"]) \
+                    .aggregate(Sum('quantity'))
+                self.Meta.model.objects.filter(cart=self.cleaned_data["cart"],
+                                               product=self.cleaned_data["product"]).delete()
                 self.instance.quantity += cart_items_sum["quantity__sum"]
-                self.instance.save()
+                super().save()
         else:
             cart_item = CartItem.objects.get(product=self.cleaned_data['product'])
             if self.cleaned_data["request_type"] == "inc":

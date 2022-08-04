@@ -5,9 +5,6 @@
 {% load static %}
 
 
-{#{% block page_content %}#}
-{#    {{ formset }}#}
-{#{% endblock page_content %}#}
 {% block page_content %}
 {#    {% if messages %}#}
 {#        {% for message in messages %}#}
@@ -27,6 +24,7 @@
 {#            </script>#}
 {#        {% endfor %}#}
 {#    {% endif %}#}
+
     {% if formset.errors %}
         {% for error in formset.non_field_errors %}
             <script>
@@ -41,6 +39,7 @@
                     <div class="col-lg-9">
                         <form method="post">
                             <table class="table table-cart table-mobile">
+
                                 <thead>
                                 <th>محصول</th>
                                 <th>قیمت</th>

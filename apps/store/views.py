@@ -249,6 +249,11 @@ class CartWidgetView(View):
         return render(request=self.request, template_name="store/cart_widget.html")
 
 
+class WishList(ListView):
+    template_name = 'store/whishlist.html'
+
+    def get_queryset(self):
+        return self.request.cart.wishitem_set.all()
 
 
 class OrderListView(LoginRequiredMixin, View):

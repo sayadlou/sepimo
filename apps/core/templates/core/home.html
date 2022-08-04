@@ -169,10 +169,10 @@
 
                 <div class="header-right">
                     <div class="wishlist">
-                        <a href="#" title="Wishlist">
+                        <a href="{% url 'store:whishlist' %}" title="Wishlist">
                             <div class="icon">
                                 <i class="icon-heart-o"></i>
-                                <span class="wishlist-count badge">3</span>
+                                <span class="wishlist-count badge">{{ request.cart.wishitem_set.count }}</span>
                             </div>
                             <p>{% translate "Wishlist" %}</p>
                         </a>
