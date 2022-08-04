@@ -15,7 +15,7 @@ from django_filters.views import FilterView
 from django.utils.translation import gettext as _
 
 from .filters import ProductFilter
-from .forms import ReviewForm, CartItemAddForm
+from .forms import ReviewForm, CartItemEditForm
 from .models import *
 
 logger = logging.getLogger('store.views')
@@ -143,11 +143,8 @@ class ProductView(DetailView):
         context['next_product'] = self._get_next_product()
         context['prev_product'] = self._get_prev_product()
         context['form'] = self._get_review_form()
-        form = CartItemAddForm(data={
-            "product": self.object, "quantity": 2, "cart": self.request.cart
-        })
-        if form.is_valid():
-            form.save()
+        context['product_form'] = CartItemEditForm(
+            initial={"cart": self.request.cart, "product": self.object, "request_type": "add", "quantity": 1})
         return context
 
     def _get_review_form(self):
@@ -203,9 +200,13 @@ class CartView(View):
         return HttpResponse("OK")
 
     def ajax_post(self, request, *args, **kwargs):
-        if request.cart.edit_cat_item(self.request.POST):
+        form = CartItemEditForm(request.POST)
+        if form.is_valid():
+            form.save_or_update()
             return HttpResponse("OK")
-        return HttpResponse("NOK")
+        else:
+            print(form.errors.as_text)
+        return HttpResponseBadRequest("NOK")
 
     def browser_get(self, request, *args, **kwargs):
         formset = self.cart_item_formset(queryset=self.get_formset_initial_value)
@@ -240,6 +241,14 @@ class CartView(View):
     @property
     def get_formset_initial_value(self):
         return self.request.cart.cartitem_set.all().order_by('id')
+
+
+class CartWidgetView(View):
+
+    def get(self, request, *args, **kwargs):
+        return render(request=self.request, template_name="store/cart_widget.html")
+
+
 
 
 class OrderListView(LoginRequiredMixin, View):

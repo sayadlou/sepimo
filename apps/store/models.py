@@ -62,6 +62,9 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     sold = models.PositiveBigIntegerField(default=0)
+    minimum_order_quantity = models.PositiveIntegerField(default=1)
+    maximum_order_quantity = models.PositiveIntegerField(default=10)
+
 
     def __str__(self):
         return f"{self.title}"

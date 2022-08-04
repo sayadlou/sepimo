@@ -5,7 +5,7 @@
 
 
 {% block page_content %}
-    <main class="main">
+    <main id="main-page" class="main">
         <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
             <div class="container d-flex align-items-center">
                 <ol class="breadcrumb">
@@ -82,7 +82,7 @@
 
                         <div class="col-md-6">
                             <div class="product-details">
-                                <h1 class="product-title">{{ product.title }} {{ request.cart }}</h1>
+                                <h1 class="product-title">{{ product.title }}</h1>
                                 <!-- End .product-title -->
 
                                 <div class="ratings-container">
@@ -128,43 +128,37 @@
                                         <div class="details-filter-row details-row-size mt-1">
                                             <label for="qty">تعداد : </label>
                                             <div class="product-details-quantity">
-                                                <input type="number" id="qty" class="form-control" value="1" min="1"
-                                                       max="10"
-                                                       step="1" data-decimals="0" required="" style="display: none;">
-                                                <div class="input-group  input-spinner">
-                                                    <div class="input-group-prepend">
-                                                        <button
-                                                                style="min-width: 26px"
-                                                                class="btn btn-decrement btn-spinner"
-                                                                type="button"
-                                                                id="add-cart-minus"
-                                                                onclick="addCartMinusOnClick()"
-                                                        >
-                                                            <i class="icon-minus"></i>
-                                                        </button>
-                                                    </div>
-                                                    <input type="text"
-                                                           value="1"
-                                                           style="text-align: center;min-width:80px ; width: 100px"
-                                                           class="form-control "
-                                                           id="cart-value">
-                                                    <div class="input-group-append">
-                                                        <button style="min-width: 26px"
-                                                                class="btn btn-increment btn-spinner"
-                                                                type="button"
-                                                                id="add-cart-plus"
-                                                                onclick="addCartPlusOnClick()"
-                                                        >
-                                                            <i class="icon-plus"></i></button>
-                                                    </div>
+                                                <form id="cart-add"
 
-                                                </div>
+                                                      action="{% url "store:cart" %}"
+                                                >
+                                                    <input
+                                                            name="quantity"
+                                                            type="number"
+
+                                                            class="form-control"
+                                                            value="1"
+                                                            min="{{ product.minimum_order_quantity }}"
+                                                            max="{{ product.maximum_order_quantity }}"
+                                                            step="1" data-decimals="0" required=""
+                                                            style="display: none;">
+                                                    <input type="number" name="product" hidden value="{{ product.id }}">
+                                                    <input type="text" name="cart" hidden value="{{ request.cart.id }}">
+                                                    <input type="text" name="request_type" hidden value="add">
+                                                    {#                                                    {{ product_form }}#}
+                                                </form>
+
                                             </div><!-- End .product-details-quantity -->
                                         </div><!-- End .details-filter-row -->
                                     </div>
                                     <div class="col">
-                                        <a href="#"
-                                           class="btn-product btn-cart pt-0 mt-2"><span>افزودن به سبد خرید</span></a>
+                                        <a class="btn-product btn-cart pt-0 mt-2"
+                                           style=" cursor: pointer;"
+                                           onclick="cartAddOnclick()"
+
+                                        >
+                                            <span data-cartwidget="{% url "store:cart-widget" %}">افزودن به سبد خرید</span>
+                                        </a>
 
                                     </div>
                                     <div class="col">
@@ -328,16 +322,16 @@
                                             </div>
                                         </div>
                                         <div class="row">
-{#                                            <div class="col-5">#}
-{#                                                {{ form.captcha }}#}
-{#                                                {{ form.captcha.errors }}#}
-{#                                                {% if form.captcha.help_text %}#}
-{#                                                    <p class="help">{{ form.captcha.help_text|safe }}</p>#}
-{#                                                {% endif %}#}
-{#                                                <button onclick="reviewSubmitOnClick()" id="review-submit" class="btn btn-primary mr-2" style="max-width: 70px" aria-url="">#}
-{#                                                    {% translate "Submit" %}#}
-{#                                                </button>#}
-{#                                            </div>#}
+                                            {#                                            <div class="col-5">#}
+                                            {#                                                {{ form.captcha }}#}
+                                            {#                                                {{ form.captcha.errors }}#}
+                                            {#                                                {% if form.captcha.help_text %}#}
+                                            {#                                                    <p class="help">{{ form.captcha.help_text|safe }}</p>#}
+                                            {#                                                {% endif %}#}
+                                            {#                                                <button onclick="reviewSubmitOnClick()" id="review-submit" class="btn btn-primary mr-2" style="max-width: 70px" aria-url="">#}
+                                            {#                                                    {% translate "Submit" %}#}
+                                            {#                                                </button>#}
+                                            {#                                            </div>#}
                                         </div>
                                     </form>
                                 </div><!-- End .reply -->

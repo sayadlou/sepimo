@@ -16,3 +16,8 @@ p .help {
     transform: scale(0.8);
     color: #CCA7B5;
 }
+
+.pgage-deactive {
+    opacity: 0.3;
+    /*background: #CCC;*/
+}

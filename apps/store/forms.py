@@ -1,22 +1,11 @@
 from captcha.fields import CaptchaField
 from django import forms
 from django.core.exceptions import ValidationError
+from django.db.models import Sum
 from django.utils.translation import gettext as _
 
 from .models import *
 from .widget import CustomCaptchaTextInput
-
-
-class CartItemEditFormSet(forms.ModelForm):
-
-    class Meta:
-        model = CartItem
-        fields = ['cart', 'quantity', 'product', ]
-        widgets = {
-            "cart": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0 d-none'}),
-            "quantity": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0 cart_qty'}),
-            "product": forms.TextInput(attrs={'class': 'form-control mt-0 mb-0 d-none'}),
-        }
 
 
 class CartItemEditForm(forms.ModelForm):
@@ -29,44 +18,69 @@ class CartItemEditForm(forms.ModelForm):
     def clean(self):
         cleaned_post_data = super().clean()
         product = cleaned_post_data['product']
-        if not cleaned_post_data["request_type"] in ("dec", "inc", 'del'):
+        if not cleaned_post_data["request_type"] in ("dec", "inc", 'del', 'add'):
             raise ValidationError(_("requested type is not valid"))
-        try:
-            data = CartItem.objects.get(product=product)
-            if cleaned_post_data["request_type"] == "inc":
-                if data.quantity + cleaned_post_data['quantity'] > product.max_order_quantity:
-                    raise ValidationError(_("quantity is more than allowed value"))
-            if cleaned_post_data["request_type"] == "dec":
-                if data.quantity - cleaned_post_data['quantity'] < product.min_order_quantity:
-                    raise ValidationError(_("quantity is less than allowed value"))
+        if cleaned_post_data["request_type"] != "add":
+            try:
+                data = CartItem.objects.get(product=product.id)
+                if cleaned_post_data["request_type"] == "inc":
+                    if data.quantity + cleaned_post_data['quantity'] > product.maximum_order_quantity:
+                        raise ValidationError(_("quantity is more than allowed value"))
+                if cleaned_post_data["request_type"] == "dec":
+                    if data.quantity - cleaned_post_data['quantity'] < product.minimum_order_quantity:
+                        raise ValidationError(_("quantity is less than allowed value"))
 
-        except CartItem.DoesNotExist:
-            raise ValidationError(_("product not found"))
+            except CartItem.DoesNotExist:
+                raise ValidationError(_("product not found"))
 
     def save_or_update(self):
-        cart_item = CartItem.objects.get(product=self.cleaned_data['product'])
-        if self.cleaned_data["request_type"] == "inc":
-            cart_item.quantity += self.cleaned_data['quantity']
-            cart_item.save()
 
-        if self.cleaned_data["request_type"] == "dec":
-            cart_item.quantity -= self.cleaned_data['quantity']
-            cart_item.save()
+        if self.cleaned_data["request_type"] == "add":
+            try:
+                cart_item = self.Meta.model.objects.get(cart=self.instance.cart, product=self.instance.product)
+                cart_item.quantity += self.instance.quantity
+                cart_item.save()
+            except CartItem.DoesNotExist:
+                self.instance.save()
+            except CartItem.MultipleObjectsReturned:
+                cart_items_sum = CartItem.objects.filter(cart=self.cart, product=self.product).aggregate(
+                    Sum('quantity'))
+                self.Meta.model.objects.filter(cart=self.cart, product=self.product).delete()
+                self.instance.quantity += cart_items_sum["quantity__sum"]
+                self.instance.save()
+        else:
+            cart_item = CartItem.objects.get(product=self.cleaned_data['product'])
+            if self.cleaned_data["request_type"] == "inc":
+                cart_item.quantity += self.cleaned_data['quantity']
+                cart_item.save()
 
-        if self.cleaned_data["request_type"] == "del":
-            cart_item.delete()
+            if self.cleaned_data["request_type"] == "dec":
+                cart_item.quantity -= self.cleaned_data['quantity']
+                cart_item.save()
+
+            if self.cleaned_data["request_type"] == "del":
+                cart_item.delete()
 
 
 class CartItemAddForm(forms.ModelForm):
     request_type = forms.CharField(max_length=3, required=True)
 
     class Meta:
-        model = CartItem
+        model: CartItem = CartItem
         fields = ('cart', 'quantity', 'product', 'request_type')
 
-    def clean(self):
-        cleaned_data = super().clean()
-
+    def save_or_add_existing(self):
+        try:
+            cart_item = self.Meta.model.objects.get(cart=self.instance.cart, product=self.instance.product)
+            cart_item.quantity += self.instance.quantity
+            cart_item.save()
+        except CartItem.DoesNotExist:
+            self.instance.save()
+        except CartItem.MultipleObjectsReturned:
+            cart_items_sum = CartItem.objects.filter(cart=self.cart, product=self.product).aggregate(Sum('quantity'))
+            self.Meta.model.objects.filter(cart=self.cart, product=self.product).delete()
+            self.instance.quantity += cart_items_sum["quantity__sum"]
+            self.instance.save()
 
 
 class ReviewForm(forms.ModelForm):

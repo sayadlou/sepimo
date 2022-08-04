@@ -1,69 +1,52 @@
 {% load static %}
-<div class="dropdown cart-dropdown my-4">
-    <a  class="dropdown-toggle" role="button"
-       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-        <i class="icon-shopping-cart"></i>
-        <span class="cart-count">{{ request.cart.cartitem_set.count }}</span>
-    </a>
-    <div class="dropdown-menu dropdown-menu-right">
-        <div class="dropdown-cart-products">
-            {% for item in request.cart.cartitem_set.all %}
-                <div class="product">
-                    <div class="product-cart-details">
-                        <h4 class="product-title">
-                            <a href="{{ item.product.get_absolute_url }}">{{ item.product.title }}</a>
-                        </h4>
+<div id="cart-widget-div">
+    <div class="dropdown cart-dropdown my-4">
+        <a class="dropdown-toggle" role="button"
+           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+            <i class="icon-shopping-cart"></i>
+            <span class="cart-count">{{ request.cart.cartitem_set.count }}</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right">
+            <div class="dropdown-cart-products">
+                {% for item in request.cart.cartitem_set.all %}
+                    <div class="product">
+                        <div class="product-cart-details">
+                            <h4 class="product-title">
+                                <a href="{{ item.product.get_absolute_url }}">{{ item.product.title }}</a>
+                            </h4>
 
-                        <span class="cart-product-info">
+                            <span class="cart-product-info">
                                                 <span class="cart-product-qty">{{ item.quantity }} x </span>
                                                 {{ item.product.price }}
                             تومان
                                             </span>
-                    </div><!-- End .product-cart-details -->
+                        </div><!-- End .product-cart-details -->
 
-                    <figure class="product-image-container">
-                        <a href="{{ item.product.get_absolute_url }}" class="product-image">
-                            <img src="{{ item.product.introduction_picture.url }}"
-                                 alt="{{ item.product.title }}">
-                        </a>
-                    </figure>
-                    <a href="#" class="btn-remove" title="حذف محصول"><i data-url="{% url "store:cart" %}"
-                                                                        data-pk="saeid" onclick="cartDeleteOnClick()"
-                                                                        class="icon-close"></i></a>
-                </div><!-- End .product -->
-            {% endfor %}
-            {#                                <div class="product">#}
-            {#                                    <div class="product-cart-details">#}
-            {#                                        <h4 class="product-title">#}
-            {#                                            <a href="product.html">لباس زنانه آبی</a>#}
-            {#                                        </h4>#}
-            {##}
-            {#                                        <span class="cart-product-info">#}
-            {#                                                <span class="cart-product-qty">1 x </span>#}
-            {#                                                76,000 تومان#}
-            {#                                            </span>#}
-            {#                                    </div><!-- End .product-cart-details -->#}
-            {##}
-            {#                                    <figure class="product-image-container">#}
-            {#                                        <a href="product.html" class="product-image">#}
-            {#                                            <img src="{% static "core/en/images/products/cart/product-2.jpg" %}"#}
-            {#                                                 alt="product">#}
-            {#                                        </a>#}
-            {#                                    </figure>#}
-            {#                                    <a href="#" class="btn-remove" title="حذف محصول"><i class="icon-close"></i></a>#}
-            {#                                </div><!-- End .product -->#}
-        </div><!-- End .cart-product -->
+                        <figure class="product-image-container">
+                            <a href="{{ item.product.get_absolute_url }}" class="product-image">
+                                <img src="{{ item.product.introduction_picture.url }}"
+                                     alt="{{ item.product.title }}">
+                            </a>
+                        </figure>
+                        <a href="#" class="btn-remove" title="حذف محصول"><i data-url="{% url "store:cart" %}"
+                                                                            data-pk="saeid"
+                                                                            onclick="cartDeleteOnClick()"
+                                                                            class="icon-close"></i></a>
+                    </div><!-- End .product -->
+                {% endfor %}
+            </div><!-- End .cart-product -->
 
-        <div class="dropdown-cart-total">
-            <span>مجموع</span>
+            <div class="dropdown-cart-total">
+                <span>مجموع</span>
 
-            <span class="cart-total-price">{{ request.cart.get_sum }} تومان</span>
-        </div><!-- End .dropdown-cart-total -->
+                <span class="cart-total-price">{{ request.cart.get_sum }} تومان</span>
+            </div><!-- End .dropdown-cart-total -->
 
-        <div class="dropdown-cart-action">
-            <a href="{% url "store:cart" %}" class="btn btn-primary">مشاهده سبد خرید</a>
-            <a href="checkout.html" class="btn btn-outline-primary-2"><span>پرداخت</span><i
-                    class="icon-long-arrow-left"></i></a>
-        </div><!-- End .dropdown-cart-total -->
-    </div><!-- End .dropdown-menu -->
-</div><!-- End .cart-dropdown -->
+            <div class="dropdown-cart-action">
+                <a href="{% url "store:cart" %}" class="btn btn-primary">مشاهده سبد خرید</a>
+                <a href="checkout.html" class="btn btn-outline-primary-2"><span>پرداخت</span><i
+                        class="icon-long-arrow-left"></i></a>
+            </div><!-- End .dropdown-cart-total -->
+        </div><!-- End .dropdown-menu -->
+    </div><!-- End .cart-dropdown -->
+</div>

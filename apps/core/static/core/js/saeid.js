@@ -67,10 +67,10 @@ function cartDeleteOnClick(e) {
 
     })
         .done(
-        function (response) {
-            alert("success");
-            console.log(response)
-        })
+            function (response) {
+                alert("success");
+                console.log(response)
+            })
         .fail(
             function (response) {
                 console.log(response)
@@ -87,5 +87,50 @@ function cartDeleteOnClick(e) {
     //         function (response) {
     //             console.log(response)
     //         });
+
+}
+
+function cartAddOnclick() {
+    event.preventDefault();
+    console.log($('#cart-add').serialize())
+    var csrftoken = getCookie('csrftoken');
+    console.log(event.target.dataset.cartwidget)
+    var cartWidgetUrl = event.target.dataset.cartwidget
+    var postData = $('#cart-add').serialize();
+    $("#main-page").addClass("pgage-deactive")
+    $.ajax({
+        url: $('#cart-add').attr('action'),
+        type: 'post',
+        data: postData,
+        headers: {'X-CSRFToken': csrftoken},
+
+    })
+        .done(
+            function (response) {
+
+                $.ajax({
+                    url: cartWidgetUrl,
+                    type: 'get',
+                    headers: {'X-CSRFToken': csrftoken},
+                })
+                    .done(
+                        function (response) {
+                            $("#main-page").removeClass("pgage-deactive")
+                            $("#cart-widget-div").html(response)
+                            alertify.success("محصول به سبد اضافه شد");
+                        }
+                    ).fail(
+                    function (response) {
+                        location.reload()
+                    }
+                )
+            })
+        .fail(
+            function (response) {
+                $("#main-page").removeClass("pgage-deactive")
+                alertify.warning("محصول به سبد اضافه نشد");
+                console.log(response)
+            });
+
 
 }
