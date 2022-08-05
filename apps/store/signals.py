@@ -16,6 +16,7 @@ def create_cart(sender, instance, created, **kwargs):
 
 @receiver(user_logged_in)
 def post_login(sender, user: UserProfile, request: WSGIRequest, **kwargs):
+    print("signal",request.session.session_key)
     session_cart = Cart.objects.get(session__session_key=request.session.session_key)
     user_cart = Cart.objects.get(owner=user)
     session_cart.cartitem_set.update(cart=user_cart)

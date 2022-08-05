@@ -106,7 +106,6 @@
                                                     <input type="number" name="product" hidden value="{{ product.id }}">
                                                     <input type="text" name="cart" hidden value="{{ request.cart.id }}">
                                                     <input type="text" name="request_type" hidden value="add">
-                                                    {#                                                    {{ product_form }}#}
                                                 </form>
                                             </div>
                                         </div>
@@ -131,9 +130,9 @@
                                                     style="cursor: pointer"
                                                     id="wish-button-{{ product.id }}"
                                                     {% if product.id in product_in_wishlist %}
-                                                        class="btn-product btn-wishlist pt-0 mt-2 in-wish"
+                                                    class="btn-product btn-wishlist pt-0 mt-2 in-wish"
                                                     {% else %}
-                                                        class="btn-product btn-wishlist pt-0 mt-2"
+                                                    class="btn-product btn-wishlist pt-0 mt-2"
                                                     {% endif %}
                                                     title="لیست علاقه مندی"
                                             >
@@ -268,6 +267,7 @@
                                         {% csrf_token %}
                                         <div class="row">
                                             <div class="col-lg-4 form-req-text">
+                                                {{ form.product }}
                                                 {{ form.title.label_tag }}
                                                 {{ form.title }}
                                                 {{ form.title.errors.as_text }}
@@ -292,17 +292,36 @@
                                                 {{ form.post }}
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            {#                                            <div class="col-5">#}
-                                            {#                                                {{ form.captcha }}#}
-                                            {#                                                {{ form.captcha.errors }}#}
-                                            {#                                                {% if form.captcha.help_text %}#}
-                                            {#                                                    <p class="help">{{ form.captcha.help_text|safe }}</p>#}
-                                            {#                                                {% endif %}#}
-                                            {#                                                <button onclick="reviewSubmitOnClick()" id="review-submit" class="btn btn-primary mr-2" style="max-width: 70px" aria-url="">#}
-                                            {#                                                    {% translate "Submit" %}#}
-                                            {#                                                </button>#}
-                                            {#                                            </div>#}
+                                        <div class="row mt-3">
+                                            <div class="col-3">
+                                                    <input
+                                                            name="rate"
+                                                            class="rating"
+                                                            max="5"
+                                                            oninput="this.style.setProperty('--value', `${this.valueAsNumber}`)"
+                                                            step="0.5"
+                                                            style="--value:2.5"
+                                                            type="range"
+                                                            value="2.5">
+                                                </label>
+                                            </div>
+                                            <div class="col-9">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        {{ form.captcha }}
+                                                        {{ form.captcha.errors }}
+                                                        {% if form.captcha.help_text %}
+                                                            <p class="help">{{ form.captcha.help_text|safe }}</p>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <button class="btn btn-primary my-3 mr-2"
+                                                                style="max-width: 70px;">
+                                                            {% translate "Submit" %}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </form>
                                 </div><!-- End .reply -->

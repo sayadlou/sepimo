@@ -122,11 +122,18 @@ class ReviewForm(forms.ModelForm):
 
     class Meta:
         model = Review
-        fields = ("name", "email", "title", "comment", "product",)
+        fields = ("name", "email", "title", "comment", "product", 'rate')
         widgets = {
             "product": forms.TextInput(attrs={'hidden': True}),
+            "rate": forms.NumberInput(attrs={'hidden': True}),
             "comment": forms.Textarea(attrs={'class': 'form-control mb-0 mt-0'}),
             "name": forms.TextInput(attrs={'class': 'form-control mb-0 mt-0'}),
             "title": forms.TextInput(attrs={'class': 'form-control mb-0 mt-0'}),
             "email": forms.EmailInput(attrs={'class': 'form-control mb-0 mt-0'}),
         }
+
+    def clean_rate(self):
+        rate = self.cleaned_data['rate']
+        rate *= 20
+        print(rate)
+        return rate

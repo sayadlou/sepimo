@@ -9,8 +9,8 @@ from django.forms import modelformset_factory
 from django import forms
 from django.http import HttpResponseBadRequest, HttpResponse
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import DetailView
 from django_filters.views import FilterView
 from django.utils.translation import gettext as _
 
@@ -127,27 +127,52 @@ class ProductListView(FilterView):
         return orm_arg
 
 
-class ProductView(DetailView):
+class ProductView(View):
     model = Product
     template_name = 'store/product.html'
     review_form = ReviewForm
+    success_url = reverse_lazy('store:product-code-slug')
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        return render(request=self.request, template_name=self.template_name, context=context)
+
+    def form_valid(self, form):
+        messages.info(self.request, _('Review add'))
+        form.save()
+        return self.get(self.request)
+
+    def form_invalid(self, form):
+        messages.error(self.request, _('Review Not vaild'))
+        context = self.get_context_data()
+        context['form'] = form
+        return render(request=self.request, template_name=self.template_name, context=context)
+
+    def post(self, request, *args, **kwargs):
+        form = self.review_form(request.POST)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def get_form(self, form_class=None):
+        return ReviewForm(self.request.Post)
 
     def get_object(self, queryset=None):
         code = self.kwargs.get('pk')
         return self.model.objects.filter(code=code).first()
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        context['reviews'] = self._get_reviews()
-        context['title'] = self._get_page_title()
-        context['same_products'] = self._get_same_product()
-        context['next_product'] = self._get_next_product()
-        context['prev_product'] = self._get_prev_product()
-        context['form'] = self._get_review_form()
-        context['product_in_wishlist'] = [i for i in
-                                          self.request.cart.wishitem_set.values_list('product_id', flat=True)]
-        context['product_form'] = CartItemForm(
-            initial={"cart": self.request.cart, "product": self.object, "request_type": "add", "quantity": 1})
+        self.object = self.get_object()
+        context = {
+            'product': self.get_object(),
+            'reviews': self._get_reviews(),
+            'title': self._get_page_title(),
+            'same_products': self._get_same_product(),
+            'next_product': self._get_next_product(),
+            'prev_product': self._get_prev_product(),
+            'form': self._get_review_form(),
+            'product_in_wishlist': [i for i in self.request.cart.wishitem_set.values_list('product_id', flat=True)]}
         return context
 
     def _get_review_form(self):
