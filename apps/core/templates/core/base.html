@@ -111,8 +111,8 @@
                         <li>
                             <a href="#">لینک ها</a>
                             <ul>
-                                <li><a href="wishlist.html"><i class="icon-heart-o"></i>لیست علاقه مندی
-                                    <span>(3)</span></a></li>
+                                <li><a href="{% url "store:whishlist" %}"><i class="icon-heart-o"></i>لیست علاقه مندی
+                                    <span>({{ request.cart.wishitem_set.count }})</span></a></li>
                                 <li><a href="{% url "core:about_us" %}">درباره ما</a></li>
                                 <li><a href="{% url "contact_us:form" %}">تماس با ما</a></li>
                                 <li>

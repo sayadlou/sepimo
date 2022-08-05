@@ -24,121 +24,135 @@
             </div><!-- End .cart -->
         </div>
     {% else %}
-        <div class="page-content">
-            <div class="container">
-
-                <table class="table table-wishlist table-mobile">
-                    <thead>
-                    <tr>
-                        <th>محصول</th>
-                        <th>قیمت</th>
-                        <th>وضعیت محصول</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    {% for item in object_list %}
+        <div id="main-page">
+            <div class="page-content">
+                <div class="container">
+                    <table class="table table-wishlist table-mobile">
+                        <thead>
                         <tr>
-                            <td class="product-col">
-                                <div class="product">
-                                    <figure class="product-media">
-                                        <a href="#">
-                                            <img src="{{ item.product.introduction_picture.url }}" alt="تصویر محصول">
-                                        </a>
-                                    </figure>
-
-                                    <h3 class="product-title">
-                                        <a href="#">{{ item.product.title }}</a>
-                                    </h3><!-- End .product-title -->
-                                </div><!-- End .product -->
-                            </td>
-                            <td class="price-col"> {{ item.product.price }} تومان</td>
-                            <td class="stock-col"><span
-                                    class="stock-{{ item.product.stock_status }}">{{ item.product.stock_label }}</span>
-                            </td>
-                            <td class="action-col">
-                                {% if item.product.stock_status != "out" %}
-                                    <button class="btn btn-block btn-outline-primary-2"><i class="icon-cart-plus"></i>افزودن
-                                        به
-                                        سبد
-                                        خرید
-                                    </button>
-                                {% else %}
-                                    <button class="btn btn-block btn-outline-primary-2 disabled">ناموجود</button>
-                                {% endif %}
-
-                            </td>
-                            <td class="remove-col text-left">
-                                <button class="btn-remove"><i class="icon-close"></i></button>
-                            </td>
+                            <th>محصول</th>
+                            <th>قیمت</th>
+                            <th>وضعیت محصول</th>
+                            <th></th>
+                            <th></th>
                         </tr>
-                    {% endfor %}
-                    {#                <tr>#}
-                    {#                    <td class="product-col">#}
-                    {#                        <div class="product">#}
-                    {#                            <figure class="product-media">#}
-                    {#                                <a href="#">#}
-                    {#                                    <img src="assets/images/products/table/product-2.jpg" alt="تصویر محصول">#}
-                    {#                                </a>#}
-                    {#                            </figure>#}
-                    {##}
-                    {#                            <h3 class="product-title">#}
-                    {#                                <a href="#">لباس زنانه آبی</a>#}
-                    {#                            </h3><!-- End .product-title -->#}
-                    {#                        </div><!-- End .product -->#}
-                    {#                    </td>#}
-                    {#                    <td class="price-col">76,000 تومان</td>#}
-                    {#                    <td class="stock_label-col"><span class="in-stock_label">موجود</span></td>#}
-                    {#                    <td class="action-col">#}
-                    {#                        <button class="btn btn-block btn-outline-primary-2"><i class="icon-cart-plus"></i>افزودن به سبد#}
-                    {#                            خرید#}
-                    {#                        </button>#}
-                    {#                    </td>#}
-                    {#                    <td class="remove-col text-left">#}
-                    {#                        <button class="btn-remove"><i class="icon-close"></i></button>#}
-                    {#                    </td>#}
-                    {#                </tr>#}
-                    {#                <tr>#}
-                    {#                    <td class="product-col">#}
-                    {#                        <div class="product">#}
-                    {#                            <figure class="product-media">#}
-                    {#                                <a href="#">#}
-                    {#                                    <img src="assets/images/products/table/product-3.jpg" alt="تصویر محصول">#}
-                    {#                                </a>#}
-                    {#                            </figure>#}
-                    {##}
-                    {#                            <h3 class="product-title">#}
-                    {#                                <a href="#">کیف زنانه با بند زنجیری</a>#}
-                    {#                            </h3><!-- End .product-title -->#}
-                    {#                        </div><!-- End .product -->#}
-                    {#                    </td>#}
-                    {#                    <td class="price-col">52,000 تومان</td>#}
-                    {#                    <td class="stock_label-col"><span class="out-of-stock_label">ناموجود</span></td>#}
-                    {#                    <td class="action-col">#}
-                    {#                        <button class="btn btn-block btn-outline-primary-2 disabled">ناموجود</button>#}
-                    {#                    </td>#}
-                    {#                    <td class="remove-col text-left">#}
-                    {#                        <button class="btn-remove"><i class="icon-close"></i></button>#}
-                    {#                    </td>#}
-                    {#                </tr>#}
-                    </tbody>
-                </table><!-- End .table table-wishlist -->
-                <div class="wishlist-share">
-                    <div class="social-icons social-icons-sm mb-2">
-                        <label class="social-label">اشتراک گذاری در : </label>
-                        <a href="#" class="social-icon" title="فیسبوک" target="_blank"><i
-                                class="icon-facebook-f"></i></a>
-                        <a href="#" class="social-icon" title="توییتر" target="_blank"><i class="icon-twitter"></i></a>
-                        <a href="#" class="social-icon" title="اینستاگرام" target="_blank"><i
-                                class="icon-instagram"></i></a>
-                        <a href="#" class="social-icon" title="یوتیوب" target="_blank"><i class="icon-youtube"></i></a>
-                        <a href="#" class="social-icon" title="پینترست" target="_blank"><i
-                                class="icon-pinterest"></i></a>
-                    </div><!-- End .soial-icons -->
-                </div><!-- End .wishlist-share -->
-            </div><!-- End .container -->
+                        </thead>
+
+                        <tbody>
+                        {% for item in object_list %}
+                            <tr>
+                                <td class="product-col">
+                                    <div class="product">
+                                        <figure class="product-media">
+                                            <a href="#">
+                                                <img src="{{ item.product.introduction_picture.url }}"
+                                                     alt="تصویر محصول">
+                                            </a>
+                                        </figure>
+
+                                        <h3 class="product-title">
+                                            <a href="#">{{ item.product.title }}</a>
+                                        </h3><!-- End .product-title -->
+                                    </div><!-- End .product -->
+                                </td>
+                                <td class="price-col"> {{ item.product.price }} تومان</td>
+                                <td class="stock-col"><span
+                                        class="stock-{{ item.product.stock_status }}">{{ item.product.stock_label }}</span>
+                                </td>
+                                <td class="action-col">
+                                    {% if item.product.stock_status != "out" %}
+                                        <form id="cart-add-{{ item.product.id }}">
+                                            <input hidden type="number" name="quantity" value="1">
+                                            <input type="number" name="product" hidden value="{{ item.product.id }}">
+                                            <input type="text" name="cart" hidden value="{{ request.cart.id }}">
+                                            <input type="text" name="request_type" hidden value="add">
+                                        </form>
+                                        <button class="btn btn-block btn-outline-primary-2"
+                                                onclick="cartAddOnclick()"
+                                                data-formid="cart-add-{{ item.product.id }}"
+                                                data-cartwidgeturl="{% url "store:cart-widget" %}"
+                                                data-carturl="{% url "store:cart" %}"
+                                        >
+                                            افزودن
+                                            به
+                                            سبد
+                                            خرید
+                                        </button>
+                                    {% else %}
+                                        <button class="btn btn-block btn-outline-primary-2 disabled">ناموجود</button>
+                                    {% endif %}
+
+                                </td>
+                                <td class="remove-col text-left">
+                                    <button class="btn-remove"><i class="icon-close"></i></button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        {#                <tr>#}
+                        {#                    <td class="product-col">#}
+                        {#                        <div class="product">#}
+                        {#                            <figure class="product-media">#}
+                        {#                                <a href="#">#}
+                        {#                                    <img src="assets/images/products/table/product-2.jpg" alt="تصویر محصول">#}
+                        {#                                </a>#}
+                        {#                            </figure>#}
+                        {##}
+                        {#                            <h3 class="product-title">#}
+                        {#                                <a href="#">لباس زنانه آبی</a>#}
+                        {#                            </h3><!-- End .product-title -->#}
+                        {#                        </div><!-- End .product -->#}
+                        {#                    </td>#}
+                        {#                    <td class="price-col">76,000 تومان</td>#}
+                        {#                    <td class="stock_label-col"><span class="in-stock_label">موجود</span></td>#}
+                        {#                    <td class="action-col">#}
+                        {#                        <button class="btn btn-block btn-outline-primary-2"><i class="icon-cart-plus"></i>افزودن به سبد#}
+                        {#                            خرید#}
+                        {#                        </button>#}
+                        {#                    </td>#}
+                        {#                    <td class="remove-col text-left">#}
+                        {#                        <button class="btn-remove"><i class="icon-close"></i></button>#}
+                        {#                    </td>#}
+                        {#                </tr>#}
+                        {#                <tr>#}
+                        {#                    <td class="product-col">#}
+                        {#                        <div class="product">#}
+                        {#                            <figure class="product-media">#}
+                        {#                                <a href="#">#}
+                        {#                                    <img src="assets/images/products/table/product-3.jpg" alt="تصویر محصول">#}
+                        {#                                </a>#}
+                        {#                            </figure>#}
+                        {##}
+                        {#                            <h3 class="product-title">#}
+                        {#                                <a href="#">کیف زنانه با بند زنجیری</a>#}
+                        {#                            </h3><!-- End .product-title -->#}
+                        {#                        </div><!-- End .product -->#}
+                        {#                    </td>#}
+                        {#                    <td class="price-col">52,000 تومان</td>#}
+                        {#                    <td class="stock_label-col"><span class="out-of-stock_label">ناموجود</span></td>#}
+                        {#                    <td class="action-col">#}
+                        {#                        <button class="btn btn-block btn-outline-primary-2 disabled">ناموجود</button>#}
+                        {#                    </td>#}
+                        {#                    <td class="remove-col text-left">#}
+                        {#                        <button class="btn-remove"><i class="icon-close"></i></button>#}
+                        {#                    </td>#}
+                        {#                </tr>#}
+                        </tbody>
+                    </table><!-- End .table table-wishlist -->
+                    <div class="wishlist-share">
+                        <div class="social-icons social-icons-sm mb-2">
+                            <label class="social-label">اشتراک گذاری در : </label>
+                            <a href="#" class="social-icon" title="فیسبوک" target="_blank"><i
+                                    class="icon-facebook-f"></i></a>
+                            <a href="#" class="social-icon" title="توییتر" target="_blank"><i class="icon-twitter"></i></a>
+                            <a href="#" class="social-icon" title="اینستاگرام" target="_blank"><i
+                                    class="icon-instagram"></i></a>
+                            <a href="#" class="social-icon" title="یوتیوب" target="_blank"><i class="icon-youtube"></i></a>
+                            <a href="#" class="social-icon" title="پینترست" target="_blank"><i
+                                    class="icon-pinterest"></i></a>
+                        </div><!-- End .soial-icons -->
+                    </div><!-- End .wishlist-share -->
+                </div><!-- End .container -->
+            </div>
         </div>
     {% endif %}
 {% endblock page_content %}
