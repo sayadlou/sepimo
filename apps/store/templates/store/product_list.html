@@ -18,6 +18,7 @@
                     </div><!-- End .toolbox-info -->
                 </div><!-- End .toolbox-center -->
 
+
                 <div class="toolbox-right">
                     <div class="toolbox-sort">
                         <label for="sortby">مرتب سازی بر اساس : </label>
@@ -59,14 +60,20 @@
                                         <input type="text" name="request_type" hidden value="add">
                                     </form>
                                     <div class="product-action-vertical">
-                                        <a style=" cursor: auto;"
-                                           class="btn-product-icon btn-wishlist btn-expandable">
-                                            <span
-                                                    style=" cursor: pointer;"
-                                                    onclick="wishItemAddOnclick()"
-                                                    data-formid="whish-add-{{ product.id }}"
-                                                    data-whishurl="{% url "store:whishlist" %}"
-                                            >
+                                        <a id="wish-button-{{ product.id }}" style=" cursor: auto;"
+                                                {% if product.id in product_in_wishlist %}
+                                           class="btn-product-icon btn-wishlist btn-expandable in-wish"
+                                                {% else %}
+                                           class="btn-product-icon btn-wishlist btn-expandable"
+                                                {% endif %}
+                                        >
+                                        <span
+                                                style=" cursor: pointer;"
+                                                onclick="wishItemAddOnclick()"
+                                                data-formid="whish-add-{{ product.id }}"
+                                                data-whishurl="{% url "store:whishlist" %}"
+                                                data-wishbutton="wish-button-{{ product.id }}"
+                                        >
                                                 افزودن به لیست علاقه مندی
                                             </span>
                                         </a>

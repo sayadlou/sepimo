@@ -37,18 +37,29 @@ p .help {
     font-size: 1.8rem;
 }
 
+.in-wish:before {
+    content: '\f233' !important;
+    font-family: "molla";
+    color: #c96;
+    font-size: 1.8rem;
+}
+
 .whished {
     cursor: default !important;
 }
-.stock-available{
+
+.stock-available {
     color: #A6C784 !important;
 }
-.stock-low{
+
+.stock-low {
     color: #e1a02a !important;
 }
-.stock-out{
+
+.stock-out {
     color: #EF83A5 !important;
 }
+
 .btn-cart:before {
     color: #c96 !important;
     content: '\e812' !important;

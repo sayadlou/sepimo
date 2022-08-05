@@ -59,7 +59,8 @@ class ProductListView(FilterView):
         context['order_strategy'] = self.order_strategy
         context['total_product'] = self.get_queryset().count()
         context['paginate_by'] = self.paginate_by
-        print(self.request.cart.cartitem_set.all())
+        context['product_in_wishlist'] = [i for i in
+                                          self.request.cart.wishitem_set.values_list('product_id', flat=True)]
 
         return context
 
@@ -143,6 +144,8 @@ class ProductView(DetailView):
         context['next_product'] = self._get_next_product()
         context['prev_product'] = self._get_prev_product()
         context['form'] = self._get_review_form()
+        context['product_in_wishlist'] = [i for i in
+                                          self.request.cart.wishitem_set.values_list('product_id', flat=True)]
         context['product_form'] = CartItemForm(
             initial={"cart": self.request.cart, "product": self.object, "request_type": "add", "quantity": 1})
         return context
@@ -203,8 +206,6 @@ class CartView(View):
         if form.is_valid():
             form.save_or_update()
             return HttpResponse("OK")
-        else:
-            print(form.errors.as_text)
         return HttpResponseBadRequest("NOK")
 
     def browser_get(self, request, *args, **kwargs):
@@ -267,7 +268,7 @@ class WishList(View):
 
     def browser_get(self, request, *args, **kwargs):
         context = {
-            'object_list': self.get_queryset()
+            'object_list': self.get_queryset(),
         }
         return render(request=request, template_name=self.template_name, context=context)
 

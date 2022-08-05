@@ -119,6 +119,7 @@ function wishItemAddOnclick() {
     var formId = event.target.dataset.formid;
     var csrftoken = getCookie('csrftoken');
     var whishurl = event.target.dataset.whishurl;
+    var wishbutton = event.target.dataset.wishbutton
     var postData = $(`#${formId}`).serialize();
     $("#main-page").addClass("pgage-deactive")
     $.ajax({
@@ -127,7 +128,9 @@ function wishItemAddOnclick() {
     })
         .done(function (response) {
             $("#main-page").removeClass("pgage-deactive")
-            alertify.success(response);
+            $(`#${wishbutton}`).addClass("in-wish")
+            alertify.success(response)
+
         })
         .fail(function (response) {
             $("#main-page").removeClass("pgage-deactive")

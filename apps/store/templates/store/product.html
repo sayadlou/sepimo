@@ -122,15 +122,30 @@
                                     </div>
                                     <div class="col-4">
                                         <div class="details-action-wrapper">
-                                            <a style="cursor: pointer" class="btn-product btn-wishlist pt-0 mt-2"
-                                               title="لیست علاقه مندی"><span>افزودن
-                                                    به
-                                                    علاقه مندی</span></a>
+                                            <form id="whish-add-{{ product.id }}">
+                                                <input type="number" name="product" hidden value="{{ product.id }}">
+                                                <input type="text" name="cart" hidden value="{{ request.cart.id }}">
+                                                <input type="text" name="request_type" hidden value="add">
+                                            </form>
+                                            <a
+                                                    style="cursor: pointer"
+                                                    id="wish-button-{{ product.id }}"
+                                                    {% if product.id in product_in_wishlist %}
+                                                        class="btn-product btn-wishlist pt-0 mt-2 in-wish"
+                                                    {% else %}
+                                                        class="btn-product btn-wishlist pt-0 mt-2"
+                                                    {% endif %}
+                                                    title="لیست علاقه مندی"
+                                            >
+                                                <span
+                                                        style=" cursor: pointer;"
+                                                        onclick="wishItemAddOnclick()"
+                                                        data-formid="whish-add-{{ product.id }}"
+                                                        data-whishurl="{% url "store:whishlist" %}"
+                                                        data-wishbutton="wish-button-{{ product.id }}"
+                                                >  افزودن به  علاقه مندی</span>
+                                            </a>
                                         </div><!-- End .details-action-wrapper -->
-
-                                        <div class="details-action-wrapper">
-                                            <p class="whished">محصول مورد علاقه </p>
-                                        </div>
                                     </div>
                                 </div>
 
