@@ -39,11 +39,7 @@ function reviewSubmitOnClick() {
     event.preventDefault()
     formData = FormData()
     $.ajax({
-        type: "POST",
-        url: "process.php",
-        data: formData,
-        dataType: "json",
-        encode: true,
+        type: "POST", url: "process.php", data: formData, dataType: "json", encode: true,
     }).done(function (data) {
         console.log(data);
     });
@@ -56,25 +52,19 @@ function cartDeleteOnClick(e) {
     var csrftoken = getCookie('csrftoken');
 
     var postData = {
-        product: event.target.dataset.pk,
-        type: 'premium'
+        product: event.target.dataset.pk, type: 'premium'
     }
     $.ajax({
-        url: event.target.dataset.url,
-        type: 'post',
-        data: postData,
-        headers: {'X-CSRFToken': csrftoken},
+        url: event.target.dataset.url, type: 'post', data: postData, headers: {'X-CSRFToken': csrftoken},
 
     })
-        .done(
-            function (response) {
-                alert("success");
-                console.log(response)
-            })
-        .fail(
-            function (response) {
-                console.log(response)
-            });
+        .done(function (response) {
+            alert("success");
+            console.log(response)
+        })
+        .fail(function (response) {
+            console.log(response)
+        });
 
 
     // $.post(event.target.dataset.url, data)
@@ -97,42 +87,52 @@ function cartAddOnclick() {
     var cartWidgetUrl = event.target.dataset.cartwidgeturl;
     var cartUrl = event.target.dataset.carturl;
     var postData = $(`#${formId}`).serialize();
-    console.log(cartUrl)
-    console.log(event.target)
     $("#main-page").addClass("pgage-deactive")
     $.ajax({
-        url: cartUrl,
-        type: 'post',
-        data: postData,
-        headers: {'X-CSRFToken': csrftoken},
+        url: cartUrl, type: 'post', data: postData, headers: {'X-CSRFToken': csrftoken},
 
     })
-        .done(
-            function (response) {
+        .done(function (response) {
 
-                $.ajax({
-                    url: cartWidgetUrl,
-                    type: 'get',
-                    headers: {'X-CSRFToken': csrftoken},
-                })
-                    .done(
-                        function (response) {
-                            $("#main-page").removeClass("pgage-deactive")
-                            $("#cart-widget-div").html(response)
-                            alertify.success("محصول به سبد اضافه شد");
-                        }
-                    ).fail(
-                    function (response) {
-                        location.reload()
-                    }
-                )
+            $.ajax({
+                url: cartWidgetUrl, type: 'get', headers: {'X-CSRFToken': csrftoken},
             })
-        .fail(
-            function (response) {
-                $("#main-page").removeClass("pgage-deactive")
-                alertify.warning("محصول به سبد اضافه نشد");
-                console.log(response)
-            });
+                .done(function (response) {
+                    $("#main-page").removeClass("pgage-deactive")
+                    $("#cart-widget-div").html(response)
+                    alertify.success("محصول به سبد اضافه شد");
+                }).fail(function (response) {
+                location.reload()
+            })
+        })
+        .fail(function (response) {
+            $("#main-page").removeClass("pgage-deactive")
+            alertify.warning("محصول به سبد اضافه نشد");
+            console.log(response)
+        });
+
+
+}
+
+function wishItemAddOnclick() {
+    event.preventDefault();
+    var formId = event.target.dataset.formid;
+    var csrftoken = getCookie('csrftoken');
+    var whishurl = event.target.dataset.whishurl;
+    var postData = $(`#${formId}`).serialize();
+    $("#main-page").addClass("pgage-deactive")
+    $.ajax({
+        url: whishurl, type: 'post', data: postData, headers: {'X-CSRFToken': csrftoken},
+
+    })
+        .done(function (response) {
+            $("#main-page").removeClass("pgage-deactive")
+            alertify.success(response);
+        })
+        .fail(function (response) {
+            $("#main-page").removeClass("pgage-deactive")
+            alertify.warning(response.responseText);
+        });
 
 
 }

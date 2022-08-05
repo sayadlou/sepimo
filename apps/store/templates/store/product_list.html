@@ -53,11 +53,23 @@
                                              alt="{{ product.introduction_picture.alt }}"
                                              class="product-image">
                                     </a>
-
+                                    <form id="whish-add-{{ product.id }}">
+                                        <input type="number" name="product" hidden value="{{ product.id }}">
+                                        <input type="text" name="cart" hidden value="{{ request.cart.id }}">
+                                        <input type="text" name="request_type" hidden value="add">
+                                    </form>
                                     <div class="product-action-vertical">
-                                        <a href="#"
-                                           class="btn-product-icon btn-wishlist btn-expandable"><span>افزودن
-                                                    به لیست علاقه مندی</span></a>
+                                        <a style=" cursor: auto;"
+                                           class="btn-product-icon btn-wishlist btn-expandable">
+                                            <span
+                                                    style=" cursor: pointer;"
+                                                    onclick="wishItemAddOnclick()"
+                                                    data-formid="whish-add-{{ product.id }}"
+                                                    data-whishurl="{% url "store:whishlist" %}"
+                                            >
+                                                افزودن به لیست علاقه مندی
+                                            </span>
+                                        </a>
                                     </div><!-- End .product-action -->
 
                                     <div class="product-action action-icon-top">

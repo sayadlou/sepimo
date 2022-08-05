@@ -8,7 +8,7 @@ from .models import *
 from .widget import CustomCaptchaTextInput
 
 
-class CartItemEditForm(forms.ModelForm):
+class CartItemForm(forms.ModelForm):
     request_type = forms.CharField(max_length=3, required=True)
 
     class Meta:
@@ -33,11 +33,7 @@ class CartItemEditForm(forms.ModelForm):
             except CartItem.DoesNotExist:
                 raise ValidationError(_("product not found"))
 
-    def save(self, commit=True):
-        return super().save(commit)
-
     def save_or_update(self):
-
         if self.cleaned_data["request_type"] == "add":
             try:
                 cart_item = self.Meta.model.objects.get(cart=self.cleaned_data["cart"],
@@ -66,6 +62,37 @@ class CartItemEditForm(forms.ModelForm):
 
             if self.cleaned_data["request_type"] == "del":
                 cart_item.delete()
+
+
+class WishItemForm(forms.ModelForm):
+    actions = (
+        ("add", "add"),
+        ("del", "del"),
+    )
+    request_type = forms.ChoiceField(required=True, choices=actions)
+
+    class Meta:
+        model = WishItem
+        fields = ['cart', 'product', 'request_type']
+
+    def save_or_update_existing(self):
+        if self.cleaned_data["request_type"] == "add":
+            try:
+                self.Meta.model.objects.get(cart=self.cleaned_data["cart"], product=self.cleaned_data["product"])
+            except self.Meta.model.DoesNotExist:
+                self.save()
+            except self.Meta.model.MultipleObjectsReturned:
+                self.Meta.model.objects.filter(cart=self.cleaned_data["cart"],
+                                               product=self.cleaned_data["product"]).delete()
+                self.save()
+        elif self.cleaned_data["request_type"] == "del":
+            try:
+                self.Meta.model.objects.get(product=self.cleaned_data['product']).delete()
+            except self.Meta.model.DoesNotExist:
+                pass
+            except self.Meta.model.MultipleObjectsReturned:
+                self.Meta.model.objects.filter(cart=self.cleaned_data["cart"],
+                                               product=self.cleaned_data["product"]).delete()
 
 
 class CartItemAddForm(forms.ModelForm):

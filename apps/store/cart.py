@@ -3,7 +3,7 @@ from typing import List, Tuple
 
 from django.http import HttpRequest, QueryDict
 
-from apps.store.forms import CartItemEditForm
+from apps.store.forms import CartItemForm
 from apps.store.models import Product
 
 
@@ -39,7 +39,7 @@ class Cart:
             return self.request.user.cart.cartitem_set.count()
 
     def edit_cat_item(self, post_data: QueryDict) -> bool:
-        form = CartItemEditForm(post_data)
+        form = CartItemForm(post_data)
         if form.is_valid():
             if self.request.user.is_anonymous and self.request.session.get("cart"):
                 self.edit_product_in_session(post_data)

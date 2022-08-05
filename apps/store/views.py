@@ -7,15 +7,15 @@ from django.db.models import Avg, Count, Q, Max, Min
 from django.db.models.functions import Coalesce
 from django.forms import modelformset_factory
 from django import forms
-from django.http import HttpResponseBadRequest, HttpResponse, QueryDict
+from django.http import HttpResponseBadRequest, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views import View
-from django.views.generic import ListView, DetailView
+from django.views.generic import DetailView
 from django_filters.views import FilterView
 from django.utils.translation import gettext as _
 
 from .filters import ProductFilter
-from .forms import ReviewForm, CartItemEditForm
+from .forms import ReviewForm, CartItemForm, WishItemForm
 from .models import *
 
 logger = logging.getLogger('store.views')
@@ -143,7 +143,7 @@ class ProductView(DetailView):
         context['next_product'] = self._get_next_product()
         context['prev_product'] = self._get_prev_product()
         context['form'] = self._get_review_form()
-        context['product_form'] = CartItemEditForm(
+        context['product_form'] = CartItemForm(
             initial={"cart": self.request.cart, "product": self.object, "request_type": "add", "quantity": 1})
         return context
 
@@ -196,11 +196,10 @@ class CartView(View):
         return self.browser_post(request, *args, **kwargs)
 
     def ajax_get(self, request, *args, **kwargs):
-        print("ajax get")
         return HttpResponse("OK")
 
     def ajax_post(self, request, *args, **kwargs):
-        form = CartItemEditForm(request.POST)
+        form = CartItemForm(request.POST)
         if form.is_valid():
             form.save_or_update()
             return HttpResponse("OK")
@@ -249,9 +248,38 @@ class CartWidgetView(View):
         return render(request=self.request, template_name="store/cart_widget.html")
 
 
-class WishList(ListView):
+class WishList(View):
     template_name = 'store/whishlist.html'
     model = WishItem
+
+    def get(self, request, *args, **kwargs):
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            return self.ajax_get(request, *args, **kwargs)
+        return self.browser_get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            return self.ajax_post(request, *args, **kwargs)
+        return self.browser_post(request, *args, **kwargs)
+
+    def ajax_get(self, request, *args, **kwargs):
+        return HttpResponse("OK")
+
+    def browser_get(self, request, *args, **kwargs):
+        context = {
+            'object_list': self.get_queryset()
+        }
+        return render(request=request, template_name=self.template_name, context=context)
+
+    def ajax_post(self, request, *args, **kwargs):
+        form = WishItemForm(request.POST)
+        if form.is_valid():
+            form.save_or_update_existing()
+            return HttpResponse(_("Product added to wish list"))
+        return HttpResponseBadRequest(_("Product didn't add to wish list"))
+
+    def browser_post(self, request, *args, **kwargs):
+        return HttpResponse("OK")
 
     def get_queryset(self):
         return self.request.cart.wishitem_set.all()
