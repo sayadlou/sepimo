@@ -7,7 +7,7 @@ from django.db.models import Avg, Count, Q, Max, Min
 from django.db.models.functions import Coalesce
 from django.forms import modelformset_factory
 from django import forms
-from django.http import HttpResponseBadRequest, HttpResponse
+from django.http import HttpResponseBadRequest, HttpResponse, QueryDict
 from django.shortcuts import render, get_object_or_404
 from django.views import View
 from django.views.generic import ListView, DetailView
@@ -251,6 +251,7 @@ class CartWidgetView(View):
 
 class WishList(ListView):
     template_name = 'store/whishlist.html'
+    model = WishItem
 
     def get_queryset(self):
         return self.request.cart.wishitem_set.all()
@@ -326,11 +327,3 @@ class PaymentListAddView(LoginRequiredMixin, View):
             )
         OrderItem.objects.bulk_create(order_items, batch_size=20)
         return new_order
-
-
-class WishListView(ListView):
-    pass
-
-
-class WishListApiView(View):
-    pass

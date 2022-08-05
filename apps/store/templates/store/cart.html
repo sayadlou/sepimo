@@ -6,25 +6,25 @@
 
 
 {% block page_content %}
-{#    {% if messages %}#}
-{#        {% for message in messages %}#}
-{#            <script>#}
-{#                {% if message.tags == 'success' %}#}
-{#                    alertify.success('{{ message }}');#}
-{#                {% endif %}#}
-{#                {% if message.tags == 'error' %}#}
-{#                    alertify.error('{{ message }}');#}
-{#                {% endif %}#}
-{#                {% if message.tags == 'warning' %}#}
-{#                    alertify.warning('{{ message }}');#}
-{#                {% endif %}#}
-{#                {% if message.tags == 'info' %}#}
-{#                    alertify.message('{{ message }}');#}
-{#                {% endif %}#}
-{#            </script>#}
-{#        {% endfor %}#}
-{#    {% endif %}#}
+    {% if request.cart.cartitem_set.all.count == 0 %}
+        <div class="page-content">
+            <div class="cart">
+                <div class="container">
+                    <div class="page404-bg text-center">
+                        <div class="page404-text">
+                            <div class="empty-image"><img src="{% static "core/fa/images/empty3.png" %}" alt="">
+                            </div>
+                            <div class="empty-text display-3">سبد خرید شما خالی است!</div>
 
+                            <a href="{% url "store:product-list" %}"
+                               class="btn btn-outline-primary-2 btn-order mt-3"><span>رفتن به
+                                        فروشگاه و شروع خرید</span><i class="icon-long-arrow-left"></i></a>
+                        </div>
+                    </div>
+                </div><!-- End .container -->
+            </div><!-- End .cart -->
+        </div>
+    {% else %}
     {% if formset.errors %}
         {% for error in formset.non_field_errors %}
             <script>
@@ -177,9 +177,9 @@
         </div><!-- End .cart -->
     </div>
     <script src="{% static "core/js/bootstrap-input-spinner.js" %}"></script>
-
-
     <script>
         $(".cart_qty").inputSpinner();
     </script>
+
+    {% endif %}
 {% endblock page_content %}

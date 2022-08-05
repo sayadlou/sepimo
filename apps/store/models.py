@@ -43,6 +43,15 @@ class Product(models.Model):
         ('Draft', 'Draft'),
         ('Trash', 'Trash'),
     )
+    STOCK_AVAILABILITY = {
+        "low_in_stock": 3,
+        "out_of_stock": 1,
+    }
+    STOCK_AVAILABILITY_LABEL = {
+        "available": _("Available"),
+        "low": _("Low in stock"),
+        "out": _("Out of stock"),
+    }
     status = models.CharField(max_length=50, choices=STATUS, default='Draft')
     code = models.CharField(max_length=11, blank=True, unique=True)
     title = models.CharField(max_length=200)
@@ -79,6 +88,20 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('store:product-code-slug', kwargs={'slug': self.slug, 'pk': self.code})
+
+    @property
+    def stock_label(self) -> str:
+        return Product.STOCK_AVAILABILITY_LABEL[self.stock_status]
+
+    @property
+    def stock_status(self) -> str:
+        if self.stock_inventory > Product.STOCK_AVAILABILITY["low_in_stock"]:
+            return "available"
+        elif Product.STOCK_AVAILABILITY["low_in_stock"] >= self.stock_inventory > Product.STOCK_AVAILABILITY[
+            "out_of_stock"]:
+            return "low"
+        else:
+            return "out"
 
     # def clean(self):
     # if self.has_variant is False and self.price is None:

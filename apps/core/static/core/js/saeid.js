@@ -92,14 +92,16 @@ function cartDeleteOnClick(e) {
 
 function cartAddOnclick() {
     event.preventDefault();
-    console.log($('#cart-add').serialize())
+    var formId = event.target.dataset.formid;
     var csrftoken = getCookie('csrftoken');
-    console.log(event.target.dataset.cartwidget)
-    var cartWidgetUrl = event.target.dataset.cartwidget
-    var postData = $('#cart-add').serialize();
+    var cartWidgetUrl = event.target.dataset.cartwidgeturl;
+    var cartUrl = event.target.dataset.carturl;
+    var postData = $(`#${formId}`).serialize();
+    console.log(cartUrl)
+    console.log(event.target)
     $("#main-page").addClass("pgage-deactive")
     $.ajax({
-        url: $('#cart-add').attr('action'),
+        url: cartUrl,
         type: 'post',
         data: postData,
         headers: {'X-CSRFToken': csrftoken},
@@ -134,3 +136,4 @@ function cartAddOnclick() {
 
 
 }
+

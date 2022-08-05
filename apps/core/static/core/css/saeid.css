@@ -26,3 +26,30 @@ p .help {
     -moz-opacity: 0.5;
     -khtml-opacity: 0.5;
 }
+
+.whished:before {
+    content: '\f233' !important;
+    color: #c96;
+    padding-left: 1.1rem;
+    pointer-events: none !important;
+    cursor: none !important;
+    font-family: "molla";
+    font-size: 1.8rem;
+}
+
+.whished {
+    cursor: default !important;
+}
+.stock-available{
+    color: #A6C784 !important;
+}
+.stock-low{
+    color: #e1a02a !important;
+}
+.stock-out{
+    color: #EF83A5 !important;
+}
+.btn-cart:before {
+    color: #c96 !important;
+    content: '\e812' !important;
+}
