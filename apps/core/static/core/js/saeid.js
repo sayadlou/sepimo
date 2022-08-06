@@ -108,6 +108,7 @@ function cartAddOnclick() {
         .fail(function (response) {
             $("#main-page").removeClass("pgage-deactive")
             alertify.warning("محصول به سبد اضافه نشد");
+            location.reload()
             console.log(response)
         });
 

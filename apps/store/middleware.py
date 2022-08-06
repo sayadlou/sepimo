@@ -14,8 +14,7 @@ class CartMiddleware:
         else:
             if not request.session.session_key:
                 request.session.cycle_key()
-            session_model = Session.objects.get(session_key=request.session.session_key)
-            cart, _ = Cart.objects.get_or_create(session=session_model)
+            cart, _ = Cart.objects.get_or_create(session_id=request.session.session_key)
         request.cart = cart
         response = self.get_response(request)
         return response
