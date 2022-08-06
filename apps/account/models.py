@@ -17,12 +17,12 @@ class UserProfile(AbstractUser):
     phone = models.CharField(_('phone'), max_length=20, null=True, blank=False)
     first_name = models.CharField(_('first name'), max_length=150, blank=False, null=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=False, null=True)
-    email = models.EmailField(_('email address'), blank=True)
+    email = models.EmailField(_('email address'), blank=True, unique=True)
 
 
 class Address(models.Model):
-    owner = models.ForeignKey(UserProfile, on_delete=models.PROTECT)
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    owner = models.ForeignKey(UserProfile, on_delete=models.PROTECT)
     province = models.CharField(_('Province'), max_length=30)
     city = models.CharField(_('City'), max_length=30)
     phone_number = models.CharField(_('Phone Number'), max_length=30)

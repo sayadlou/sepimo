@@ -2,20 +2,19 @@ import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db import transaction
 from django.db.models import Avg, Count, Q, Max, Min
 from django.db.models.functions import Coalesce
 from django.forms import modelformset_factory
 from django import forms
 from django.http import HttpResponseBadRequest, HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
 from django_filters.views import FilterView
 from django.utils.translation import gettext as _
 
 from .filters import ProductFilter
-from .forms import ReviewForm, CartItemForm, WishItemForm
+from .forms import ReviewForm, CartItemForm, WishItemForm, DiscountForm
 from .models import *
 
 logger = logging.getLogger('store.views')
@@ -311,73 +310,13 @@ class WishList(View):
         return self.request.cart.wishitem_set.all()
 
 
-class OrderListView(LoginRequiredMixin, View):
-
-    def get(self, request, *args, **kwargs):
-        orders = Order.objects.filter(owner=request.user)
-        context = {'orders': orders, 'has_order': orders.exists()}
-        return render(request=self.request, template_name="store/orders.html", context=context)
-
-
-class OrderDetailView(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        order = get_object_or_404(Order, owner=request.user, pk=kwargs["pk"])
-        context = {'order': order}
-        return render(request=request, template_name="store/order.html", context=context)
-
-
-class PaymentListAddView(LoginRequiredMixin, View):
-
-    def get(self, request, *args, **kwargs):
-        payments = Payment.objects.filter(owner=request.user)
-        context = {'payments': payments, 'has_payments': payments.exists()}
-        return render(request=self.request, template_name="store/payments.html", context=context)
+class DiscountView(LoginRequiredMixin, View):
+    model = Discount
+    form = DiscountForm
 
     def post(self, request, *args, **kwargs):
-        with transaction.atomic():
-            pass
-            # order_id = request.POST.get('order_id')
-            # try:
-            #     order = Order.objects.get(owner=request.user, pk=order_id)
-            # except Order.DoesNotExist:
-            #     order = self.cart_to_order(request)
-            # if order.total_price <= MINIMUM_ORDER_AMOUNT:
-            #     messages.success(request, _('minimum order amount should be more than 100,000 IRR'))
-            #     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-            # request.user.cart.cartitem_set.all().delete()
-            # factory = bankfactories.BankFactory()
-            # try:
-            #     bank = factory.auto_create(bank_models.BankType.ZARINPAL)
-            #     bank.set_request(request)
-            #     bank.set_amount(int(order.total_price))
-            #     bank.set_client_callback_url(reverse_lazy('store:callback-gateway'))
-            #     bank.set_mobile_number(order.owner.mobile)
-            #     bank_record = bank.ready()
-            #     Payment.objects.create(
-            #         owner=request.user,
-            #         order=order,
-            #         amount=(int(order.total_price)),
-            #         transaction=bank_record,
-            #     )
-            #     return bank.redirect_gateway()
-            # except AZBankGatewaysException as e:
-            #     logging.critical(e)
-            #     # TODO: redirect to failed page.
-            #     raise e
-
-    def cart_to_order(self):
-        if not self.request.user.cart.cartitem_set.exists():
-            raise HttpResponseBadRequest
-        cart = self.request.user.cart
-        order_items = list()
-        new_order = Order.objects.create(owner=self.request.user, status='W')
-        for item in cart.cartitem_set.all():
-            order_items.append(
-                OrderItem(
-                    order=new_order,
-                    quantity=item.quantity,
-                    product=item.product,
-                )
-            )
-        OrderItem.objects.bulk_create(order_items, batch_size=20)
-        return new_order
+        form = self.form(self.request.POST, request=request)
+        if form.is_valid():
+            return HttpResponse(f"{form.get_discount()}")
+        else:
+            return HttpResponse("0")

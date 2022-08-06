@@ -25,161 +25,192 @@
             </div><!-- End .cart -->
         </div>
     {% else %}
-    {% if formset.errors %}
-        {% for error in formset.non_field_errors %}
-            <script>
-                alertify.error("{{ error }}");
-            </script>
-        {% endfor %}
-    {% endif %}
-    <div class="page-content">
-        <div class="cart">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-9">
-                        <form method="post">
-                            <table class="table table-cart table-mobile">
+        {% if formset.errors %}
+            {% for error in formset.non_field_errors %}
+                <script>
+                    alertify.error("{{ error }}");
+                </script>
+            {% endfor %}
+        {% endif %}
+        <div class="page-content">
+            <div class="cart">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <form method="post">
+                                <table class="table table-cart table-mobile">
 
-                                <thead>
-                                <th>محصول</th>
-                                <th>قیمت</th>
-                                <th class="pr-5">تعداد</th>
-                                <th>مجموع</th>
-                                <th>حذف</th>
-                                {% csrf_token %}
-                                {{ formset.management_form }}
-                                {% for form in formset.forms %}
-                                    </thead>
+                                    <thead>
+                                    <th>محصول</th>
+                                    <th>قیمت</th>
+                                    <th class="pr-5">تعداد</th>
+                                    <th>مجموع</th>
+                                    <th>حذف</th>
+                                    {% csrf_token %}
+                                    {{ formset.management_form }}
+                                    {% for form in formset.forms %}
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td class="product-col">
+                                                <div class="product">
+                                                    <figure class="product-media">
+                                                        <a href="#">
+                                                            <img src="{% get_product_picture forloop.counter0 %}"
+                                                                 alt="تصویر محصول">
+                                                        </a>
+                                                    </figure>
+
+                                                    <h3 class="product-title">
+                                                        <a href="{% get_product_attr "absolute_url" forloop.counter0 %}">{% get_product_attr "title" forloop.counter0 %}</a>
+                                                    </h3><!-- End .product-title -->
+                                                </div><!-- End .product -->
+                                            </td>
+                                            <td class="price-col">{% get_product_attr "price" forloop.counter0 %}</td>
+                                            <td class="quantity-col">
+                                                <div class="ml-5 pl-5 quantity-input " style="width: 60%">
+                                                    {{ form.quantity }}
+                                                    {{ form.cart }}
+                                                    {{ form.product }}
+                                                    {{ form.id }}
+                                                </div>
+                                            </td>
+                                            <td class="total-col">{% get_cartitem_total_price forloop.counter0 %}</td>
+                                            <td class="remove-col">
+                                                <button class="btn-remove">{{ form.DELETE }}</button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+
+                                <div class="cart-bottom">
+                                    <div class="cart-discount">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="کد تخفیف">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-primary-2" type="submit"><i
+                                                        class="icon-long-arrow-left"></i></button>
+                                            </div><!-- .End .input-group-append -->
+                                        </div><!-- End .input-group -->
+                                    </div><!-- End .cart-discount -->
+
+                                    <button type="submit" class="btn btn-outline-dark-2">
+                                        <span>به روز رسانی سبد خرید</span>
+                                        <i class="icon-refresh"></i>
+                                    </button>
+                                </div><!-- End .cart-bottom -->
+                            </form>
+                        </div><!-- End .col-lg-9 -->
+                        <aside class="col-lg-3">
+                            <div class="summary summary-cart">
+                                <h3 class="summary-title">جمع سبد خرید</h3><!-- End .summary-title -->
+
+                                <table class="table table-summary">
                                     <tbody>
-                                    <tr>
-                                        <td class="product-col">
-                                            <div class="product">
-                                                <figure class="product-media">
-                                                    <a href="#">
-                                                        <img src="{% get_product_picture forloop.counter0 %}"
-                                                             alt="تصویر محصول">
-                                                    </a>
-                                                </figure>
-
-                                                <h3 class="product-title">
-                                                    <a href="{% get_product_attr "absolute_url" forloop.counter0 %}">{% get_product_attr "title" forloop.counter0 %}</a>
-                                                </h3><!-- End .product-title -->
-                                            </div><!-- End .product -->
-                                        </td>
-                                        <td class="price-col">{% get_product_attr "price" forloop.counter0 %}</td>
-                                        <td class="quantity-col">
-                                            <div class="ml-5 pl-5 quantity-input " style="width: 60%">
-                                                {{ form.quantity }}
-                                                {{ form.cart }}
-                                                {{ form.product }}
-                                                {{ form.id }}
-                                            </div>
-                                        </td>
-                                        <td class="total-col">{% get_cartitem_total_price forloop.counter0 %}</td>
-                                        <td class="remove-col">
-                                            <button class="btn-remove">{{ form.DELETE }}</button>
-                                        </td>
+                                    <tr class="summary-subtotal">
+                                        <td>جمع کل سبد خرید :</td>
+                                        <td class="text-left">236,000 تومان</td>
+                                    </tr><!-- End .summary-subtotal -->
+                                    <tr class="summary-shipping">
+                                        <td>شیوه ارسال :</td>
+                                        <td>&nbsp;</td>
                                     </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
 
-                            <div class="cart-bottom">
-                                <div class="cart-discount">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="کد تخفیف">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-primary-2" type="submit"><i
-                                                    class="icon-long-arrow-left"></i></button>
-                                        </div><!-- .End .input-group-append -->
-                                    </div><!-- End .input-group -->
-                                </div><!-- End .cart-discount -->
+                                    <tr class="summary-shipping-row">
+                                        <td>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="free-shipping" name="shipping"
+                                                       class="custom-control-input">
+                                                <label class="custom-control-label" for="free-shipping">ارسال
+                                                    رایگان</label>
+                                            </div><!-- End .custom-control -->
+                                        </td>
+                                        <td class="text-left">0,000 تومان</td>
+                                    </tr><!-- End .summary-shipping-row -->
 
-                                <button type="submit" class="btn btn-outline-dark-2">
-                                    <span>به روز رسانی سبد خرید</span>
-                                    <i class="icon-refresh"></i>
+                                    <tr class="summary-shipping-row">
+                                        <td>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="standart-shipping" name="shipping"
+                                                       class="custom-control-input">
+                                                <label class="custom-control-label" for="standart-shipping">پست
+                                                    سفارشی :</label>
+                                            </div><!-- End .custom-control -->
+                                        </td>
+                                        <td class="text-left">10,000 تومان</td>
+                                    </tr><!-- End .summary-shipping-row -->
+
+                                    <tr class="summary-shipping-row">
+                                        <td>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="express-shipping" name="shipping"
+                                                       class="custom-control-input">
+                                                <label class="custom-control-label" for="express-shipping">پست
+                                                    پیشتاز :</label>
+                                            </div><!-- End .custom-control -->
+                                        </td>
+                                        <td class="text-left">20,000 تومان</td>
+                                    </tr><!-- End .summary-shipping-row -->
+
+                                    <tr class="summary-shipping-estimate">
+                                        <td>آدرس<br> <a href="dashboard.html">تغییر آدرس</a></td>
+                                        <td>&nbsp;</td>
+                                    </tr><!-- End .summary-shipping-estimate -->
+
+                                    <tr class="summary-total">
+                                        <td>مبلغ قابل پرداخت :</td>
+                                        <td class="text-left">236,000 تومان</td>
+                                    </tr><!-- End .summary-total -->
+                                    </tbody>
+                                </table><!-- End .table table-summary -->
+
+                                <button
+                                        class="btn btn-outline-primary-2 btn-order btn-block"
+                                        id="makeOrder"
+                                        data-carturl="{% url "store:discount" %}"
+                                        data-cartid="{{ request.cart }}"
+                                >
+                                    رفتن به صفحه پرداخت
                                 </button>
-                            </div><!-- End .cart-bottom -->
-                        </form>
-                    </div><!-- End .col-lg-9 -->
-                    <aside class="col-lg-3">
-                        <div class="summary summary-cart">
-                            <h3 class="summary-title">جمع سبد خرید</h3><!-- End .summary-title -->
+                                <script>
+                                    $('#makeOrder').click(
+                                        function makeOrderOnClick(e) {
+                                            var cartUrl = e.target.dataset.carturl
+                                            var cartId = e.target.dataset.cartid
+                                            var csrftoken = getCookie('csrftoken');
+                                            $.ajax({
+                                                url: cartUrl,
+                                                data: {
+                                                    id: cartId,
+                                                    cart_purchase_amount: 100000,
+                                                },
+                                                type: 'post',
+                                                headers: {'X-CSRFToken': csrftoken}
+                                            })
+                                                .done(function (response) {
+                                                    alert("success");
+                                                    console.log(response)
+                                                })
+                                                .fail(function (response) {
+                                                    console.log(response)
+                                                });
+                                        }
+                                    )
+                                </script>
+                            </div><!-- End .summary -->
 
-                            <table class="table table-summary">
-                                <tbody>
-                                <tr class="summary-subtotal">
-                                    <td>جمع کل سبد خرید :</td>
-                                    <td class="text-left">236,000 تومان</td>
-                                </tr><!-- End .summary-subtotal -->
-                                <tr class="summary-shipping">
-                                    <td>شیوه ارسال :</td>
-                                    <td>&nbsp;</td>
-                                </tr>
-
-                                <tr class="summary-shipping-row">
-                                    <td>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="free-shipping" name="shipping"
-                                                   class="custom-control-input">
-                                            <label class="custom-control-label" for="free-shipping">ارسال
-                                                رایگان</label>
-                                        </div><!-- End .custom-control -->
-                                    </td>
-                                    <td class="text-left">0,000 تومان</td>
-                                </tr><!-- End .summary-shipping-row -->
-
-                                <tr class="summary-shipping-row">
-                                    <td>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="standart-shipping" name="shipping"
-                                                   class="custom-control-input">
-                                            <label class="custom-control-label" for="standart-shipping">پست
-                                                سفارشی :</label>
-                                        </div><!-- End .custom-control -->
-                                    </td>
-                                    <td class="text-left">10,000 تومان</td>
-                                </tr><!-- End .summary-shipping-row -->
-
-                                <tr class="summary-shipping-row">
-                                    <td>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="express-shipping" name="shipping"
-                                                   class="custom-control-input">
-                                            <label class="custom-control-label" for="express-shipping">پست
-                                                پیشتاز :</label>
-                                        </div><!-- End .custom-control -->
-                                    </td>
-                                    <td class="text-left">20,000 تومان</td>
-                                </tr><!-- End .summary-shipping-row -->
-
-                                <tr class="summary-shipping-estimate">
-                                    <td>آدرس<br> <a href="dashboard.html">تغییر آدرس</a></td>
-                                    <td>&nbsp;</td>
-                                </tr><!-- End .summary-shipping-estimate -->
-
-                                <tr class="summary-total">
-                                    <td>مبلغ قابل پرداخت :</td>
-                                    <td class="text-left">236,000 تومان</td>
-                                </tr><!-- End .summary-total -->
-                                </tbody>
-                            </table><!-- End .table table-summary -->
-
-                            <a href="checkout.html" class="btn btn-outline-primary-2 btn-order btn-block">رفتن
-                                به صفحه پرداخت</a>
-                        </div><!-- End .summary -->
-
-                        <a href="category.html" class="btn btn-outline-dark-2 btn-block mb-3"><span>ادامه
+                            <a href="category.html" class="btn btn-outline-dark-2 btn-block mb-3"><span>ادامه
                                         خرید</span><i class="icon-refresh"></i></a>
-                    </aside><!-- End .col-lg-3 -->
-                </div><!-- End .row -->
-            </div><!-- End .container -->
-        </div><!-- End .cart -->
-    </div>
-    <script src="{% static "core/js/bootstrap-input-spinner.js" %}"></script>
-    <script>
-        $(".cart_qty").inputSpinner();
-    </script>
+                        </aside><!-- End .col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .cart -->
+        </div>
+        <script src="{% static "core/js/bootstrap-input-spinner.js" %}"></script>
+        <script>
+            $(".cart_qty").inputSpinner();
+        </script>
 
     {% endif %}
 {% endblock page_content %}

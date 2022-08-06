@@ -167,6 +167,7 @@
                     <div class="modal-body p-5">
                         <div class="row">
                             <div class="col-4 form-req-text">
+                                {{ new_address_form.owner }}
                                 {{ new_address_form.province.label_tag }}
                                 {{ new_address_form.province }}
                                 {{ new_address_form.province.errors.as_text }}
@@ -448,6 +449,7 @@
             ).then(function (response) {
                     if (response.status === 200) {
                         return response.text();
+
                     } else {
                         throw "connection Error"
                     }

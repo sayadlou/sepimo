@@ -95,25 +95,24 @@ class WishItemForm(forms.ModelForm):
                                                product=self.cleaned_data["product"]).delete()
 
 
-class CartItemAddForm(forms.ModelForm):
-    request_type = forms.CharField(max_length=3, required=True)
+class DiscountForm(forms.Form):
+    id = forms.UUIDField()
+    cart_purchase_amount = forms.IntegerField()
 
-    class Meta:
-        model: CartItem = CartItem
-        fields = ('cart', 'quantity', 'product', 'request_type')
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super().__init__(*args, **kwargs)
 
-    def save_or_add_existing(self):
-        try:
-            cart_item = self.Meta.model.objects.get(cart=self.instance.cart, product=self.instance.product)
-            cart_item.quantity += self.instance.quantity
-            cart_item.save()
-        except CartItem.DoesNotExist:
-            self.instance.save()
-        except CartItem.MultipleObjectsReturned:
-            cart_items_sum = CartItem.objects.filter(cart=self.cart, product=self.product).aggregate(Sum('quantity'))
-            self.Meta.model.objects.filter(cart=self.cart, product=self.product).delete()
-            self.instance.quantity += cart_items_sum["quantity__sum"]
-            self.instance.save()
+    def clean_id(self):
+        id = self.cleaned_data["id"]
+        print(id)
+        if not Discount.objects.filter(id=id).exists():
+            raise ValidationError("Discount is not valid")
+        return id
+
+    def get_discount(self):
+        print(self.cleaned_data["id"])
+        return Discount.objects.get(id=self.cleaned_data["id"]).discount_purchase_amount
 
 
 class ReviewForm(forms.ModelForm):

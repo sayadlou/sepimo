@@ -8,6 +8,7 @@ from django.contrib.sessions.models import Session
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from filer.fields.image import FilerImageField
 from mptt.fields import TreeForeignKey
@@ -143,12 +144,6 @@ class Review(models.Model):
     email = models.EmailField()
 
 
-# class Variant(models.Model):
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
-#     price = models.DecimalField(max_digits=12, decimal_places=0)
-#     differentiation_value = models.CharField(max_length=200, null=True, blank=True)
-
-
 class Cart(models.Model):
     CART_STATUS_WAITING = 'W'
     CART_STATUS_TRANSFERRED = 'T'
@@ -163,7 +158,7 @@ class Cart(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(choices=CART_STATUS_CHOICES, max_length=20, default=CART_STATUS_WAITING)
-    status_change_date = models.DateTimeField(auto_now_add=True)
+    status_change_date = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = _('Cart')
@@ -216,6 +211,20 @@ class CartItem(models.Model):
         return f'{self.quantity} of {self.product.title}'
 
 
+def one_month_later():
+    return timezone.now() + timezone.timedelta(days=30)
+
+
+class Discount(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    quantity = models.PositiveIntegerField(verbose_name=_('quantity'), default=0)
+    expiration_date = models.DateField(default=one_month_later)
+    minimum_purchase_amount = models.PositiveIntegerField(verbose_name=_('quantity'), default=100000)
+    discount_purchase_amount = models.PositiveIntegerField(verbose_name=_('quantity'), default=10000)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
 class Order(models.Model):
     ORDER_STATUS_WAITING = 'W'
     ORDER_STATUS_TRANSFERRED = 'T'
@@ -233,7 +242,7 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(choices=ORDER_STATUS_CHOICES, max_length=20, default=ORDER_STATUS_WAITING)
 
-    status_change_date = models.DateTimeField(auto_now_add=True)
+    status_change_date = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -291,7 +300,7 @@ class Payment(models.Model):
     amount = models.PositiveIntegerField(default=0, verbose_name=_('amount'))
     status = models.PositiveSmallIntegerField(verbose_name=_('status'), choices=STATUS_TYPE_CHOICES,
                                               default=STATUS_PROCESSING)
-    status_change_date = models.DateTimeField(auto_now_add=True)
+    status_change_date = models.DateTimeField(auto_now=True)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     transaction = GenericForeignKey('content_type', 'object_id')

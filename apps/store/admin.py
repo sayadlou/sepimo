@@ -53,6 +53,13 @@ class BrandAdmin(admin.ModelAdmin):
     pass
 
 
+@admin.register(Discount)
+class DiscountAdmin(admin.ModelAdmin):
+    readonly_fields = ['id']
+    list_display = ['id', ]
+
+
+
 @admin.register(Payment)
 class ProductAdmin(admin.ModelAdmin):
     pass
