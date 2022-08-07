@@ -1,4 +1,4 @@
-from apps.store.models import Cart, Order, OrderItem, CartItem
+from apps.store.models import Cart, CartItem#, Order, OrderItem
 
 
 def cart_to_order(request):

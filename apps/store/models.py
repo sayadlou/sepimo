@@ -2,11 +2,11 @@ from decimal import Decimal
 from uuid import uuid4
 
 from azbankgateways.models import Bank
-from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sessions.models import Session
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.db.models import Sum
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -15,7 +15,7 @@ from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 from tinymce.models import HTMLField
 
-from apps.account.models import UserProfile
+from apps.account.models import UserProfile, Address
 from config.settings.base import LANGUAGES
 
 
@@ -219,10 +219,18 @@ class Discount(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     quantity = models.PositiveIntegerField(verbose_name=_('quantity'), default=0)
     expiration_date = models.DateField(default=one_month_later)
-    minimum_purchase_amount = models.PositiveIntegerField(verbose_name=_('quantity'), default=100000)
-    discount_purchase_amount = models.PositiveIntegerField(verbose_name=_('quantity'), default=10000)
+    minimum_purchase_amount = models.PositiveIntegerField(default=100000)
+    discount_purchase_amount = models.PositiveIntegerField(default=10000)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class Shipping(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    shipping_title = models.CharField(max_length=100)
+    shipping_coast = models.PositiveIntegerField(default=10000)
+    delivery_time = models.PositiveIntegerField(default=2)
+    minimum_order_cost = models.PositiveIntegerField(default=10000)
 
 
 class Order(models.Model):
@@ -237,27 +245,22 @@ class Order(models.Model):
         (ORDER_STATUS_FAILED, 'Failed')
     ]
 
-    owner = models.ForeignKey(UserProfile, on_delete=models.RESTRICT, related_name="Orders")
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    created_at = models.DateTimeField(auto_now_add=True)
+    owner = models.ForeignKey(UserProfile, on_delete=models.RESTRICT, related_name="Orders")
+    address = models.ForeignKey(Address, on_delete=models.RESTRICT)
+    shipping = models.ForeignKey(Shipping, on_delete=models.RESTRICT)
+    discount = models.ForeignKey(Discount, on_delete=models.RESTRICT)
     status = models.CharField(choices=ORDER_STATUS_CHOICES, max_length=20, default=ORDER_STATUS_WAITING)
-
+    created_at = models.DateTimeField(auto_now_add=True)
     status_change_date = models.DateTimeField(auto_now=True)
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
     class Meta:
-        verbose_name = _('Order')
-        verbose_name_plural = _('Orders')
-        ordering = ('id',)
+        ordering = ('status_change_date',)
 
     @property
     def total_price(self):
-        sum = 0
-        for item in self.orderitem_set.all():
-            sum += item.product.price * item.quantity
-        return sum
+        oder_sum_dict = self.orderitem_set.aggregate(Sum('product_price'))
+        return oder_sum_dict.get('product_price__sum', 0)
 
     def __str__(self):
         return f"order of {self.owner.username}"
@@ -267,6 +270,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, verbose_name=_('order item'), on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(verbose_name=_('quantity'))
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product_price = models.PositiveIntegerField()
 
     def __str__(self):
         return f'{self.quantity} of {self.product.title}'
@@ -276,36 +280,32 @@ class OrderItem(models.Model):
         verbose_name_plural = _('Order items')
         ordering = ('id',)
 
-    @property
-    def total_price(self):
-        return self.quantity * self.product.price
-
-
-class Payment(models.Model):
-    STATUS_INITIAL = 1
-    STATUS_PROCESSING = 2
-    STATUS_CONFIRMED = 3
-    STATUS_TYPE_CHOICES = [
-        (STATUS_INITIAL, _('initial')),
-        (STATUS_PROCESSING, _('processing')),
-        (STATUS_CONFIRMED, _('confirmed')),
-    ]
-    owner = models.ForeignKey(UserProfile, on_delete=models.RESTRICT, related_name="Payment")
-    order = models.ForeignKey(Order, verbose_name=_('order'), on_delete=models.CASCADE)
-    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created at'))
-    expired_at = models.DateTimeField(verbose_name=_('expired at'), null=True, blank=True)
-    due_at = models.DateTimeField(verbose_name=_('due at'), null=True, blank=True)
-    fulfilled_at = models.DateTimeField(verbose_name=_('fulfilled at'), null=True, blank=True)
-    amount = models.PositiveIntegerField(default=0, verbose_name=_('amount'))
-    status = models.PositiveSmallIntegerField(verbose_name=_('status'), choices=STATUS_TYPE_CHOICES,
-                                              default=STATUS_PROCESSING)
-    status_change_date = models.DateTimeField(auto_now=True)
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    transaction = GenericForeignKey('content_type', 'object_id')
-
-    class Meta:
-        verbose_name = _('Payment')
-        verbose_name_plural = _('Payments')
-        ordering = ('created_at',)
+#
+# class Payment(models.Model):
+#     STATUS_INITIAL = 1
+#     STATUS_PROCESSING = 2
+#     STATUS_CONFIRMED = 3
+#     STATUS_TYPE_CHOICES = [
+#         (STATUS_INITIAL, _('initial')),
+#         (STATUS_PROCESSING, _('processing')),
+#         (STATUS_CONFIRMED, _('confirmed')),
+#     ]
+#     owner = models.ForeignKey(UserProfile, on_delete=models.RESTRICT, related_name="Payment")
+#     order = models.ForeignKey(Order, verbose_name=_('order'), on_delete=models.CASCADE)
+#     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+#     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created at'))
+#     expired_at = models.DateTimeField(verbose_name=_('expired at'), null=True, blank=True)
+#     due_at = models.DateTimeField(verbose_name=_('due at'), null=True, blank=True)
+#     fulfilled_at = models.DateTimeField(verbose_name=_('fulfilled at'), null=True, blank=True)
+#     amount = models.PositiveIntegerField(default=0, verbose_name=_('amount'))
+#     status = models.PositiveSmallIntegerField(verbose_name=_('status'), choices=STATUS_TYPE_CHOICES,
+#                                               default=STATUS_PROCESSING)
+#     status_change_date = models.DateTimeField(auto_now=True)
+#     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+#     object_id = models.PositiveIntegerField()
+#     transaction = GenericForeignKey('content_type', 'object_id')
+#
+#     class Meta:
+#         verbose_name = _('Payment')
+#         verbose_name_plural = _('Payments')
+#         ordering = ('created_at',)

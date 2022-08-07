@@ -60,9 +60,9 @@ class DiscountAdmin(admin.ModelAdmin):
 
 
 
-@admin.register(Payment)
-class ProductAdmin(admin.ModelAdmin):
-    pass
+# @admin.register(Payment)
+# class ProductAdmin(admin.ModelAdmin):
+#     pass
 
 
 @admin.register(Category)
