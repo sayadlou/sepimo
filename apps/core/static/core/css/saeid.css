@@ -136,3 +136,5 @@ p .help {
 [dir="rtl"] .rating--nojs::-webkit-slider-thumb {
   box-shadow: var(--w) 0 0 var(--w) var(--fill);
 }
+.cart-discount {
+  max-width: 426px; }

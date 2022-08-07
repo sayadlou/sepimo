@@ -48,6 +48,10 @@ class ProductAdmin(TranslationAdmin):
     inlines = [ImageInline]
 
 
+@admin.register(Shipping)
+class ShippingAdmin(admin.ModelAdmin):
+    pass
+
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
     pass

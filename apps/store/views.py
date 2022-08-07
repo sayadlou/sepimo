@@ -1,12 +1,14 @@
 import logging
+from copy import copy
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import Avg, Count, Q, Max, Min
 from django.db.models.functions import Coalesce
 from django.forms import modelformset_factory
 from django import forms
-from django.http import HttpResponseBadRequest, HttpResponse
+from django.http import HttpResponseBadRequest, HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
@@ -14,7 +16,7 @@ from django_filters.views import FilterView
 from django.utils.translation import gettext as _
 
 from .filters import ProductFilter
-from .forms import ReviewForm, CartItemForm, WishItemForm, DiscountForm
+from .forms import ReviewForm, CartItemForm, WishItemForm, DiscountForm, OrderForm
 from .models import *
 
 logger = logging.getLogger('store.views')
@@ -132,7 +134,7 @@ class ProductView(View):
     review_form = ReviewForm
     success_url = reverse_lazy('store:product-code-slug')
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: WSGIRequest, *args, **kwargs):
         context = self.get_context_data()
         return render(request=self.request, template_name=self.template_name, context=context)
 
@@ -147,7 +149,7 @@ class ProductView(View):
         context['form'] = form
         return render(request=self.request, template_name=self.template_name, context=context)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: WSGIRequest, *args, **kwargs):
         form = self.review_form(request.POST)
         if form.is_valid():
             return self.form_valid(form)
@@ -200,63 +202,54 @@ class ProductView(View):
 
 
 class CartView(View):
-    cart_item_formset = modelformset_factory(CartItem, extra=0, can_delete=True,
-                                             fields=['cart', 'quantity', 'product', ],
-                                             widgets={
-                                                 "cart": forms.TextInput(
-                                                     attrs={'class': 'form-control mt-0 mb-0 d-none'}),
-                                                 "quantity": forms.TextInput(
-                                                     attrs={'class': 'form-control mt-0 mb-0 cart_qty'}),
-                                                 "product": forms.TextInput(
-                                                     attrs={'class': 'form-control mt-0 mb-0 d-none'}),
-                                             }
-                                             )
+    cart_item_formset = modelformset_factory(
+        CartItem,
+        extra=0,
+        can_delete=True,
+        fields=['cart', 'quantity', 'product', ],
+        widgets={
+            "cart": forms.TextInput(
+                attrs={'class': 'form-control mt-0 mb-0 d-none'}),
+            "quantity": forms.TextInput(
+                attrs={'class': 'form-control mt-0 mb-0 cart_qty'}),
+            "product": forms.TextInput(
+                attrs={'class': 'form-control mt-0 mb-0 d-none'}),
+        }
+    )
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: WSGIRequest, *args, **kwargs):
         if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
             return self.ajax_get(request, *args, **kwargs)
         return self.browser_get(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: WSGIRequest, *args, **kwargs):
         if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
             return self.ajax_post(request, *args, **kwargs)
         return self.browser_post(request, *args, **kwargs)
 
-    def ajax_get(self, request, *args, **kwargs):
+    def ajax_get(self, request: WSGIRequest, *args, **kwargs):
         return HttpResponse("OK")
 
-    def ajax_post(self, request, *args, **kwargs):
+    def ajax_post(self, request: WSGIRequest, *args, **kwargs):
         form = CartItemForm(request.POST)
         if form.is_valid():
             form.save_or_update()
             return HttpResponse("OK")
         return HttpResponseBadRequest("NOK")
 
-    def browser_get(self, request, *args, **kwargs):
+    def browser_get(self, request: WSGIRequest, *args, **kwargs):
         formset = self.cart_item_formset(queryset=self.get_formset_initial_value)
-        product_pictures = self.get_product_pictures
-        context = {
-            "formset": formset,
-            "product_pictures": product_pictures,
-        }
-        return render(request=self.request, template_name="store/cart.html", context=context)
+        return render(request=self.request, template_name="store/cart.html", context=self.get_context(formset=formset))
 
-    def browser_post(self, request, *args, **kwargs):
-        print("normal post")
-        # Check if submitted forms are valid
+    def browser_post(self, request: WSGIRequest, *args, **kwargs):
         formset = self.cart_item_formset(data=request.POST)
-        product_pictures = self.get_product_pictures
         if formset.is_valid():
             formset.save()
             messages.info(request, _('Cart Updated'))
-            formset = self.cart_item_formset(queryset=self.get_formset_initial_value)
+            formset = copy(self.cart_item_formset(queryset=self.get_formset_initial_value))
         else:
             messages.error(request, _('Cart Not Valid'))
-        context = {
-            "formset": formset,
-            "product_pictures": product_pictures,
-        }
-        return render(request=self.request, template_name="store/cart.html", context=context)
+        return render(request=self.request, template_name="store/cart.html", context=self.get_context(formset=formset))
 
     @property
     def get_product_pictures(self):
@@ -266,10 +259,27 @@ class CartView(View):
     def get_formset_initial_value(self):
         return self.request.cart.cartitem_set.all().order_by('id')
 
+    def get_context(self, formset):
+        form_initial = {
+            "cart": self.request.cart.pk,
+            "owner": self.request.user,
+        }
+        context = {
+            "formset": formset,
+            "product_pictures": self.get_product_pictures,
+            "request": self.request,
+            "shipping_list": Shipping.objects.all(),
+            "cart_item": self.request.cart.cartitem_set.all(),
+        }
+        if self.request.user.is_authenticated:
+            context["order_form"] = OrderForm(request=self.request, initial=form_initial)
+            context["addresses"] = Address.objects.filter(owner=self.request.user)
+        return context
+
 
 class CartWidgetView(View):
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: WSGIRequest, *args, **kwargs):
         return render(request=self.request, template_name="store/cart_widget.html")
 
 
@@ -277,33 +287,33 @@ class WishList(View):
     template_name = 'store/whishlist.html'
     model = WishItem
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: WSGIRequest, *args, **kwargs):
         if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
             return self.ajax_get(request, *args, **kwargs)
         return self.browser_get(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: WSGIRequest, *args, **kwargs):
         if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
             return self.ajax_post(request, *args, **kwargs)
         return self.browser_post(request, *args, **kwargs)
 
-    def ajax_get(self, request, *args, **kwargs):
+    def ajax_get(self, request: WSGIRequest, *args, **kwargs):
         return HttpResponse("OK")
 
-    def browser_get(self, request, *args, **kwargs):
+    def browser_get(self, request: WSGIRequest, *args, **kwargs):
         context = {
             'object_list': self.get_queryset(),
         }
         return render(request=request, template_name=self.template_name, context=context)
 
-    def ajax_post(self, request, *args, **kwargs):
+    def ajax_post(self, request: WSGIRequest, *args, **kwargs):
         form = WishItemForm(request.POST)
         if form.is_valid():
             form.save_or_update_existing()
             return HttpResponse(_("Product added to wish list"))
         return HttpResponseBadRequest(_("Product didn't add to wish list"))
 
-    def browser_post(self, request, *args, **kwargs):
+    def browser_post(self, request: WSGIRequest, *args, **kwargs):
         return HttpResponse("OK")
 
     def get_queryset(self):
@@ -314,9 +324,22 @@ class DiscountView(LoginRequiredMixin, View):
     model = Discount
     form = DiscountForm
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: WSGIRequest, *args, **kwargs):
         form = self.form(self.request.POST, request=request)
         if form.is_valid():
             return HttpResponse(f"{form.get_discount()}")
         else:
-            return HttpResponse("0")
+            return HttpResponseNotFound("Not Found")
+
+
+class OrderView(LoginRequiredMixin, View):
+    def post(self, request: WSGIRequest, *args, **kwargs):
+        form = OrderForm(request.POST, request=request)
+        if form.is_valid():
+
+            return HttpResponse(f"Valid")
+        else:
+            return HttpResponse(f"Not Valid")
+
+    def get(self, request: WSGIRequest, *args, **kwargs):
+        pass

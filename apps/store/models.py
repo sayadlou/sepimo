@@ -6,7 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.sessions.models import Session
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from django.db.models import Sum
+from django.db.models import Sum, F
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -38,6 +38,13 @@ class Brand(models.Model):
         return self.name
 
 
+class ProductManager(models.Manager):
+
+    def get_queryset(self):
+        # return super().get_queryset()
+        return super().get_queryset().select_related("introduction_picture", "category", "brand")
+
+
 class Product(models.Model):
     STATUS = (
         ('Published', 'Published'),
@@ -53,6 +60,7 @@ class Product(models.Model):
         "low": _("Low in stock"),
         "out": _("Out of stock"),
     }
+    objects = ProductManager()
     status = models.CharField(max_length=50, choices=STATUS, default='Draft')
     code = models.CharField(max_length=11, blank=True, unique=True)
     title = models.CharField(max_length=200)
@@ -104,22 +112,6 @@ class Product(models.Model):
         else:
             return "out"
 
-    # def clean(self):
-    # if self.has_variant is False and self.price is None:
-    #     raise ValidationError(_('a product without a variant should have a price'))
-    # if self.has_variant is False and self.price == Decimal('0.0'):
-    #     raise ValidationError(_('a product without a variant should have price more than 0'))
-    # if self.has_variant and self.variant_title == "":
-    #     raise ValidationError(_('variant title should be defined'))
-
-    # if self.has_variant and self.variant_set.all().count() == 0:
-    #     raise ValidationError(_('variant should be defined'))
-    # if self.has_variant:
-    #     self.price = Decimal('0.01')
-    # else:
-    #     self.variant_title = ""
-    #     self.variant_set.set(Variant.objects.none())
-
 
 class Image(models.Model):
     image_file = FilerImageField(related_name='store_product_picture', on_delete=models.CASCADE)
@@ -144,6 +136,12 @@ class Review(models.Model):
     email = models.EmailField()
 
 
+class CartManager(models.Manager):
+
+    def get_queryset(self):
+        return super().get_queryset().prefetch_related("cartitem_set")
+
+
 class Cart(models.Model):
     CART_STATUS_WAITING = 'W'
     CART_STATUS_TRANSFERRED = 'T'
@@ -153,6 +151,7 @@ class Cart(models.Model):
         (CART_STATUS_TRANSFERRED, 'Transferred'),
         (CART_STATUS_FAILED, 'Failed')
     ]
+    objects = CartManager()
     owner = models.OneToOneField(UserProfile, on_delete=models.CASCADE, related_name="cart", blank=True, null=True)
     session = models.OneToOneField(Session, on_delete=models.CASCADE, blank=True, null=True)
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
@@ -170,7 +169,9 @@ class Cart(models.Model):
 
     @property
     def get_sum(self):
-        return sum((item.quantity * item.product.price) for item in self.cartitem_set.all())
+        oder_sum_dict = self.cartitem_set.aggregate(total=Sum(F('product__price') * F('quantity')))
+        return oder_sum_dict.get('total', 0)
+        # return sum((item.quantity * item.product.price) for item in self.cartitem_set.all())
 
     @property
     def has_item(self):
@@ -182,18 +183,7 @@ class WishItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
 
-class CartItemManager(models.Manager):
-
-    def add_or_create(self, **kwargs):
-        try:
-            obj = super().get(**kwargs)
-            super().filter(id=obj.id).update(quantity=obj.quantity + kwargs.get("quantity", 0))
-        except self.model.DoesNotExist:
-            super().create(**kwargs)
-
-
 class CartItem(models.Model):
-    objects = CartItemManager()
     cart = models.ForeignKey(Cart, verbose_name=_('cart'), on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(verbose_name=_('quantity'), default=0)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -249,7 +239,7 @@ class Order(models.Model):
     owner = models.ForeignKey(UserProfile, on_delete=models.RESTRICT, related_name="Orders")
     address = models.ForeignKey(Address, on_delete=models.RESTRICT)
     shipping = models.ForeignKey(Shipping, on_delete=models.RESTRICT)
-    discount = models.ForeignKey(Discount, on_delete=models.RESTRICT)
+    discount = models.ForeignKey(Discount, on_delete=models.RESTRICT, null=True, blank=True)
     status = models.CharField(choices=ORDER_STATUS_CHOICES, max_length=20, default=ORDER_STATUS_WAITING)
     created_at = models.DateTimeField(auto_now_add=True)
     status_change_date = models.DateTimeField(auto_now=True)

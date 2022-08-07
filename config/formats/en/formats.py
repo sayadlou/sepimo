@@ -1,0 +1,1 @@
+THOUSAND_SEPARATOR = '\x2c'

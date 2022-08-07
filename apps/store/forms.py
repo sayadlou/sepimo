@@ -1,7 +1,6 @@
 from captcha.fields import CaptchaField
 from django import forms
 from django.core.exceptions import ValidationError
-from django.db.models import Sum
 from django.utils.translation import gettext as _
 
 from .models import *
@@ -134,5 +133,24 @@ class ReviewForm(forms.ModelForm):
     def clean_rate(self):
         rate = self.cleaned_data['rate']
         rate *= 20
-        print(rate)
         return rate
+
+
+class OrderForm(forms.ModelForm):
+    cart = forms.ModelChoiceField(queryset=None, widget=forms.TextInput(attrs={'hidden': True}))
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super().__init__(*args, **kwargs)
+        self.fields["cart"].queryset = Cart.objects.filter(pk=self.request.cart.id)
+        self.fields["address"].queryset = self.request.user.address_set.all()
+
+    class Meta:
+        model = Order
+        fields = ("owner", "address", "shipping", "discount",)
+        widgets = {
+            "owner": forms.TextInput(attrs={'hidden': True}),
+            "address": forms.TextInput(attrs={'hidden': True}),
+            "shipping": forms.TextInput(attrs={'hidden': True}),
+            "discount": forms.TextInput(attrs={'hidden': True}),
+        }
