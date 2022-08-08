@@ -1,15 +1,20 @@
 import logging
 from copy import copy
 
+from azbankgateways import bankfactories
+from django.conf import settings
+from azbankgateways import models as bank_models
+from azbankgateways.exceptions import AZBankGatewaysException
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.handlers.wsgi import WSGIRequest
-from django.db.models import Avg, Count, Q, Max, Min
+from django.db import transaction
+from django.db.models import Avg, Count, Q, Max, Min, QuerySet
 from django.db.models.functions import Coalesce
 from django.forms import modelformset_factory
 from django import forms
-from django.http import HttpResponseBadRequest, HttpResponse, HttpResponseNotFound
-from django.shortcuts import render
+from django.http import HttpResponseBadRequest, HttpResponse, HttpResponseNotFound, HttpResponseRedirect, Http404
+from django.shortcuts import render, get_list_or_404
 from django.urls import reverse_lazy
 from django.views import View
 from django_filters.views import FilterView
@@ -343,3 +348,128 @@ class OrderView(LoginRequiredMixin, View):
 
     def get(self, request: WSGIRequest, *args, **kwargs):
         pass
+
+
+class PaymentView(LoginRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        with transaction.atomic():
+            order_id = request.POST.get('order_id')
+            try:
+                order = Order.objects.get(owner=request.user, pk=order_id)
+            except Order.DoesNotExist:
+                order = self.cart_to_order()
+            if order.total_price <= settings.MINIMUM_ORDER_AMOUNT:
+                messages.success(request, _('minimum order amount should be more than 100,000 IRR'))
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+            factory = bankfactories.BankFactory()
+            try:
+                bank = factory.create(bank_models.BankType.ZARINPAL)
+                bank.set_request(request)
+                bank.set_amount(int(order.total_price))
+                bank.set_client_callback_url(reverse_lazy('store:callback-gateway'))
+                bank.set_mobile_number(order.owner.mobile)
+                bank_record = bank.ready()
+                Payment.objects.create(
+                    owner=request.user,
+                    order=order,
+                    amount=(int(order.total_price)),
+                    transaction=bank_record,
+                )
+                return bank.redirect_gateway()
+            except AZBankGatewaysException as e:
+                logging.critical(e)
+                # TODO: redirect to failed page.
+                raise e
+
+    def cart_to_order(self):
+        if not self.request.cart.cartitem_set.exists():
+            raise HttpResponseBadRequest
+        order_form = OrderForm(self.request.POST, request=self.request)
+        if not order_form.is_valid():
+            raise HttpResponseBadRequest
+        new_order = order_form.save()
+        order_items = [
+            OrderItem(order=new_order, quantity=item.quantity, product=item.product, product_price=item.product.price)
+            for item in
+            self.request.cart.cartitem_set.all()]
+        OrderItem.objects.bulk_create(order_items, batch_size=20)
+        return new_order
+
+
+class CallbackGatewayView(LoginRequiredMixin, View):
+    tracking_code: str
+    bank_record: Bank
+    payment: Payment
+    paid_order_items: QuerySet[OrderItem]
+    buyer: UserProfile
+
+    def get(self, request, *args, **kwargs):
+        self.tracking_code = request.GET.get(settings.AZ_IRANIAN_BANK_GATEWAYS['TRACKING_CODE_QUERY_PARAM'], None)
+        self._is_tracking_code_valid()
+        self._get_bank_record()
+        if self.bank_record.is_success:
+            try:
+                self._is_requested_user_payment_owner()
+                self._make_payment_confirmed()
+                self._make_cart_empty()
+            except Payment.DoesNotExist:
+                return self._show_no_payment_error()
+            return self._show_successful_payment()
+        return self._show_unsuccessful_payment()
+
+    def _make_cart_empty(self):
+        self.request.cart.cartitem_set.all().delete()
+
+    def _is_requested_user_payment_owner(self):
+        self.payment = Payment.objects.get(
+            content_type=ContentType.objects.get_for_model(self.bank_record),
+            object_id=self.bank_record.pk
+        )
+        if not self.payment.owner.pk == self.request.user.pk:
+            raise Http404
+
+    def _is_tracking_code_valid(self):
+        if not self.tracking_code:
+            logging.error("tracking code is not in url query param.")
+            raise Http404
+
+    def _get_bank_record(self):
+        try:
+            self.bank_record = bank_models.Bank.objects.get(tracking_code=self.tracking_code)
+        except bank_models.Bank.DoesNotExist:
+            logging.error("bank record is not valid")
+            raise Http404
+
+    def _show_no_payment_error(self):
+        logging.error(f"payment for {self.bank_record.pk} was successful but has no oder")
+        return render(request=self.request,
+                      template_name="store/callback.html",
+                      context={
+                          "message": "خطایی در پرداخت رخ داده است جهت بازپرداخت وجه با پشتیبانی تماس حاصل نمایید.", }
+                      )
+
+    def _show_successful_payment(self):
+        logging.error(f"payment {self.bank_record.pk} with amount {self.bank_record.amount} was not successful")
+
+        return render(request=self.request,
+                      template_name="store/callback.html",
+                      context={
+                          "message": "پرداخت با موفقیت انجام شد.", }
+                      )
+
+    def _show_unsuccessful_payment(self):
+        logging.error(f"payment {self.bank_record.pk} with amount {self.bank_record.amount} was not successful")
+
+        return render(request=self.request,
+                      template_name="store/callback.html",
+                      context={
+                          "message": "عملیات پرداخت موفقیت آمیز نبوده است.اگر از حساب شما مبلغی کم شده "
+                                     "است. ظرف مدت ۴۸ ساعت پول به حساب شما بازخواهد گشت.", })
+
+    def _make_payment_confirmed(self):
+
+        self.payment.status = Payment.STATUS_CONFIRMED
+        self.payment.save()
+        self.payment.order.status = Order.ORDER_STATUS_PAYED
+        self.payment.order.save()

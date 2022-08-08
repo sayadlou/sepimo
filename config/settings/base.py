@@ -193,9 +193,23 @@ TINYMCE_DEFAULT_CONFIG = {
                "removeformat | ltr rtl | help",
 }
 
-MINIMUM_ORDER_AMOUNT = 100000
+MINIMUM_ORDER_AMOUNT = 10_000
 
 USE_THOUSAND_SEPARATOR = True
 
 SESSION_ENGINE = 'apps.core.session_backend'
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # 30 Days
+
+
+AZ_IRANIAN_BANK_GATEWAYS = {
+    'GATEWAYS': {
+        'ZARINPAL': {
+            'MERCHANT_CODE': os.environ['ZARINPAL_MERCHANT_CODE'],
+            'SANDBOX': int(os.environ['ZARINPAL_SANDBOX']),
+        },
+    },
+    'DEFAULT': 'ZARINPAL',
+    'CURRENCY': 'IRR',
+    'TRACKING_CODE_QUERY_PARAM': 'tc',
+    'TRACKING_CODE_LENGTH': 16,
+}
