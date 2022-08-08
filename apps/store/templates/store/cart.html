@@ -1,281 +1,1 @@
-{% extends "core/base.html" %}
-{% load humanize %}
-{% load i18n %}
-{% load store_tag %}
-{% load static %}
-{#<form>#}
-{#    <h1>salam</h1>#}
-{#    {% csrf_token %}#}
-{#    {{ order_form }}#}
-{#    <input type="submit">#}
-{#</form>#}
-{% block page_content %}
-    {% if request.cart.cartitem_set.all.count == 0 %}
-        <div class="page-content">
-            <div class="cart">
-                <div class="container">
-                    <div class="page404-bg text-center">
-                        <div class="page404-text">
-                            <div class="empty-image"><img src="{% static "core/fa/images/empty3.png" %}" alt="">
-                            </div>
-                            <div class="empty-text display-3">سبد خرید شما خالی است!</div>
-
-                            <a href="{% url "store:product-list" %}"
-                               class="btn btn-outline-primary-2 btn-order mt-3"><span>رفتن به
-                                        فروشگاه و شروع خرید</span><i class="icon-long-arrow-left"></i></a>
-                        </div>
-                    </div>
-                </div><!-- End .container -->
-            </div><!-- End .cart -->
-        </div>
-    {% else %}
-        {% if formset.errors %}
-            {% for error in formset.non_field_errors %}
-                <script>
-                    alertify.error("{{ error }}");
-                </script>
-            {% endfor %}
-        {% endif %}
-        <div class="page-content">
-            <div class="cart">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-9">
-                            <form method="post">
-                                <table class="table table-cart table-mobile">
-
-                                    <thead>
-                                    <th>محصول</th>
-                                    <th>قیمت</th>
-                                    <th class="pr-5">تعداد</th>
-                                    <th>مجموع</th>
-                                    <th>حذف</th>
-                                    {% csrf_token %}
-                                    {{ formset.management_form }}
-                                    {% for form in formset.forms %}
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td class="product-col">
-                                                <div class="product">
-                                                    <figure class="product-media">
-                                                        <a href="#">
-                                                            <img src="{% get_product_picture forloop.counter0 %}"
-                                                                 alt="تصویر محصول">
-                                                        </a>
-                                                    </figure>
-
-                                                    <h3 class="product-title">
-                                                        <a href="{% get_product_attr "absolute_url" forloop.counter0 %}">{% get_product_attr "title" forloop.counter0 %}</a>
-                                                    </h3><!-- End .product-title -->
-                                                </div><!-- End .product -->
-                                            </td>
-                                            <td class="price-col">{% get_product_attr "price" forloop.counter0 %}</td>
-                                            <td class="quantity-col">
-                                                <div id="cart-list" class="ml-5 pl-5 quantity-input "
-                                                     style="width: 60%">
-                                                    {{ form.quantity }}
-                                                    {{ form.cart }}
-                                                    {{ form.product }}
-                                                    {{ form.id }}
-                                                </div>
-
-                                            </td>
-                                            <td class="total-col">{% get_cartitem_total_price forloop.counter0 %}</td>
-                                            <td class="remove-col">
-                                                <button class="btn-remove">{{ form.DELETE }}</button>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-
-                                <div class="cart-bottom">
-                                    {% if request.user.is_authenticated %}
-                                        <div class="cart-discount">
-                                            <div class="input-group">
-                                                <input id="discount-code" type="text" class="form-control"
-                                                       placeholder="کد تخفیف">
-                                                <div class="input-group-append">
-                                                    <button
-                                                            class="btn btn-outline-primary-2"
-                                                            id="check-discount"
-                                                            data-formid="order-form"
-                                                            data-url="{% url "store:discount" %}"
-                                                    >
-                                                        <i
-                                                                class="icon-long-arrow-left"
-
-                                                        ></i>
-                                                    </button>
-                                                </div><!-- .End .input-group-append -->
-                                            </div><!-- End .input-group -->
-                                        </div><!-- End .cart-discount -->
-                                        <script>
-
-                                        </script>
-                                    {% endif %}
-                                    <button class="btn btn-outline-dark-2">
-                                        <span>به روز رسانی سبد خرید</span>
-                                        <i class="icon-refresh"></i>
-                                    </button>
-                                </div><!-- End .cart-bottom -->
-                            </form>
-                        </div><!-- End .col-lg-9 -->
-                        <aside class="col-lg-3">
-                            {% if request.user.is_authenticated %}
-                                <div class="summary summary-cart">
-                                    <h3 class="summary-title">جمع سبد خرید</h3><!-- End .summary-title -->
-
-                                    <table class="table table-summary">
-                                        <form id="order-form">
-                                            <tbody>
-                                            <tr class="summary-subtotal">
-                                                <td>جمع کل سبد خرید :</td>
-                                                <td class="text-left">{{ request.cart.get_sum|intcomma:False }} تومان
-                                                </td>
-                                            </tr><!-- End .summary-subtotal -->
-
-
-                                            <tr class="summary-shipping">
-                                                <td>شیوه ارسال :</td>
-                                                <td>&nbsp;</td>
-                                            </tr>
-                                            {% for shipping in shipping_list %}
-                                                <tr class="summary-shipping-row">
-                                                    <td>
-                                                        <div class="custom-control custom-radio">
-                                                            <input type="radio" id="{{ shipping.id }}" name="shipping"
-                                                                   value="{{ shipping.id }}"
-                                                                   class="custom-control-input"
-                                                                    {% if forloop.first %}checked="checked"{% endif %}
-                                                                   >
-                                                            <label class="custom-control-label" for="{{ shipping.id }}">
-                                                                {{ shipping.shipping_title }}
-                                                            </label>
-                                                        </div><!-- End .custom-control -->
-                                                    </td>
-                                                    <td class="text-left">
-                                                        {{ shipping.shipping_coast|intcomma:False }}
-                                                        تومان
-                                                    </td>
-                                                </tr><!-- End .summary-shipping-row -->
-                                            {% endfor %}
-                                            <tr class="summary-shipping-estimate">
-                                                <td>آدرس
-                                                    <br>
-                                                    <select class="form-control" name="address">
-                                                        {% for address in addresses %}
-                                                            <option value="{{ address.id }}">{{ address.address|slice:20 }}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </td>
-
-                                                <td>&nbsp;</td>
-                                            </tr><!-- End .summary-shipping-estimate -->
-
-                                            <tr class="summary-total">
-                                                <td>مبلغ قابل پرداخت :</td>
-                                                <td class="text-left">
-                                                    <span id="total-purchase">236000</span>
-                                                    تومان
-                                                </td>
-                                            </tr><!-- End .summary-total -->
-                                            <tr class="summary-total d-none" id="price-with-discount-row">
-                                                <td>مبلغ قابل پرداخت :</td>
-                                                <td class="text-left">
-                                                    <span id="total-price-with-discount">236000</span>
-                                                    تومان
-                                                </td>
-                                            </tr><!-- End .summary-total -->
-                                            </tbody>
-                                            {{ order_form.owner }}
-                                            {{ order_form.discount }}
-                                            {{ order_form.cart }}
-                                        </form>
-                                    </table><!-- End .table table-summary -->
-
-                                    <button
-                                            class="btn btn-outline-primary-2 btn-order btn-block"
-                                            id="makeOrder"
-                                            data-formid="order-form"
-                                            data-carturl="{% url "store:order" %}"
-                                    >
-                                        رفتن به صفحه پرداخت
-                                    </button>
-                                    <script>
-                                        $('#makeOrder').click(
-                                            function makeOrderOnClick(e) {
-                                                var cartUrl = e.target.dataset.carturl
-                                                var formId = e.target.dataset.formid
-                                                var form_data = $(`#${formId}`).serialize()
-                                                var csrftoken = getCookie('csrftoken');
-                                                $.ajax({
-                                                    url: cartUrl,
-                                                    data: form_data,
-                                                    type: 'post',
-                                                    headers: {'X-CSRFToken': csrftoken}
-                                                })
-                                                    .done(function (response) {
-                                                        alert("success");
-                                                        console.log(response)
-                                                    })
-                                                    .fail(function (response) {
-                                                        console.log(response)
-                                                    });
-                                            }
-                                        )
-                                        $('#cart-list input').change(
-                                                function (e) {
-                                                    if (e.target.value < 2) {
-                                                        $(this).val(1);
-                                                    }
-                                                }
-                                            )
-                                        $('#check-discount').click(
-                                            function (e) {
-                                                e.preventDefault()
-                                                var url = document.getElementById('check-discount').dataset.url
-                                                var data = {
-                                                    id: $('#discount-code').val(),
-                                                    cart_purchase_amount: parseInt($('#total-purchase').text()),
-                                                }
-                                                var csrftoken = getCookie('csrftoken');
-                                                $.ajax({
-                                                    url: url,
-                                                    data: data,
-                                                    type: 'post',
-                                                    headers: {'X-CSRFToken': csrftoken}
-                                                })
-                                                    .done(function (response) {
-                                                        var discount = parseInt(response)
-                                                        var totalPrice = parseInt($('#'))
-                                                        $("#price-with-discount-row").removeClass("d-none");
-
-                                                    })
-                                                    .fail(function (response) {
-                                                        alert(response.responseText)
-                                                    });
-                                            }
-                                        )
-                                    </script>
-                                </div><!-- End .summary -->
-                            {% else %}
-                                <div class="summary summary-cart">
-                                    <h3 class="summary-title">{% translate "for submit an order pleade Login" %}</h3>
-                                    <!-- End .summary-title -->
-                                </div><!-- End .summary -->
-
-                            {% endif %}
-                        </aside><!-- End .col-lg-3 -->
-                    </div><!-- End .row -->
-                </div><!-- End .container -->
-            </div><!-- End .cart -->
-        </div>
-        <script src="{% static "core/js/bootstrap-input-spinner.js" %}"></script>
-        <script>
-            $(".cart_qty").inputSpinner();
-        </script>
-
-    {% endif %}
-{% endblock page_content %}
+{% extends "core/base.html" %}{% load humanize %}{% load i18n %}{% load store_tag %}{% load static %}{#<form>#}{#    <h1>salam</h1>#}{#    {% csrf_token %}#}{#    {{ order_form }}#}{#    <input type="submit">#}{#</form>#}{% block page_content %}    {% if request.cart.cartitem_set.all.count == 0 %}        <div class="page-content">            <div class="cart">                <div class="container">                    <div class="page404-bg text-center">                        <div class="page404-text">                            <div class="empty-image"><img src="{% static "core/fa/images/empty3.png" %}" alt="">                            </div>                            <div class="empty-text display-3">سبد خرید شما خالی است!</div>                            <a href="{% url "store:product-list" %}"                               class="btn btn-outline-primary-2 btn-order mt-3"><span>رفتن به                                        فروشگاه و شروع خرید</span><i class="icon-long-arrow-left"></i></a>                        </div>                    </div>                </div><!-- End .container -->            </div><!-- End .cart -->        </div>    {% else %}        {% if formset.errors %}            {% for error in formset.non_field_errors %}                <script>                    alertify.error("{{ error }}");                </script>            {% endfor %}        {% endif %}        <div class="page-content">            <div class="cart">                <div class="container">                    <div class="row">                        <div class="col-lg-9">                            <form method="post">                                <table class="table table-cart table-mobile">                                    <thead>                                    <th>محصول</th>                                    <th>قیمت</th>                                    <th class="pr-5">تعداد</th>                                    <th>مجموع</th>                                    <th>حذف</th>                                    {% csrf_token %}                                    {{ formset.management_form }}                                    {% for form in formset.forms %}                                        </thead>                                        <tbody>                                        <tr>                                            <td class="product-col">                                                <div class="product">                                                    <figure class="product-media">                                                        <a href="#">                                                            <img src="{% get_product_picture forloop.counter0 %}"                                                                 alt="تصویر محصول">                                                        </a>                                                    </figure>                                                    <h3 class="product-title">                                                        <a href="{% get_product_attr "absolute_url" forloop.counter0 %}">{% get_product_attr "title" forloop.counter0 %}</a>                                                    </h3><!-- End .product-title -->                                                </div><!-- End .product -->                                            </td>                                            <td class="price-col">{% get_product_attr "price" forloop.counter0 %}</td>                                            <td class="quantity-col">                                                <div id="cart-list" class="ml-5 pl-5 quantity-input "                                                     style="width: 60%">                                                    {{ form.quantity }}                                                    {{ form.cart }}                                                    {{ form.product }}                                                    {{ form.id }}                                                </div>                                            </td>                                            <td class="total-col">{% get_cartitem_total_price forloop.counter0 %}</td>                                            <td class="remove-col">                                                <button class="btn-remove">{{ form.DELETE }}</button>                                            </td>                                        </tr>                                    {% endfor %}                                    </tbody>                                </table>                                <div class="cart-bottom">                                    {% if request.user.is_authenticated %}                                        <div class="cart-discount">                                            <div class="input-group">                                                <input id="discount-code" type="text" class="form-control"                                                       placeholder="کد تخفیف">                                                <div class="input-group-append">                                                    <button                                                            class="btn btn-outline-primary-2"                                                            id="check-discount"                                                            data-formid="order-form"                                                            data-url="{% url "store:discount" %}"                                                            data-alertmessage="{% translate "Please select a shipping method" %}"                                                    >                                                        <i                                                                class="icon-long-arrow-left"                                                        ></i>                                                    </button>                                                </div><!-- .End .input-group-append -->                                            </div><!-- End .input-group -->                                        </div><!-- End .cart-discount -->                                        <script>                                        </script>                                    {% endif %}                                    <button class="btn btn-outline-dark-2">                                        <span>به روز رسانی سبد خرید</span>                                        <i class="icon-refresh"></i>                                    </button>                                </div><!-- End .cart-bottom -->                            </form>                        </div><!-- End .col-lg-9 -->                        <aside class="col-lg-3">                            {% if request.user.is_authenticated %}                                <div class="summary summary-cart">                                    <h3 class="summary-title">جمع سبد خرید</h3><!-- End .summary-title -->                                    <table class="table table-summary">                                        <form id="order-form">                                            <tbody>                                            <tr class="summary-subtotal">                                                <td>جمع کل سبد خرید :</td>                                                <td class="text-left">{{ request.cart.get_sum|intcomma:False }} تومان                                                <span class="d-none">                                                </span>                                                </td>                                            </tr><!-- End .summary-subtotal -->                                            <tr class="summary-shipping">                                                <td>شیوه ارسال :</td>                                                <td>&nbsp;</td>                                            </tr>                                            <tr class="summary-shipping-row">                                                    <td>                                                        <div class="custom-control custom-radio">                                                            <input type="radio"                                                             id="888888888"                                                            name="shipping"                                                                   value="8888888"                                                                   class="custom-control-input"                                                                    checked="checked"                                                                   >                                                            <label class="custom-control-label" for="{{ shipping.id }}">                                                                {{ shipping.shipping_title }}                                                            </label>                                                        </div><!-- End .custom-control -->                                                    </td>                                                    <td class="text-left">                                                        {{ shipping.shipping_coast|intcomma:False }}                                                    </td>                                                </tr><!-- End .summary-shipping-row -->                                            {% for shipping in shipping_list %}                                                <tr class="summary-shipping-row">                                                    <td>                                                        <div class="custom-control custom-radio">                                                            <input type="radio" id="{{ shipping.id }}" name="shipping"                                                                   value="{{ shipping.id }}"                                                                   data-shippingprice = {{ shipping.shipping_coast }}                                                                   data-cartprice = {{ request.cart.get_sum }}                                                                   class="custom-control-input"                                                                   onchange="shippingMethodOnChange()"{#                                                                    {% if forloop.first %}checked="checked"{% endif %}#}                                                                   >                                                            <label class="custom-control-label" for="{{ shipping.id }}">                                                                {{ shipping.shipping_title }}                                                            </label>                                                        </div><!-- End .custom-control -->                                                    </td>                                                    <td class="text-left">                                                        {{ shipping.shipping_coast|intcomma:False }}                                                        تومان                                                    </td>                                                </tr><!-- End .summary-shipping-row -->                                            {% endfor %}                                            <script>                                            function shippingMethodOnChange(){                                                var shippingCost = parseInt(event.target.dataset.shippingprice)                                                var cartCost = parseInt(event.target.dataset.cartprice)                                                $('#total-purchase').text(shippingCost+cartCost)                                            }                                            </script>                                            <tr class="summary-shipping-estimate">                                                <td>آدرس                                                    <br>                                                    <select class="form-control" name="address">                                                        {% for address in addresses %}                                                            <option value="{{ address.id }}">{{ address.address|slice:20 }}</option>                                                        {% endfor %}                                                    </select>                                                </td>                                                <td>&nbsp;</td>                                            </tr><!-- End .summary-shipping-estimate -->                                            <tr class="summary-total">                                                <td>مبلغ قابل پرداخت :</td>                                                <td class="text-left">                                                    <span id="total-purchase">---</span>                                                    تومان                                                </td>                                            </tr><!-- End .summary-total -->                                            <tr class="summary-total d-none" id="price-with-discount-row">                                                <td> مبلغ قابل پرداخت با تخفیف:</td>                                                <td class="text-left">                                                    <span id="total-price-with-discount"></span>                                                    تومان                                                </td>                                            </tr><!-- End .summary-total -->                                            </tbody>                                            {{ order_form.owner }}                                            {{ order_form.discount }}                                            {{ order_form.cart }}                                        </form>                                    </table><!-- End .table table-summary -->                                    <button                                            class="btn btn-outline-primary-2 btn-order btn-block"                                            id="makeOrder"                                            data-formid="order-form"                                            data-carturl="{% url "store:order" %}"                                    >                                        رفتن به صفحه پرداخت                                    </button>                                    <script>                                        $('#makeOrder').click(                                            function makeOrderOnClick(e) {                                                var cartUrl = e.target.dataset.carturl                                                var formId = e.target.dataset.formid                                                var form_data = $(`#${formId}`).serialize()                                                var csrftoken = getCookie('csrftoken');                                                $.ajax({                                                    url: cartUrl,                                                    data: form_data,                                                    type: 'post',                                                    headers: {'X-CSRFToken': csrftoken}                                                })                                                    .done(function (response) {                                                        alert("success");                                                        console.log(response)                                                    })                                                    .fail(function (response) {                                                        console.log(response)                                                    });                                            }                                        )                                        $('#cart-list input').change(                                                function (e) {                                                    if (e.target.value < 2) {                                                        $(this).val(1);                                                    }                                                }                                            )                                        $('#check-discount').click(                                            function (e) {                                                e.preventDefault()                                                var totalPurchase =$('#total-purchase').text()                                                var alertmessage = document.getElementById('check-discount').dataset.alertmessage                                                if(totalPurchase === '---'){                                                    alert(alertmessage)                                                    return 0;                                                }                                                var url = document.getElementById('check-discount').dataset.url                                                var cart_purchase_amount_val = parseInt($('#total-purchase').text())                                                var id = $('#discount-code').val()                                                var data = {                                                    id: id,                                                    cart_purchase_amount: cart_purchase_amount_val,                                                }                                                var csrftoken = getCookie('csrftoken');                                                $.ajax({                                                    url: url,                                                    data: data,                                                    type: 'post',                                                    headers: {'X-CSRFToken': csrftoken}                                                })                                                    .done(function (response) {                                                        var discount = parseInt(response)                                                        $("#price-with-discount-row").removeClass("d-none");                                                        console.log(cart_purchase_amount_val , discount)                                                        $('#id_discount').val(id)                                                        $('#total-price-with-discount').text(cart_purchase_amount_val - discount)                                                        })                                                    .fail(function (response) {                                                        alert(response.responseText)                                                    });                                            }                                        )                                    </script>                                </div><!-- End .summary -->                            {% else %}                                <div class="summary summary-cart">                                    <h3 class="summary-title">{% translate "for submit an order pleade Login" %}</h3>                                    <!-- End .summary-title -->                                </div><!-- End .summary -->                            {% endif %}                        </aside><!-- End .col-lg-3 -->                    </div><!-- End .row -->                </div><!-- End .container -->            </div><!-- End .cart -->        </div>        <script src="{% static "core/js/bootstrap-input-spinner.js" %}"></script>        <script>            $(".cart_qty").inputSpinner();        </script>    {% endif %}{% endblock page_content %}

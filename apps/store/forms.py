@@ -104,8 +104,9 @@ class DiscountForm(forms.Form):
 
     def clean_id(self):
         id = self.cleaned_data["id"]
-        print(id)
+
         if not Discount.objects.filter(id=id).exists():
+            print("nok")
             raise ValidationError("Discount is not valid")
         return id
 

@@ -329,6 +329,7 @@ class DiscountView(LoginRequiredMixin, View):
         if form.is_valid():
             return HttpResponse(f"{form.get_discount()}")
         else:
+            print(form.errors)
             return HttpResponseNotFound("Not Found")
 
 
@@ -336,7 +337,6 @@ class OrderView(LoginRequiredMixin, View):
     def post(self, request: WSGIRequest, *args, **kwargs):
         form = OrderForm(request.POST, request=request)
         if form.is_valid():
-
             return HttpResponse(f"Valid")
         else:
             return HttpResponse(f"Not Valid")

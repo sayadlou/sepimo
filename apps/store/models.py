@@ -170,7 +170,7 @@ class Cart(models.Model):
     @property
     def get_sum(self):
         oder_sum_dict = self.cartitem_set.aggregate(total=Sum(F('product__price') * F('quantity')))
-        return oder_sum_dict.get('total', 0)
+        return oder_sum_dict['total'] if oder_sum_dict['total'] else 0
         # return sum((item.quantity * item.product.price) for item in self.cartitem_set.all())
 
     @property
