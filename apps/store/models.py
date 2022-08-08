@@ -251,7 +251,12 @@ class Order(models.Model):
     @property
     def total_price(self):
         oder_sum_dict = self.orderitem_set.aggregate(Sum('product_price'))
-        return oder_sum_dict.get('product_price__sum', 0) if oder_sum_dict.get('product_price__sum', 0) else 0
+        total_price = oder_sum_dict.get('product_price__sum', 0) if oder_sum_dict.get('product_price__sum', 0) else 0
+        if self.discount and self.discount.discount_purchase_amount:
+            discount = self.discount.discount_purchase_amount
+        else:
+            discount = 0
+        return total_price - discount
 
     def __str__(self):
         return f"order of {self.owner.username}"

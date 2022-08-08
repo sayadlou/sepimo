@@ -14,8 +14,9 @@ from django.db.models.functions import Coalesce
 from django.forms import modelformset_factory
 from django import forms
 from django.http import HttpResponseBadRequest, HttpResponse, HttpResponseNotFound, HttpResponseRedirect, Http404
-from django.shortcuts import render, get_list_or_404
+from django.shortcuts import render, get_list_or_404, redirect
 from django.urls import reverse_lazy
+from django.utils.timezone import now
 from django.views import View
 from django_filters.views import FilterView
 from django.utils.translation import gettext as _
@@ -373,7 +374,7 @@ class PaymentView(LoginRequiredMixin, View):
                 Payment.objects.create(
                     owner=request.user,
                     order=order,
-                    amount=(int(order.total_price)),
+                    amount=(int(order.total_price) * 10),
                     transaction=bank_record,
                 )
                 return bank.redirect_gateway()
@@ -408,6 +409,9 @@ class CallbackGatewayView(LoginRequiredMixin, View):
         self.tracking_code = request.GET.get(settings.AZ_IRANIAN_BANK_GATEWAYS['TRACKING_CODE_QUERY_PARAM'], None)
         self._is_tracking_code_valid()
         self._get_bank_record()
+        self._get_payment()
+        if self.payment.status == Payment.STATUS_CONFIRMED:
+            return self._show_successful_payment()
         if self.bank_record.is_success:
             try:
                 self._is_requested_user_payment_owner()
@@ -421,11 +425,16 @@ class CallbackGatewayView(LoginRequiredMixin, View):
     def _make_cart_empty(self):
         self.request.cart.cartitem_set.all().delete()
 
-    def _is_requested_user_payment_owner(self):
+    def _is_payment_confirmed(self):
+        pass
+
+    def _get_payment(self):
         self.payment = Payment.objects.get(
             content_type=ContentType.objects.get_for_model(self.bank_record),
             object_id=self.bank_record.pk
         )
+
+    def _is_requested_user_payment_owner(self):
         if not self.payment.owner.pk == self.request.user.pk:
             raise Http404
 
@@ -443,33 +452,39 @@ class CallbackGatewayView(LoginRequiredMixin, View):
 
     def _show_no_payment_error(self):
         logging.error(f"payment for {self.bank_record.pk} was successful but has no oder")
-        return render(request=self.request,
-                      template_name="store/callback.html",
-                      context={
-                          "message": "خطایی در پرداخت رخ داده است جهت بازپرداخت وجه با پشتیبانی تماس حاصل نمایید.", }
-                      )
+        # return render(request=self.request,
+        #               template_name="store/payment-callback.html",
+        #               context={
+        #                   "message": "خطایی در پرداخت رخ داده است جهت بازپرداخت وجه با پشتیبانی تماس حاصل نمایید.", }
+        #               )
+        messages.error(self.request, _("There has been an error in the payment, contact support for a refund."))
+        return redirect(reverse('account:profile'))
 
     def _show_successful_payment(self):
         logging.error(f"payment {self.bank_record.pk} with amount {self.bank_record.amount} was not successful")
-
-        return render(request=self.request,
-                      template_name="store/callback.html",
-                      context={
-                          "message": "پرداخت با موفقیت انجام شد.", }
-                      )
+        # return render(request=self.request,
+        #               template_name="store/payment-callback.html",
+        #               context={
+        #                   "message": "پرداخت با موفقیت انجام شد.", }
+        #               )
+        messages.success(self.request, _("Payment was successful."))
+        return redirect(reverse('account:profile'))
 
     def _show_unsuccessful_payment(self):
         logging.error(f"payment {self.bank_record.pk} with amount {self.bank_record.amount} was not successful")
-
-        return render(request=self.request,
-                      template_name="store/callback.html",
-                      context={
-                          "message": "عملیات پرداخت موفقیت آمیز نبوده است.اگر از حساب شما مبلغی کم شده "
-                                     "است. ظرف مدت ۴۸ ساعت پول به حساب شما بازخواهد گشت.", })
+        #
+        # return render(request=self.request,
+        #               template_name="store/payment-callback.html",
+        #               context={
+        #                   "message": "عملیات پرداخت موفقیت آمیز نبوده است.اگر از حساب شما مبلغی کم شده "
+        #                              "است. ظرف مدت ۴۸ ساعت پول به حساب شما بازخواهد گشت.", })
+        messages.error(self.request,
+                       _("The payment operation has not been successful. If an amount has been deducted from your account. The money will be returned to your account within 48 hours."))
+        return redirect(reverse('account:profile'))
 
     def _make_payment_confirmed(self):
-
         self.payment.status = Payment.STATUS_CONFIRMED
+        self.payment.fulfilled_at = now()
         self.payment.save()
         self.payment.order.status = Order.ORDER_STATUS_PAYED
         self.payment.order.save()
