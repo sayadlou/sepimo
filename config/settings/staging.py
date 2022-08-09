@@ -26,3 +26,9 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Sepimo E-commerce'
+INSTALLED_APPS += [
+    "admin_honeypot",
+]
+KAVENEGAR_API_KEY = os.environ.get('KAVENEGAR_API_KEY')
+
+ADMINS = [(os.environ.get('ADMIN_NAME'), os.environ.get('ADMIN_EMAIL')), ]
