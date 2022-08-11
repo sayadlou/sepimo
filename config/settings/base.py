@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'mptt',
     'easy_thumbnails',
     'filer',
+    'dbbackup',
     'modeltranslation',
     'django.contrib.admin',
     'apps.account',
@@ -213,3 +214,7 @@ AZ_IRANIAN_BANK_GATEWAYS = {
     'TRACKING_CODE_QUERY_PARAM': 'tc',
     'TRACKING_CODE_LENGTH': 16,
 }
+
+
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': BASE_DIR / 'backup'}
