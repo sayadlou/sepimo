@@ -218,3 +218,5 @@ AZ_IRANIAN_BANK_GATEWAYS = {
 
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
 DBBACKUP_STORAGE_OPTIONS = {'location': BASE_DIR / 'backup'}
+
+IMPORT_EXPORT_USE_TRANSACTIONS = True
