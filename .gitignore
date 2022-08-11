@@ -69,3 +69,4 @@ general.log/
 /backup/
 /logs/
 /sent_email/
+/fixtures/

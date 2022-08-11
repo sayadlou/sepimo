@@ -31,6 +31,7 @@ class PasswordResetOptions(BaseTranslationOptions):
 
 
 translator.register(SignPage, TitleTranslationOptions)
+translator.register(HomePage, TitleTranslationOptions)
 translator.register(PasswordResetPage, PasswordResetOptions)
 translator.register(AboutUsPage, TranslationOptions)
 translator.register(ProfilePage, ProfileTranslationOptions)

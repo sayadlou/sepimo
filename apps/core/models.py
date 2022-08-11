@@ -27,7 +27,7 @@ class Page(models.Model):
             raise ValidationError(_("add setting Error"))
 
 
-class homePage(Page):
+class HomePage(Page):
     pass
 
 
