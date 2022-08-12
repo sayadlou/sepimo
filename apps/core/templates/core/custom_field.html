@@ -1,7 +1,7 @@
 {% load i18n %}
 {% spaceless %}
     <div class="form-group my-3">
-        <label class="text-right">{% translate "Security code" %} </label>
+        <label class="">{% translate "Security code" %} </label>
         <div class="input-group ">
             <div class="input-group-prepend">
                 <img src="{{ image }}" alt="captcha" loading="eager" class="captcha mx-2"/>
@@ -11,7 +11,9 @@
             {% endfor %}
         </div>
     </div>
+
     <script>
+
         $(function () {
             // Add refresh button after field (this can be done in the template as well)
             $('img.captcha').before(
