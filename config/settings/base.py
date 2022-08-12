@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_jalali',
     'captcha',
     'tinymce',
+    'sitetree',
     'azbankgateways',
     'mptt',
     'easy_thumbnails',
