@@ -6,7 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm, UsernameField, Passwor
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
 
-from apps.core.widget import CustomCaptchaTextInput, AdminCaptchaTextInput
+from apps.core.widget import CustomCaptchaTextInput
 from .models import UserProfile, Address
 
 
@@ -132,4 +132,4 @@ class UserRegisterForm(UserCreationForm):
 
 
 class AuthAdminForm(AuthenticationForm):
-    captcha = CaptchaField(widget=AdminCaptchaTextInput(attrs={'class': "form-control"}))
+    captcha = CaptchaField(widget=CustomCaptchaTextInput(attrs={'class': "form-control"}))
