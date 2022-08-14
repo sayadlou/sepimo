@@ -116,7 +116,9 @@
                                            onclick="cartAddOnclick()"
                                         >
                                             <span data-formid="cart-add"
-                                                  data-cartwidget="{% url "store:cart-widget" %}">افزودن به سبد خرید</span>
+                                                  data-cartwidgeturl="{% url "store:cart-widget" %}"
+                                                  data-carturl="{% url "store:cart" %}"
+                                            >افزودن به سبد خرید</span>
                                         </a>
                                     </div>
                                     <div class="col-4">
