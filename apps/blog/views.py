@@ -84,9 +84,15 @@ class Slug(CreateView):
         context['comments'] = self.post_obj.comment_set.filter(status='Published')
         context['next_post'] = self.get_next_post()
         context['prev_post'] = self.get_prev_post()
-        context['same_post'] = self.post_model.objects.order_by('pub_date').filter(status='Published') \
-            .filter(category=self.post_obj.category).all()
+        context['same_post'] = self.get_same_post()
         return context
+
+    def get_same_post(self):
+        return self.post_model.objects \
+            .order_by('pub_date') \
+            .filter(status='Published') \
+            .filter(category=self.post_obj.category).all() \
+            .exclude(id=self.post_obj.id)
 
     def get_next_post(self):
         return self.post_model.objects.order_by('id').filter(id__gt=self.post_obj.id).first()

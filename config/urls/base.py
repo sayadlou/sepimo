@@ -1,6 +1,12 @@
 from azbankgateways.urls import az_bank_gateways_urls
+from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
 
+from apps.core.sitemaps import PostSitemap
+
+sitemaps = {
+    'blog': PostSitemap
+}
 
 urlpatterns = [
     path('', include(('apps.core.urls', 'apps.core'), namespace='core')),
@@ -12,7 +18,6 @@ urlpatterns = [
     path('bankgateways/', az_bank_gateways_urls()),
     path('tinymce/', include('tinymce.urls')),
     path('i18n/', include('django.conf.urls.i18n')),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 
 ]
-
-

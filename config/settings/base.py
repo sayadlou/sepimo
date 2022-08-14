@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'django.contrib.humanize',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
     'django.forms',
     'django_jalali',
     'captcha',
@@ -112,6 +114,9 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'fa'
 
 LANGUAGE_COOKIE_AGE = 3600 * 24 * 30
+
+SITE_ID = 1
+
 
 LANGUAGES = (
     ('fa', 'پارسی'),
