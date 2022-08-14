@@ -1,0 +1,4 @@
+{% load sitetree %}
+{% for item in sitetree_items %}
+                    <li><a href="{% sitetree_url for item %}">{{ item.title_resolved }}</a></li>
+{% endfor %}

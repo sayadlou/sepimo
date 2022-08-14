@@ -1,0 +1,55 @@
+{% load sitetree %}
+{#<h1>1</h1>#}
+{#{% for item in sitetree_items %}#}
+{#    <a class="dropdown-item {% if item.is_current or item.in_current_branch %}active{% endif %}"#}
+{#       href="{% sitetree_url for item %}"#}
+{#       {% if item.hint %}title="{{ item.hint }}"{% endif %}>{{ item.title_resolved }}</a>#}
+{#    {% if item.is_current %}#}
+{#        85#}
+{#        {{ item.title_resolved }}#}
+{#    {% endif %}#}
+{#{% endfor %}#}
+
+
+{#<ul class="menu sf-arrows">#}
+{#    <li>#}
+{#        {% for item in sitetree_items %}#}
+{#            {% if forloop.first %}#}
+{#                <a href="{% sitetree_url for item %}" class="sf-with-ul">{{ item.title_resolved }} </a>#}
+{#            {% else %}#}
+{#                <ul>#}
+{#                    <li><a href="{% sitetree_url for item %}">{{ item.title_resolved }}</a></li>#}
+{#                </ul>#}
+{#            {% endif %}#}
+{##}
+{#        {% endfor %}#}
+{#    </li>#}
+{#</ul><!-- End .menu -->#}
+
+{% for item in sitetree_items %}
+    {% if item.has_children %}
+{#        <ul class="menu sf-arrows">#}
+            <li>
+                <a class="sf-with-ul" href="{% sitetree_url for item %}">{{ item.title_resolved }} </a>
+                <ul>
+                    {% sitetree_children of item for menu template "core/sepimo_menu_item.html" %}
+                </ul>
+            </li>
+{#        </ul><!-- End .menu -->#}
+    {% endif %}
+{% endfor %}
+
+
+{##}
+{#<ul class="menu sf-arrows">#}
+{#    <li>#}
+{#        <a href="#" class="sf-with-ul">صفحات </a>#}
+{#        <ul>#}
+{#            <li><a href="email-template/email-template.html">قالب ایمیل</a></li>#}
+{#            <li><a href="../../../account/templates/account/login.html">ورود</a></li>#}
+{#            <li><a href="faq.html">سوالات متداول</a></li>#}
+{#            <li><a href="404.html">خطای 404</a></li>#}
+{#            <li><a href="coming-soon.html">به زودی</a></li>#}
+{#        </ul>#}
+{#    </li>#}
+{#</ul><!-- End .menu -->#}
