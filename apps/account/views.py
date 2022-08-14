@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView, \
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
@@ -104,6 +105,14 @@ class SignUp(CreateView):
     template_name = 'account/signup.html'
     model = UserProfile
     form_class = UserRegisterForm
+
+    def form_valid(self, form):
+        redirect = super().form_valid(form)
+        new_user = authenticate(username=form.cleaned_data['username'],
+                                password=form.cleaned_data['password1'],
+                                )
+        login(self.request, new_user)
+        return redirect
 
     def get_success_url(self):
         return reverse_lazy('account:profile')
