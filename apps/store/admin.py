@@ -52,6 +52,7 @@ class ProductAdmin(TranslationAdmin):
 class ShippingAdmin(admin.ModelAdmin):
     pass
 
+
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
     pass
@@ -61,7 +62,6 @@ class BrandAdmin(admin.ModelAdmin):
 class DiscountAdmin(admin.ModelAdmin):
     readonly_fields = ['id']
     list_display = ['id', ]
-
 
 
 # @admin.register(Payment)

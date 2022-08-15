@@ -44,7 +44,7 @@
                             </h2><!-- End .entry-title -->
 
                             <div class="entry-cats">
-                                <a href="{% url "blog:category" post.category.name %}">
+                                <a href="{% url "blog:category" post.category.slug %}">
                                     {{ post.category.name }}
                                 </a>
                             </div><!-- End .entry-cats -->
@@ -132,7 +132,7 @@
                                 </h2><!-- End .entry-title -->
 
                                 <div class="entry-cats">
-                                    <a href="{% url "blog:category" post.category.name %}">{{ post.category.name }}</a>
+                                    <a href="{% url "blog:category" post.category.slug %}">{{ post.category.name }}</a>
                                 </div><!-- End .entry-cats -->
                             </div><!-- End .entry-body -->
                         </article><!-- End .entry -->

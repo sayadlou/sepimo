@@ -14,6 +14,7 @@ from apps.account.models import UserProfile
 class Category(MPTTModel):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=50)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
 
     def __str__(self):

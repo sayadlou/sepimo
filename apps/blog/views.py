@@ -24,7 +24,7 @@ class Blog(ListView):
             .order_by('pub_date') \
             .filter(status='Published')
         if category:
-            queryset = queryset.filter(category__name__iexact=category)
+            queryset = queryset.filter(category__slug__iexact=category)
         if search:
             queryset = queryset.filter(
                 Q(title__icontains=search) | Q(content__icontains=search) | Q(content2__icontains=search))
@@ -33,7 +33,8 @@ class Blog(ListView):
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         categories = Category.objects.all()
-        context['categories'] = [(category.name, category.post_set.all().count()) for category in categories]
+        context['categories'] = [(category.name, category.slug, category.post_set.all().count()) for category in
+                                 categories]
         context['popular_post'] = self.get_popular_posts(4)
         context['page'] = BlogPage.get_data()
         context['title'] = BlogPage.get_data().title

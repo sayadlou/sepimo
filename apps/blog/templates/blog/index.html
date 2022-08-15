@@ -55,7 +55,7 @@
                                             </h2><!-- End .entry-title -->
 
                                             <div class="entry-cats">
-                                                <a href="{% url "blog:category" post.category.name %}">
+                                                <a href="{% url "blog:category" post.category.slug %}">
                                                     {{ post.category.name }}
                                                 </a>
                                             </div><!-- End .entry-cats -->
@@ -173,9 +173,9 @@
                         <div class="widget widget-cats">
                             <h3 class="widget-title">{% translate "Categories" %}</h3><!-- End .widget-title -->
                             <ul>
-                                {% for category_name , category_count  in categories %}
+                                {% for category_name, category_slug , category_count  in categories %}
                                     <li>
-                                        <a href="{% url "blog:category" category_name %}">
+                                        <a href="{% url "blog:category" category_slug %}">
                                             {{ category_name }}
                                             <span>{{ category_count }}</span>
                                         </a>
