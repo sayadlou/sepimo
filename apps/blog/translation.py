@@ -9,9 +9,9 @@ class PostTranslationOptions(BaseTranslationOptions):
 
 
 class CategoryTranslationOptions(BaseTranslationOptions):
-    fields = ('name', 'slug')
+    fields = ('name',)
     required_languages = ('fa', 'en')
 
 
 translator.register(Post, PostTranslationOptions)
-# translator.register(Category, CategoryTranslationOptions)
+translator.register(Category, CategoryTranslationOptions)

@@ -11,20 +11,17 @@ from .models import Post, Category, PostViewHistory
 from ..core.models import BlogPage
 
 
-class Blog(ListView):
+class BlogView(ListView):
     template_name = 'blog/index.html'
     model = Post
     paginate_by = 6
 
     def get_queryset(self) -> QuerySet:
-        category = self.kwargs.get('category')
         search = self.request.GET.get("search")
         queryset = self.model.objects \
             .prefetch_related('comment_set') \
             .order_by('pub_date') \
             .filter(status='Published')
-        if category:
-            queryset = queryset.filter(category__slug__iexact=category)
         if search:
             queryset = queryset.filter(
                 Q(title__icontains=search) | Q(content__icontains=search) | Q(content2__icontains=search))
@@ -57,6 +54,18 @@ class Blog(ListView):
                    .order_by('-count')[:count]
 
 
+class CategoryView(BlogView):
+    def get_queryset(self) -> QuerySet:
+        category = self.kwargs.get('category')
+        queryset = self.model.objects \
+            .prefetch_related('comment_set') \
+            .order_by('pub_date') \
+            .filter(status='Published')
+        if category:
+            queryset = queryset.filter(category__slug__iexact=category)
+        return queryset
+
+
 class Slug(CreateView):
     template_name = 'blog/slug.html'
     post_model = Post
@@ -70,13 +79,6 @@ class Slug(CreateView):
         self.post_obj = get_object_or_404(self.post_model, slug=self.kwargs.get("slug"))
         return {"post": self.post_obj}
 
-    # def post(self, request, *args, **kwargs):
-    #     # self.object = self.get_object()
-    #     form = self.get_form()
-    #     if form.is_valid():
-    #         return self.form_valid(form)
-    #     else:
-    #         return self.form_invalid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

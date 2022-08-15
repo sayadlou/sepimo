@@ -7,9 +7,9 @@ from .models import Post, Category, Comment, PostViewHistory
 
 
 @admin.register(Category)
-class CategoryAdmin(DraggableMPTTAdmin):
+class CategoryAdmin(TranslationAdmin, DraggableMPTTAdmin):
     mptt_level_indent = 20
-    prepopulated_fields = {'slug': ('name',)}
+    prepopulated_fields = {'slug': ('name_en',)}
 
 
 @admin.register(Post)

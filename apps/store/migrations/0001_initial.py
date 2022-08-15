@@ -46,8 +46,8 @@ class Migration(migrations.Migration):
                 ('parent', mptt.fields.TreeForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='children', to='store.category')),
             ],
             options={
-                'verbose_name': 'Blog Category',
-                'verbose_name_plural': 'Blog Categories',
+                'verbose_name': 'BlogView Category',
+                'verbose_name_plural': 'BlogView Categories',
             },
         ),
         migrations.CreateModel(
