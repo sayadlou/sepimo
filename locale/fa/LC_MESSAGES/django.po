@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-18 19:22+0430\n"
+"POT-Creation-Date: 2022-08-15 16:22+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,36 +18,48 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: apps/account/forms.py:45 apps/account/forms.py:111
+#: apps/account/admin.py:21
+msgid "Personal info"
+msgstr ""
+
+#: apps/account/admin.py:22
+msgid "Permissions"
+msgstr ""
+
+#: apps/account/admin.py:25
+msgid "Important dates"
+msgstr ""
+
+#: apps/account/forms.py:44 apps/account/forms.py:110
 msgid "Password"
 msgstr "رمز عبور"
 
-#: apps/account/forms.py:55 apps/account/forms.py:105
+#: apps/account/forms.py:54 apps/account/forms.py:104
 #: apps/contact_us/forms.py:29 apps/contact_us/forms.py:38
 msgid "Email"
 msgstr "ایمیل"
 
-#: apps/account/forms.py:64
+#: apps/account/forms.py:63
 msgid "Old password"
 msgstr "رمز عبور قدیمی"
 
-#: apps/account/forms.py:70 apps/account/forms.py:85
+#: apps/account/forms.py:69 apps/account/forms.py:84
 msgid "New password"
 msgstr "رمز عبور جدید"
 
-#: apps/account/forms.py:76 apps/account/forms.py:91
+#: apps/account/forms.py:75 apps/account/forms.py:90
 msgid "New password confirmation"
 msgstr "تکرار رمز عبور جدید"
 
-#: apps/account/forms.py:100
+#: apps/account/forms.py:99
 msgid "Username"
 msgstr "نام کاربری"
 
-#: apps/account/forms.py:117
+#: apps/account/forms.py:116
 msgid "Password confirmation"
 msgstr "تایید رمز عبور"
 
-#: apps/account/forms.py:120
+#: apps/account/forms.py:119
 msgid "Enter the same password as before, for verification."
 msgstr "برای تایید همان رمز عبور قبلی را وارد کنید."
 
@@ -91,7 +103,7 @@ msgstr "منطقه"
 msgid "Postal Code"
 msgstr "کدپستی"
 
-#: apps/account/models.py:31 apps/account/templates/account/profile.html:503
+#: apps/account/models.py:31
 msgid "Address"
 msgstr "آدرس"
 
@@ -103,8 +115,11 @@ msgstr "ویرایش"
 msgid "Delete"
 msgstr "حذف"
 
-#: apps/account/templates/account/custom_field.html:4
-msgid "Security code"
+#: apps/account/templates/account/admin_custom_field.html:4
+#: templates/admin/captcha.html:6
+#, fuzzy
+#| msgid "Security code"
+msgid "Enter security code"
 msgstr "کد امنیتی:"
 
 #: apps/account/templates/account/delete_address_form.html:9
@@ -113,7 +128,7 @@ msgstr "آیا مطئن به حذف هستید؟"
 
 #: apps/account/templates/account/delete_address_form.html:17
 #: apps/account/templates/account/edit_address_form.html:52
-#: apps/account/templates/account/profile.html:205
+#: apps/account/templates/account/profile.html:206
 msgid "Save changes"
 msgstr "ذخیره تغییرات"
 
@@ -124,9 +139,8 @@ msgstr "شما با موفقیت از حساب کاربری خود خارج شد
 
 #: apps/account/templates/account/logged_out.html:39
 #: apps/account/templates/account/password_reset_done.html:39
-#: apps/account/templates/account/profile.html:481
-#: apps/core/templates/core/base.html:122
-#: apps/core/templates/core/home.html:130
+#: apps/core/templates/core/base.html:123
+#: apps/core/templates/core/home.html:131
 msgid "Profile"
 msgstr "پروفایل"
 
@@ -217,55 +231,18 @@ msgstr "آدرس جدید"
 msgid "Add new address"
 msgstr "اضافه کردن آدرس جدید"
 
-#: apps/account/templates/account/profile.html:220
+#: apps/account/templates/account/profile.html:221
 msgid "Edit address"
 msgstr "ویرایش آدرس"
 
-#: apps/account/templates/account/profile.html:241
+#: apps/account/templates/account/profile.html:242
 msgid "Delete address"
 msgstr "پاک کردن آدرس"
 
-#: apps/account/templates/account/profile.html:280
-#: apps/account/templates/account/profile.html:308
+#: apps/account/templates/account/profile.html:281
+#: apps/account/templates/account/profile.html:309
 msgid "succesfully saved"
 msgstr "با موفقیت دخیره شد"
-
-#: apps/account/templates/account/profile.html:488
-msgid "Purchases"
-msgstr "خرید ها"
-
-#: apps/account/templates/account/profile.html:495
-msgid "username"
-msgstr "نام کاربری"
-
-#: apps/account/templates/account/profile.html:496
-msgid "first_name"
-msgstr "نام"
-
-#: apps/account/templates/account/profile.html:497
-msgid "last_name"
-msgstr "نام خانوادگی"
-
-#: apps/account/templates/account/profile.html:498
-msgid "email"
-msgstr "ایمیل"
-
-#: apps/account/templates/account/profile.html:499
-#: apps/account/templates/account/profile.html:502
-msgid "profile_picture"
-msgstr "تصویر پروفایل"
-
-#: apps/account/templates/account/profile.html:505
-msgid "logout"
-msgstr "خروج"
-
-#: apps/account/templates/account/profile.html:507
-msgid "password reset"
-msgstr "بازنشانی رمز عبور"
-
-#: apps/account/templates/account/profile.html:509
-msgid "password change"
-msgstr "تغییر رمز عبور"
 
 #: apps/account/templates/account/signup.html:89
 #: apps/account/templates/account/signup.html:203
@@ -273,53 +250,69 @@ msgstr "تغییر رمز عبور"
 msgid "Create account"
 msgstr "ایجاد حساب کاربری"
 
-#: apps/blog/models.py:21
+#: apps/blog/models.py:24
 msgid "Blog Category"
 msgstr "دسته بندی بلاگ"
 
-#: apps/blog/models.py:22
+#: apps/blog/models.py:25
 msgid "Blog Categories"
 msgstr "دسته بندی های بلاگ"
 
-#: apps/blog/models.py:44 apps/blog/models.py:70
+#: apps/blog/models.py:47 apps/blog/models.py:73
 msgid "Date"
 msgstr "تاریخ"
 
-#: apps/blog/models.py:48
+#: apps/blog/models.py:51
 msgid "Blog Post"
 msgstr "مطلب بلاگ"
 
-#: apps/blog/models.py:49
+#: apps/blog/models.py:52
 msgid "Blog Posts"
 msgstr "مطالب بلاگ"
 
-#: apps/blog/templates/blog/index.html:49
+#: apps/blog/models.py:78
+msgid "Visit Date"
+msgstr ""
+
+#: apps/blog/templates/blog/custom_field.html:4
+#: apps/core/templates/core/custom_field.html:4
+#: apps/store/templates/store/custom_field.html:4
+msgid "Security code"
+msgstr "کد امنیتی:"
+
+#: apps/blog/templates/blog/custom_field.html:14
+#: apps/store/templates/store/product.html:322
+msgid "Submit"
+msgstr ""
+
+#: apps/blog/templates/blog/index.html:50
+#: apps/store/templates/store/product.html:198
 msgid "Comments"
 msgstr "دیدگاه ها"
 
-#: apps/blog/templates/blog/index.html:72
+#: apps/blog/templates/blog/index.html:155
 msgid "No Post for display"
 msgstr "مطلبی برای نمایش وجود ندارد"
 
-#: apps/blog/templates/blog/index.html:138
-#: apps/blog/templates/blog/index.html:144
-#: apps/core/templates/core/home.html:163
+#: apps/blog/templates/blog/index.html:163
+#: apps/blog/templates/blog/index.html:169
+#: apps/core/templates/core/home.html:164
 msgid "Search"
 msgstr "جستجو"
 
-#: apps/blog/templates/blog/index.html:140
+#: apps/blog/templates/blog/index.html:165
 msgid "search post"
 msgstr "جستجو در مطالب"
 
-#: apps/blog/templates/blog/index.html:142
+#: apps/blog/templates/blog/index.html:167
 msgid "Search in Blog"
 msgstr "جستجو در وبلاگ"
 
-#: apps/blog/templates/blog/index.html:149
+#: apps/blog/templates/blog/index.html:174
 msgid "Categories"
 msgstr "دسته بندی"
 
-#: apps/blog/templates/blog/index.html:163
+#: apps/blog/templates/blog/index.html:188
 msgid "Popular Posts"
 msgstr "مطالب بلاگ"
 
@@ -365,187 +358,172 @@ msgstr "محتوا برای این صفحه یافت نشد"
 msgid "add setting Error"
 msgstr "خطای اضافه کردن تغییرات"
 
-#: apps/core/templates/core/base.html:156
-#: apps/core/templates/core/home.html:132
+#: apps/core/templates/core/base.html:128
+#: apps/core/templates/core/home.html:133
 msgid "Signin / Signup"
 msgstr "ورود / ثبت نام"
 
-#: apps/core/templates/core/home.html:104
+#: apps/core/templates/core/home.html:105
 msgid "Links"
 msgstr "لینک ها"
 
-#: apps/core/templates/core/home.html:145
+#: apps/core/templates/core/home.html:146
 msgid "Toggle mobile menu"
 msgstr "منوی موبایل"
 
-#: apps/core/templates/core/home.html:177
+#: apps/core/templates/core/home.html:178
 msgid "Wishlist"
 msgstr "مورد علاقه"
 
-#: apps/core/templates/core/home.html:187 apps/store/models.py:49
-msgid "Cart"
-msgstr "سبد خرید"
-
-#: apps/core/templates/core/home.html:235
-msgid "Total"
-msgstr "جمع کل"
-
-#: apps/core/templates/core/home.html:257
+#: apps/core/templates/core/home.html:192
 msgid "Browse Categories"
 msgstr "دسته بندی های بلاگ"
 
-#: apps/core/templates/core/home.html:1332
+#: apps/core/templates/core/home.html:1267
 msgid "Best-selling products"
 msgstr "محصولات پرفروش"
 
-#: apps/core/templates/core/home.html:1336
+#: apps/core/templates/core/home.html:1271
 msgid "All"
 msgstr "همه"
 
-#: apps/core/templates/core/home.html:2076
+#: apps/core/templates/core/home.html:2011
 msgid "Our Store News"
 msgstr "اخبار فروشگاه ما"
 
-#: apps/core/templates/core/home.html:2165
+#: apps/core/templates/core/home.html:2100
 msgid "See more news"
 msgstr "مشاهده اخبار بیشتر"
 
-#: apps/store/forms.py:19
+#: apps/store/forms.py:21
 msgid "requested type is not valid"
 msgstr "نوع درخواستی معتبر نیست"
 
-#: apps/store/forms.py:24
+#: apps/store/forms.py:27
 msgid "quantity is more than allowed value"
 msgstr "مقدار بیش از مقدار مجاز است"
 
-#: apps/store/forms.py:27
+#: apps/store/forms.py:30
 msgid "quantity is less than allowed value"
 msgstr "مقدار کمتر از مقدار مجاز است"
 
-#: apps/store/forms.py:30
+#: apps/store/forms.py:33
 msgid "product not found"
 msgstr "محصول یافت نشد"
 
-#: apps/store/models.py:23
-msgid "Product Base Model"
-msgstr "محصول پایه"
+#: apps/store/models.py:60
+msgid "Available"
+msgstr ""
 
-#: apps/store/models.py:24
-msgid "Product Base Models"
-msgstr "محصولات پایه"
+#: apps/store/models.py:61
+msgid "Low in stock"
+msgstr ""
 
-#: apps/store/models.py:50
+#: apps/store/models.py:62
+msgid "Out of stock"
+msgstr ""
+
+#: apps/store/models.py:164
+msgid "Cart"
+msgstr "سبد خرید"
+
+#: apps/store/models.py:165
 msgid "Carts"
 msgstr "سبدهای خرید"
 
-#: apps/store/models.py:58
+#: apps/store/models.py:188
 msgid "cart"
 msgstr "سبد خرید"
 
-#: apps/store/models.py:59 apps/store/models.py:111
+#: apps/store/models.py:189 apps/store/models.py:211 apps/store/models.py:267
 msgid "quantity"
 msgstr "تعداد"
 
-#: apps/store/models.py:63
+#: apps/store/models.py:197
 msgid "Cart item"
 msgstr "اقلام سبد خرید"
 
-#: apps/store/models.py:64
+#: apps/store/models.py:198
 msgid "Cart items"
 msgstr "اقلام سبد خرید"
 
-#: apps/store/models.py:94
-msgid "Order"
-msgstr "سفارش"
-
-#: apps/store/models.py:95
-msgid "Orders"
-msgstr "سفارشات"
-
-#: apps/store/models.py:110
+#: apps/store/models.py:266
 msgid "order item"
 msgstr "اقلام سفارش"
 
-#: apps/store/models.py:118
+#: apps/store/models.py:275
 msgid "Order item"
 msgstr "اقلام سفارش"
 
-#: apps/store/models.py:119
+#: apps/store/models.py:276
 msgid "Order items"
 msgstr "اقلام سفارشات"
 
-#: apps/store/models.py:132
+#: apps/store/models.py:285
 msgid "initial"
 msgstr "اولیه"
 
-#: apps/store/models.py:133
+#: apps/store/models.py:286
 msgid "processing"
 msgstr "در حال پردازش"
 
-#: apps/store/models.py:134
+#: apps/store/models.py:287
 msgid "confirmed"
 msgstr "تایید شد"
 
-#: apps/store/models.py:137 apps/store/templates/store/order.html:9
+#: apps/store/models.py:291 apps/store/templates/store/order.html:9
 #: apps/store/templates/store/orders.html:12
-#: apps/store/templates/store/payments.html:12
 msgid "order"
 msgstr "سفارش"
 
-#: apps/store/models.py:139
-msgid "created at"
-msgstr "تولید شده در"
-
-#: apps/store/models.py:140
-msgid "expired at"
-msgstr "منقضی در"
-
-#: apps/store/models.py:141
+#: apps/store/models.py:292
 msgid "due at"
 msgstr "سر رسید در"
 
-#: apps/store/models.py:142
+#: apps/store/models.py:293
 msgid "fulfilled at"
 msgstr "تامین شده"
 
-#: apps/store/models.py:143
+#: apps/store/models.py:294
 msgid "amount"
 msgstr "مقدار"
 
-#: apps/store/models.py:144 apps/store/templates/store/order.html:9
+#: apps/store/models.py:295 apps/store/templates/store/order.html:9
 #: apps/store/templates/store/orders.html:12
-#: apps/store/templates/store/payments.html:12
 msgid "status"
 msgstr "وضعیت"
 
-#: apps/store/models.py:152
+#: apps/store/models.py:301
+msgid "created at"
+msgstr "تولید شده در"
+
+#: apps/store/models.py:302
+msgid "expired at"
+msgstr "منقضی در"
+
+#: apps/store/models.py:305
 msgid "Payment"
 msgstr "پرداخت"
 
-#: apps/store/models.py:153
+#: apps/store/models.py:306
 msgid "Payments"
 msgstr "پرداخت ها"
 
-#: apps/store/templates/store/cart.html:92
-msgid "error in response"
-msgstr "خطا در پاسخ"
+#: apps/store/templates/store/cart.html:105
+#: apps/store/templates/store/cart.html:240
+msgid "Please select a shipping method"
+msgstr ""
 
-#: apps/store/templates/store/cart.html:109
-msgid "Pay Order"
-msgstr "پرداخت سفارش"
-
-#: apps/store/templates/store/cart.html:112
-msgid "your cart is empty"
-msgstr "سبد خرید شما خالی است"
+#: apps/store/templates/store/cart.html:324
+msgid "for submit an order pleade Login"
+msgstr ""
 
 #: apps/store/templates/store/order.html:39
 #: apps/store/templates/store/orders.html:41
-#: apps/store/templates/store/payments.html:41
 msgid "Make Payment"
 msgstr "پرداخت"
 
 #: apps/store/templates/store/orders.html:46
-#: apps/store/templates/store/payments.html:46
 msgid "you have no order"
 msgstr "شما سفارشی ندارید"
 
@@ -553,10 +531,139 @@ msgstr "شما سفارشی ندارید"
 msgid "you have no payment"
 msgstr "شما پرداختی ندارید"
 
-#: apps/store/views.py:50
-msgid "product added to cart"
+#: apps/store/templates/store/product.html:181
+msgid "Description"
+msgstr ""
+
+#: apps/store/templates/store/product.html:187
+#, fuzzy
+#| msgid "Password confirmation"
+msgid "More information"
+msgstr "تایید رمز عبور"
+
+#: apps/store/templates/store/product.html:193
+msgid "Sending and returning"
+msgstr ""
+
+#: apps/store/views.py:148
+msgid "Review add"
+msgstr ""
+
+#: apps/store/views.py:153
+msgid "Review Not vaild"
+msgstr ""
+
+#: apps/store/views.py:254
+#, fuzzy
+#| msgid "product updated"
+msgid "Cart Updated"
+msgstr "محصول به روزرسانی شد"
+
+#: apps/store/views.py:257
+msgid "Cart Not Valid"
+msgstr ""
+
+#: apps/store/views.py:319
+#, fuzzy
+#| msgid "product added to cart"
+msgid "Product added to wish list"
 msgstr "محصول به سبد خرید اضافه شد"
 
-#: apps/store/views.py:66
-msgid "product updated"
-msgstr "محصول به روزرسانی شد"
+#: apps/store/views.py:320
+msgid "Product didn't add to wish list"
+msgstr ""
+
+#: apps/store/views.py:364
+msgid "minimum order amount should be more than 100,000 IRR"
+msgstr ""
+
+#: apps/store/views.py:460
+msgid "There has been an error in the payment, contact support for a refund."
+msgstr ""
+
+#: apps/store/views.py:470
+msgid "Payment was successful."
+msgstr ""
+
+#: apps/store/views.py:482
+msgid ""
+"The payment operation has not been successful. If an amount has been "
+"deducted from your account. The money will be returned to your account "
+"within 48 hours."
+msgstr ""
+
+#: templates/admin/login.html:54
+msgid "Please correct the error below."
+msgstr ""
+
+#: templates/admin/login.html:55
+msgid "Please correct the errors below."
+msgstr ""
+
+#: templates/admin/login.html:71
+#, python-format
+msgid ""
+"You are authenticated as %(username)s, but are not authorized to access this "
+"page. Would you like to login to a different account?"
+msgstr ""
+
+#: templates/admin/login.html:96
+#, fuzzy
+#| msgid "did you forget your password?"
+msgid "Forgotten your password or username?"
+msgstr "رمز خود را فراموش کرده اید؟"
+
+#: templates/admin/login.html:100
+msgid "Log in"
+msgstr ""
+
+#~ msgid "Purchases"
+#~ msgstr "خرید ها"
+
+#~ msgid "username"
+#~ msgstr "نام کاربری"
+
+#~ msgid "first_name"
+#~ msgstr "نام"
+
+#~ msgid "last_name"
+#~ msgstr "نام خانوادگی"
+
+#~ msgid "email"
+#~ msgstr "ایمیل"
+
+#~ msgid "profile_picture"
+#~ msgstr "تصویر پروفایل"
+
+#~ msgid "logout"
+#~ msgstr "خروج"
+
+#~ msgid "password reset"
+#~ msgstr "بازنشانی رمز عبور"
+
+#~ msgid "password change"
+#~ msgstr "تغییر رمز عبور"
+
+#~ msgid "Total"
+#~ msgstr "جمع کل"
+
+#~ msgid "Product Base Model"
+#~ msgstr "محصول پایه"
+
+#~ msgid "Product Base Models"
+#~ msgstr "محصولات پایه"
+
+#~ msgid "Order"
+#~ msgstr "سفارش"
+
+#~ msgid "Orders"
+#~ msgstr "سفارشات"
+
+#~ msgid "error in response"
+#~ msgstr "خطا در پاسخ"
+
+#~ msgid "Pay Order"
+#~ msgstr "پرداخت سفارش"
+
+#~ msgid "your cart is empty"
+#~ msgstr "سبد خرید شما خالی است"
